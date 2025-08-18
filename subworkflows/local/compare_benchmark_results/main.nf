@@ -8,6 +8,7 @@ include { BCFTOOLS_MERGE       } from '../../../modules/nf-core/bcftools/merge'
 include { VCF_TO_CSV           } from '../../../modules/local/custom/vcf_to_csv'
 include { REFORMAT_HEADER      } from '../../../modules/local/custom/reformat_header'
 include { MERGE_SOMPY_FEATURES } from '../../../modules/local/custom/merge_sompy_features'
+include { PLOT_SVLEN_DIST      } from '../../../modules/local/custom/plot_svlen_dist'
 include { TABIX_BGZIP as TABIX_BGZIP_UNZIP } from '../../../modules/nf-core/tabix/bgzip'
 
 workflow COMPARE_BENCHMARK_RESULTS {
@@ -41,6 +42,8 @@ workflow COMPARE_BENCHMARK_RESULTS {
     }
     else{
         // SV part
+        evaluations.view()
+
         // unzip vcfs
         TABIX_BGZIP_UNZIP(
             evaluations
@@ -50,6 +53,11 @@ workflow COMPARE_BENCHMARK_RESULTS {
         TABIX_BGZIP_UNZIP.out.output
             .groupTuple()
             .set{vcf_ch}
+
+        // plot SV distribution plots, only for SVs
+        PLOT_SVLEN_DIST(
+            vcf_ch
+            )
 
         // Merge Benchmark SVs from different tools
         SURVIVOR_MERGE(
@@ -63,6 +71,7 @@ workflow COMPARE_BENCHMARK_RESULTS {
         )
         versions = versions.mix(SURVIVOR_MERGE.out.versions.first())
         merged_vcfs = merged_vcfs.mix(SURVIVOR_MERGE.out.vcf)
+
     }
 
     // convert vcf files to csv
