@@ -19,8 +19,8 @@ workflow SVANALYZER_BENCHMARK {
 
     // apply svanalyzer to benchmark SVs
     SVANALYZER_SVBENCHMARK(
-        input_ch.map{ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed  ->
-                [ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed ]
+        input_ch.map{ meta, vcf, tbi, truth_vcf, truth_tbi, regionsbed, _targets_bed  ->
+                [ meta, vcf, tbi, truth_vcf, truth_tbi, regionsbed ]
             },
         fasta,
         fai
@@ -45,7 +45,7 @@ workflow SVANALYZER_BENCHMARK {
     // subtract FPs from Query to find TPs in Query
     SUBTRACT_VCF_QUERY(
         input_ch.map{ meta, vcf, tbi, _truth_vcf, _truth_tbi, regionsbed, targets_bed  ->
-            [ meta, vcf, tbi,regionsbed, targets_bed ]}.join(SVANALYZER_SVBENCHMARK.out.fps)
+            [ meta, vcf, tbi, regionsbed, targets_bed ]}.join(SVANALYZER_SVBENCHMARK.out.fps)
         )
     versions = versions.mix(SUBTRACT_VCF_QUERY.out.versions)
 

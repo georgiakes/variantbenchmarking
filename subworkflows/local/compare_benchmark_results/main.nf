@@ -22,6 +22,15 @@ workflow COMPARE_BENCHMARK_RESULTS {
     versions    = Channel.empty()
     merged_vcfs = Channel.empty()
 
+    // plot SV distribution plots, only for SVs
+    PLOT_SVLEN_DIST(
+        evaluations.groupTuple().mix(evaluations_csv.groupTuple())
+    )
+    versions = versions.mix(PLOT_SVLEN_DIST.out.versions.first())
+
+    ch_plots = PLOT_SVLEN_DIST.out.plot
+
+
     if (params.variant_type == "small" | params.variant_type == "snv" | params.variant_type == "indel"){
 
         // Small Variants
@@ -42,8 +51,6 @@ workflow COMPARE_BENCHMARK_RESULTS {
     }
     else{
         // SV part
-        evaluations.view()
-
         // unzip vcfs
         TABIX_BGZIP_UNZIP(
             evaluations
@@ -53,11 +60,6 @@ workflow COMPARE_BENCHMARK_RESULTS {
         TABIX_BGZIP_UNZIP.out.output
             .groupTuple()
             .set{vcf_ch}
-
-        // plot SV distribution plots, only for SVs
-        PLOT_SVLEN_DIST(
-            vcf_ch
-            )
 
         // Merge Benchmark SVs from different tools
         SURVIVOR_MERGE(
@@ -89,4 +91,6 @@ workflow COMPARE_BENCHMARK_RESULTS {
     emit:
     merged_vcfs  // channel: [val(meta), vcf]
     versions     // channel: [versions.yml]
+    ch_plots     // channel: [plots.png]
+
 }
