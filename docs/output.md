@@ -20,6 +20,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   - [RTG-tools](#rtgtools)
   - [Happy](#happy)
   - [Sompy](#sompy)
+  - [Intersect](#intersect)
 - [Summary statistics](#summary)
   - [Comparison of benchmarking results](#comparisons)
   - [Merged summary benchmark statistics](#tables)
@@ -140,7 +141,6 @@ Benchmark results are created separately for each test vcf and for each method u
 <summary>Output files</summary>
 
 - `summary/`
-
   - `comparisons/`
     - `small/`
       - `rtgtools.small.FN.csv`: Summarizes and compares variants from the baseline VCF of rtgtools which were not correctly called
