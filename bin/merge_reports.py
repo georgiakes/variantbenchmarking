@@ -10,6 +10,7 @@ import os
 import sys
 import errno
 import argparse
+import json
 
 
 def parse_args(args=None):
@@ -85,18 +86,30 @@ def get_truvari_results(file_paths):
 	# Read the json into a DataFrame
 		filename = os.path.basename(file)
 		with open(file, 'r') as f:
-			data = pd.read_json(f)
+			data = json.load(f)
 
-			relevant_data = {
-				"Tool": filename.split(".")[0],
-				"File": filename,
-				"TP_base": int(data["TP-base"].iloc[0]),
-				"TP_comp": int(data["TP-comp"].iloc[0]),
-				"FP": int(data["FP"].iloc[0]),
-				"FN": int(data["FN"].iloc[0]),
-				"Precision": float(data["precision"].iloc[0]),
-				"Recall": float(data["recall"].iloc[0]),
-				"F1": float(data["f1"].iloc[0])}
+		def get_value(key, default):
+			value = data.get(key)
+			if value is None:
+				# Return the default value if the JSON value is null/None
+				return default
+				# If the value is a list (e.g., from a malformed file), take the first element
+				if isinstance(value, list) and len(value) > 0:
+					return value[0]
+					# Otherwise, return the value as is
+			return value
+
+		relevant_data = {
+			"Tool": filename.split(".")[0],
+			"File": filename,
+			"TP_base": int(get_value("TP-base", 0)),
+			"TP_comp": int(get_value("TP-comp", 0)),
+			"FP": int(get_value("FP", 0)),
+			"FN": int(get_value("FN", 0)),
+			"Precision": float(get_value("precision", 0.0)),
+			"Recall": float(get_value("recall", 0.0)),
+			"F1": float(get_value("f1", 0.0))
+			}
 
 		df = pd.DataFrame([relevant_data])
 		merged_df = pd.concat([merged_df, df], ignore_index=True)
