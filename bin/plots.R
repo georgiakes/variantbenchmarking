@@ -27,7 +27,7 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
         name2 <- paste("variants_by_tool_", benchmark, "_mqc.png", sep = "")
         name3 <- paste("pr_recall_by_tool_", benchmark, "_mqc.png", sep = "")
     }
-    input_data_melted <- melt(table, id.vars = "Tool")
+    input_data_melted <- melt(table, id.vars = "Caller")
 
     tp_data <- input_data_melted[input_data_melted$variable %in% c("TP_base", "TP_comp", "FP", "FN"), ]
     metric_data <- input_data_melted[input_data_melted$variable %in% c("F1"), ]
@@ -36,10 +36,10 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
     metric_data$variable <- factor(metric_data$variable, levels = c("F1"))
 
     # Visualize TP_base, TP_comp, FP, and FN in separate plots
-    tp_plot <- ggplot(tp_data, aes(x = Tool, y = value, color = Tool, group = interaction(variable, Tool))) +
+    tp_plot <- ggplot(tp_data, aes(x = Caller, y = value, color = Caller, group = interaction(variable, Caller))) +
         geom_line() +
         geom_point() +
-        labs(x = "Tool", y = "Value", color = "Tool") +
+        labs(x = "Method", y = "Value", color = "Caller") +
         facet_wrap(~variable, scales = "free_y") +
         theme_minimal() +
         theme(
@@ -48,9 +48,9 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
             axis.text.x = element_text(angle = 30, hjust = 0.5))
 
     # Visualize f1
-    f1_plot <- ggplot(metric_data, aes(x = Tool, y = value)) +
+    f1_plot <- ggplot(metric_data, aes(x = Caller, y = value)) +
         geom_point() +
-        labs(x = "Tool", y = "f1") +
+        labs(x = "Method", y = "f1") +
         theme_minimal() +
         theme(
             panel.background = element_rect(fill = "white"),
@@ -58,7 +58,7 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
 
     # Visualize Precision vs Recall
     pr_plot <- ggplot(table) +
-        geom_point(aes(x = Recall, y = Precision, color = Tool)) +
+        geom_point(aes(x = Recall, y = Precision, color = Caller)) +
         theme_minimal() +
         theme(
             legend.position = "right",

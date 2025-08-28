@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-- Truvari bench update to 5..30 [#200](https://github.com/nf-core/variantbenchmarking/pull)
+- Truvari bench update to 5.3.0 [#200](https://github.com/nf-core/variantbenchmarking/pull/200)
+- Added a python script to plot indel distributions for SV variants [#216](https://github.com/nf-core/variantbenchmarking/pull/216)
 
 ### `Fixed`
 
