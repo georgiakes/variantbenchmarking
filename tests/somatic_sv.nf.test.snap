@@ -3,9 +3,6 @@
         "content": [
             56,
             {
-                "BCFTOOLS_FILTER": {
-                    "bcftools": 1.2
-                },
                 "BCFTOOLS_NORM": {
                     "bcftools": 1.21
                 },
@@ -54,11 +51,14 @@
                 "SURVIVOR_STATS": {
                     "survivor": "1.0.7"
                 },
+                "TABIX_BGZIP": {
+                    "tabix": "1.19.1"
+                },
                 "TABIX_BGZIP_UNZIP": {
                     "tabix": "1.19.1"
                 },
                 "TRUVARI_BENCH": {
-                    "truvari": "4.1.0)"
+                    "truvari": "5.3.0)"
                 },
                 "VCF_TO_CSV": {
                     "python": "3.13.0"
@@ -189,20 +189,20 @@
             [
                 "SEQC2.bcftools_stats.txt:md5,98d52a15cf5e4ef38225dde69f256121",
                 "SEQC2_mqc.stats:md5,75fd7f87d3534ab64b95b5490317b11f",
-                "multiqc_bcftools_stats.txt:md5,cb4b74675a68d10ceb67663cfa5044e9",
+                "multiqc_bcftools_stats.txt:md5,d15679c9ce48a885c28263f78302ae28",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
-                "multiqc_general_stats.txt:md5,c1ffbab3d44dbb16ab7b4bcab91b7ae9",
-                "multiqc_survivor.txt:md5,3f8d64f1be3438a7cca4b9fb3ff20fe5",
-                "test11.manta.bcftools_stats.txt:md5,1ad68083ba9a83a8a34015bf3e12fe09",
-                "test11.manta_mqc.stats:md5,37db06159245b9de273b204b6d39ceb0",
-                "test12.tiddit.bcftools_stats.txt:md5,fdad28d1d9bc88e5d9913d140f35a4b8",
-                "test12.tiddit_mqc.stats:md5,3f5ef56a3283d60bb25fc8f7a8eb3642"
+                "multiqc_general_stats.txt:md5,84d590d8e5c60a7d743641eb8c21342e",
+                "multiqc_survivor.txt:md5,dac25d5e28bd8fa745bd11fb8ef456da",
+                "test11.manta.bcftools_stats.txt:md5,3b1da2e2c9c96f4aae2f3bc0490e1346",
+                "test11.manta_mqc.stats:md5,a5844dbf1ea78ed263259e3a79b7bedd",
+                "test12.tiddit.bcftools_stats.txt:md5,d24a1fee7a43e7bc6c09c595371eda59",
+                "test12.tiddit_mqc.stats:md5,950514053b461a3868a12fd5ced0a3d8"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-22T11:42:01.546305401"
+        "timestamp": "2025-08-28T13:38:58.806304273"
     }
 }

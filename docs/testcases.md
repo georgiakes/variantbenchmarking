@@ -20,11 +20,11 @@ This pipeline is able to benchmark various type of analysis. Below, explanations
 
 _Truvari_
 
-| Tool  | File                           | TP_base | TP_comp | FP  | FN   | Precision          | Recall            | F1                  |
-| ----- | ------------------------------ | ------- | ------- | --- | ---- | ------------------ | ----------------- | ------------------- |
-| test1 | test1.HG002.manta.summary.json | 211     | 211     | 9   | 1253 | 0.9590909090909091 | 0.144125683060109 | 0.250593824228028   |
-| test2 | test2.HG002.lumpy.summary.json | 51      | 51      | 7   | 1413 | 0.8793103448275861 | 0.03483606557377  | 0.06701708278580801 |
-| test3 | test3.HG002.delly.summary.json | 156     | 156     | 45  | 1308 | 0.7761194029850741 | 0.10655737704918  | 0.18738738738738703 |
+| Tool  | File                           | TP_base | TP_comp | FP  | FN   | Precision | Recall  | F1      |
+| ----- | ------------------------------ | ------- | ------- | --- | ---- | --------- | ------- | ------- |
+| test1 | test1.HG002.manta.summary.json | 197     | 197     | 23  | 1267 | 0.89545   | 0.13456 | 0.23397 |
+| test2 | test2.HG002.lumpy.summary.json | 48      | 48      | 10  | 1416 | 0.82759   | 0.03279 | 0.06307 |
+| test3 | test3.HG002.delly.summary.json | 150     | 150     | 59  | 1314 | 0.71770   | 0.10246 | 0.17932 |
 
 _SVbenchmark_
 
