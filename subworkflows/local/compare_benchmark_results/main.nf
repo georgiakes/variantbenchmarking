@@ -8,7 +8,6 @@ include { BCFTOOLS_MERGE       } from '../../../modules/nf-core/bcftools/merge'
 include { VCF_TO_CSV           } from '../../../modules/local/custom/vcf_to_csv'
 include { REFORMAT_HEADER      } from '../../../modules/local/custom/reformat_header'
 include { MERGE_SOMPY_FEATURES } from '../../../modules/local/custom/merge_sompy_features'
-include { PLOT_SVLEN_DIST      } from '../../../modules/local/custom/plot_svlen_dist'
 include { TABIX_BGZIP as TABIX_BGZIP_UNZIP } from '../../../modules/nf-core/tabix/bgzip'
 
 workflow COMPARE_BENCHMARK_RESULTS {
@@ -21,15 +20,6 @@ workflow COMPARE_BENCHMARK_RESULTS {
     main:
     versions    = Channel.empty()
     merged_vcfs = Channel.empty()
-
-    // plot SV distribution plots, only for SVs
-    PLOT_SVLEN_DIST(
-        evaluations.groupTuple().mix(evaluations_csv.groupTuple())
-    )
-    versions = versions.mix(PLOT_SVLEN_DIST.out.versions.first())
-
-    ch_plots = PLOT_SVLEN_DIST.out.plot
-
 
     if (params.variant_type == "small" | params.variant_type == "snv" | params.variant_type == "indel"){
 
@@ -91,6 +81,5 @@ workflow COMPARE_BENCHMARK_RESULTS {
     emit:
     merged_vcfs  // channel: [val(meta), vcf]
     versions     // channel: [versions.yml]
-    ch_plots     // channel: [plots.png]
 
 }

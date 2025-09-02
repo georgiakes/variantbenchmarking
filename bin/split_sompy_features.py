@@ -14,9 +14,9 @@ import os
 
 def split_csv_by_tag(input_file, prefix):
     output_files = {
-        'TP': f'{prefix}_TP.csv',
-        'FP': f'{prefix}_FP.csv',
-        'FN': f'{prefix}_FN.csv'
+        'TP': f'{prefix}.TP.csv',
+        'FP': f'{prefix}.FP.csv',
+        'FN': f'{prefix}.FN.csv'
     }
 
     try:

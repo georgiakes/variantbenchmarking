@@ -304,7 +304,9 @@ workflow VARIANTBENCHMARKING {
 
     // Summarize and plot benchmark statistics
     REPORT_BENCHMARK_STATISTICS(
-        ch_reports
+        ch_reports,
+        evals_ch,
+        evals_csv_ch
     )
     ch_versions      = ch_versions.mix(REPORT_BENCHMARK_STATISTICS.out.versions)
 
@@ -334,7 +336,6 @@ workflow VARIANTBENCHMARKING {
     ch_multiqc_files                      = ch_multiqc_files.mix(ch_collated_versions)
     ch_multiqc_files                      = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml',sort: true))
     ch_multiqc_files                      = ch_multiqc_files.mix(REPORT_BENCHMARK_STATISTICS.out.ch_plots)
-    ch_multiqc_files                      = ch_multiqc_files.mix(COMPARE_BENCHMARK_RESULTS.out.ch_plots)
 
     MULTIQC (
         ch_multiqc_files.collect(),

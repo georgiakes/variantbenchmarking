@@ -20,7 +20,6 @@ process SPLIT_SOMPY_FEATURES {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -33,9 +32,9 @@ process SPLIT_SOMPY_FEATURES {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_TP.csv
-    touch ${prefix}_FP.csv
-    touch ${prefix}_FN.csv
+    touch ${prefix}.TP.csv
+    touch ${prefix}.FP.csv
+    touch ${prefix}.FN.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
