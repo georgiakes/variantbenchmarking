@@ -191,11 +191,12 @@ nf-core/variantbenchmarking was originally written by Kübra Narcı ([@kubranarc
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
-- Nicolas Vannieuwkerke ([@nvnienwk](https://github.com/nvnieuwk)),
-- Maxime Garcia ([@maxulysse](https://github.com/maxulysse)),
+- Nicolas Vannieuwkerke ([@nvnienwk](https://github.com/nvnieuwk))
+- Maxime Garcia ([@maxulysse](https://github.com/maxulysse))
 - Sameesh Kher ([@khersameesh24](https://github.com/khersameesh24))
 - Florian Heyl ([@heylf](https://github.com/heyl))
 - Krešimir Beštak ([@kbestak](https://github.com/kbestak))
+- Ata Jadidahari ([@AtaJadidAhari](https://github.com/AtaJadidAhari))
 - Elad Herz ([@EladH1](https://github.com/EladH1))
 
 ## Acknowledgements
