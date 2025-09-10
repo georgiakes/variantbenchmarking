@@ -69,7 +69,7 @@ Consistent formatting and alignment of variants in test and truth VCF files for 
   - `homogenize`: makes use of [variant-extractor](https://github.com/EUCANCan/variant-extractor). Homogenizes the structural variants in a common format.
   - `svync`: makes use of [svync](https://github.com/nvnieuwk/svync). Reformats VCF headers properly.
   - `svdecompose`: makes use of [rtgtools svdecompose](https://cn.animalgenome.org/bioinfo/resources/manuals/RTGOperationsManual.pdf). Decomposes SVs into BND. Combine it only if you plan to run rtgtools bndeval!
-  - `svtk`: use [svtk standardize - from GATK](https://github.com/broadinstitute/gatk-sv/tree/main/src/svtk) to standardize structural variants. The standardization process may change by tool and may prodi=uce BND calls. Should be aplied very carefully. Applicable only to delly, manta, lumpy, dragen, rm res scrable, smoove, melt and wham.
+  - `svtk`: use [svtk standardize - from GATK](https://github.com/broadinstitute/gatk-sv/tree/main/src/svtk) to standardize structural variants. The standardization process may change by tool and may produce BND calls. Should be aplied very carefully. Applicable only to delly, manta, lumpy, dragen, scrable, smoove, melt and wham.
 
 - `preprocesses`: The preprocessing steps to perform on the input files. Should be a comma-separated list of one or more of the following options: `split_multiallelic,normalize,deduplicate,prepy,filter_contigs`
   - `split_multiallelic`: Splits multi-allelic variants in test and truth VCF files ([bcftools norm](https://samtools.github.io/bcftools/bcftools.html#norm))

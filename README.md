@@ -37,6 +37,8 @@ This initial step ensures consistent formatting and alignment of variants in tes
 - Subsample if input test vcf is multisample ([bcftools view](https://samtools.github.io/bcftools/bcftools.html#view))
 - Homogenization of multi-allelic variants, MNPs and SVs (including imprecise paired breakends and single breakends) ([variant-extractor](https://github.com/EUCANCan/variant-extractor))
 - Reformatting test VCF files from different SV callers ([svync](https://github.com/nvnieuwk/svync))
+- Standardize SV variants to BND ([SVTK standardize](https://github.com/broadinstitute/gatk-sv/blob/main/src/svtk/scripts/svtk))
+- Decompose SVs to BND [rtgtools svdecompose](https://cn.animalgenome.org/bioinfo/resources/manuals/RTGOperationsManual.pdf)
 - Rename sample names in test and truth VCF files ([bcftools reheader](https://samtools.github.io/bcftools/bcftools.html#reheader))
 - Splitting multi-allelic variants in test and truth VCF files ([bcftools norm](https://samtools.github.io/bcftools/bcftools.html#norm))
 - Deduplication of variants in test and truth VCF files ([bcftools norm](https://samtools.github.io/bcftools/bcftools.html#norm))

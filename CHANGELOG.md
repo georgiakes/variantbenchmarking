@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-- Truvari bench update to 5.3.0 [#200](https://github.com/nf-core/variantbenchmarking/pull/200)
+- Truvari bench update to 5.3.0 [#215](https://github.com/nf-core/variantbenchmarking/pull/215)
 - Added a python script to plot indel distributions for SV variants [#216](https://github.com/nf-core/variantbenchmarking/pull/216)
+- Hirse promo badge [#217](https://github.com/nf-core/variantbenchmarking/pull/217)
+- svtk/standardize from GATK to standardize SVs to BND format. [#218](https://github.com/nf-core/variantbenchmarking/pull/218)
 
 ### `Fixed`
+
+- Use local copies of test files instead of AWS links from sarek [#214](https://github.com/nf-core/variantbenchmarking/pull/214)
 
 ### `Dependencies`
 
