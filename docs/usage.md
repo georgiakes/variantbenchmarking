@@ -125,8 +125,8 @@ _Truvari_
 
 ```csv title="samplesheet.csv"
 id,test_vcf,caller,pctsize,pctseq,pctovl,refdist,chunksize,dup_to_ins,typeignore
-test1,test1.vcf.gz,delly,0.7,0.7,0.7,100000,50000,true,true
-test2,test2.vcf,gatk,0.6,0.5,0.7,110000,40000,false,true
+test1,test1.vcf.gz,delly,0.7,0.7,0.7,1000,50000,true,true
+test2,test2.vcf,gatk,0.6,0.5,0.7,1100,40000,false,true
 ```
 
 - `pctsize`: Has to be between 0-1. Ratio of min(base_size, comp_size)/max(base_size, comp_size)

@@ -293,7 +293,7 @@ workflow VARIANTBENCHMARKING {
 
     }
 
-    // compare tool spesfic benchmarks
+    // Compare tool spesfic benchmarks
     COMPARE_BENCHMARK_RESULTS(
         evals_ch,
         evals_csv_ch,
@@ -304,7 +304,9 @@ workflow VARIANTBENCHMARKING {
 
     // Summarize and plot benchmark statistics
     REPORT_BENCHMARK_STATISTICS(
-        ch_reports
+        ch_reports,
+        evals_ch,
+        evals_csv_ch
     )
     ch_versions      = ch_versions.mix(REPORT_BENCHMARK_STATISTICS.out.versions)
 

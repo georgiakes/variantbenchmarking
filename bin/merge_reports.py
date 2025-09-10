@@ -10,6 +10,7 @@ import os
 import sys
 import errno
 import argparse
+import json
 
 
 def parse_args(args=None):
@@ -34,7 +35,6 @@ def get_svbenchmark_results(file_paths):
 	# Define regular expressions to extract the values
 	DTP_pattern = re.compile(r'Number of detected true variants \(.*\): (\d+)')
 	FN_pattern = re.compile(r'Number of undetected true variants \(.*\): (\d+)')
-	PTP_pattern = re.compile(r'Number of predictions that are true \(.*\): (\d+)')
 	FP_pattern = re.compile(r'Number of false positives \(.*\): (\d+)')
 	recall_pattern = re.compile(r'Recall\s*\(.*?\):\s*(\d+(?:\.\d+)?)%')
 	precision_pattern = re.compile(r'Precision\s*\(.*?\):\s*(\d+(?:\.\d+)?)%')
@@ -44,13 +44,13 @@ def get_svbenchmark_results(file_paths):
 	for file in file_paths:
 		# Read the table into a DataFrame
 		filename = os.path.basename(file)
+		caller = filename.split('.')[2]
 		with open(file, 'r') as f:
 			text = f.read()
 
 		# Search for matches in the text
 		DTP_match = DTP_pattern.search(text)
 		FN_match = FN_pattern.search(text)
-		PTP_match = PTP_pattern.search(text)
 		FP_match = FP_pattern.search(text)
 		recall_match = recall_pattern.search(text)
 		precision_match = precision_pattern.search(text)
@@ -60,6 +60,7 @@ def get_svbenchmark_results(file_paths):
 		data = {
 			'Tool': [filename.split(".")[0]],
 			'File': filename,
+			'Caller': caller,
 			'TP_base': [int(DTP_match.group(1)) if DTP_match else 'NA'],
 			'FP': [int(FP_match.group(1)) if FP_match else 'NA'],
 			'TP_comp': [int(DTP_match.group(1)) if DTP_match else 'NA'],
@@ -84,19 +85,33 @@ def get_truvari_results(file_paths):
 	for file in file_paths:
 	# Read the json into a DataFrame
 		filename = os.path.basename(file)
+		caller = filename.split('.')[2]
 		with open(file, 'r') as f:
-			data = pd.read_json(f)
+			data = json.load(f)
 
-			relevant_data = {
-				"Tool": filename.split(".")[0],
-				"File": filename,
-				"TP_base": int(data["TP-base"].iloc[0]),
-				"TP_comp": int(data["TP-comp"].iloc[0]),
-				"FP": int(data["FP"].iloc[0]),
-				"FN": int(data["FN"].iloc[0]),
-				"Precision": float(data["precision"].iloc[0]),
-				"Recall": float(data["recall"].iloc[0]),
-				"F1": float(data["f1"].iloc[0])}
+		def get_value(key, default):
+			value = data.get(key)
+			if value is None:
+				# Return the default value if the JSON value is null/None
+				return default
+				# If the value is a list (e.g., from a malformed file), take the first element
+				if isinstance(value, list) and len(value) > 0:
+					return value[0]
+					# Otherwise, return the value as is
+			return value
+
+		relevant_data = {
+			"Tool": filename.split(".")[0],
+			"File": filename,
+			"Caller":caller,
+			"TP_base": int(get_value("TP-base", 0)),
+			"TP_comp": int(get_value("TP-comp", 0)),
+			"FP": int(get_value("FP", 0)),
+			"FN": int(get_value("FN", 0)),
+			"Precision": float(get_value("precision", 0.0)),
+			"Recall": float(get_value("recall", 0.0)),
+			"F1": float(get_value("f1", 0.0))
+			}
 
 		df = pd.DataFrame([relevant_data])
 		merged_df = pd.concat([merged_df, df], ignore_index=True)
@@ -110,6 +125,7 @@ def get_wittyer_results(file_paths):
 	for file in file_paths:
 	# Read the json into a DataFrame
 		filename = os.path.basename(file)
+		caller = filename.split('.')[2]
 		with open(file, 'r') as f:
 			data = pd.read_json(f)
 
@@ -119,6 +135,7 @@ def get_wittyer_results(file_paths):
 					relevant_data.append({
 						"Tool": filename.split(".")[0],
 						"File": filename,
+						"Caller": caller,
 						"StatsType": stats["StatsType"],
 						"TP_base": int(stats["TruthTpCount"]) if pd.notna(stats["TruthTpCount"]) else 0,
 						"TP_comp": int(stats["QueryTpCount"]) if pd.notna(stats["QueryTpCount"]) else 0,
@@ -141,6 +158,7 @@ def get_rtgtools_results(file_paths):
 	# Iterate over each table file
 	for file in file_paths:
 		filename = os.path.basename(file)
+		caller = filename.split('.')[2]
 
 		with open(file, 'r') as f:
 			lines = f.readlines()
@@ -157,8 +175,9 @@ def get_rtgtools_results(file_paths):
 		df = pd.DataFrame(data, columns=header)
 		df['Tool'] = filename.split(".")[0]
 		df['File'] = filename
-		df_redesigned = df[['Tool', 'File', 'Threshold','True-pos-baseline','True-pos-call','False-pos','False-neg','Precision','Sensitivity','F-measure']]
-		df_redesigned.columns = ['Tool','File', 'Threshold','TP_base','TP_call','FP','FN','Precision','Recall','F1']
+		df['Caller'] = caller
+		df_redesigned = df[['Tool', 'File', 'Caller', 'Threshold','True-pos-baseline','True-pos-call','False-pos','False-neg','Precision','Sensitivity','F-measure']]
+		df_redesigned.columns = ['Tool','File', 'Caller', 'Threshold','TP_base','TP_call','FP','FN','Precision','Recall','F1']
 		# Convert relevant columns to integers, handling potential NaN values
 		int_columns = ['TP_base', 'FN', 'TP_call', 'FP']
 		float_columns = ['Recall','Precision','F1']
@@ -176,14 +195,16 @@ def get_happy_results(file_paths):
 	# Iterate over each table file
 	for file in file_paths:
 		filename = os.path.basename(file)
+		caller = filename.split('.')[2]
 
 		df = pd.read_csv(file)
 
 		df['Tool'] = filename.split(".")[0]
 		df['File'] = filename
+		df['Caller'] = caller
 
-		df_redesigned = df[['Tool', 'File', 'Type','Filter','TRUTH.TOTAL','TRUTH.TP','TRUTH.FN','QUERY.TOTAL','QUERY.FP','QUERY.UNK','FP.gt','FP.al','METRIC.Recall','METRIC.Precision','METRIC.Frac_NA','METRIC.F1_Score','TRUTH.TOTAL.TiTv_ratio','QUERY.TOTAL.TiTv_ratio','TRUTH.TOTAL.het_hom_ratio','QUERY.TOTAL.het_hom_ratio']]
-		df_redesigned.columns = ['Tool', 'File', 'Type','Filter','TP_base','TP','FN','TP_call','FP','UNK','FP_gt','FP_al','Recall','Precision','Frac_NA','F1','TRUTH_TiTv_ratio','QUERY_TiTv_ratio','TRUTH_het_hom_ratio','QUERY_het_hom_ratio']
+		df_redesigned = df[['Tool', 'File', 'Caller', 'Type','Filter','TRUTH.TOTAL','TRUTH.TP','TRUTH.FN','QUERY.TOTAL','QUERY.FP','QUERY.UNK','FP.gt','FP.al','METRIC.Recall','METRIC.Precision','METRIC.Frac_NA','METRIC.F1_Score','TRUTH.TOTAL.TiTv_ratio','QUERY.TOTAL.TiTv_ratio','TRUTH.TOTAL.het_hom_ratio','QUERY.TOTAL.het_hom_ratio']]
+		df_redesigned.columns = ['Tool', 'File', 'Caller', 'Type','Filter','TP_base','TP','FN','TP_call','FP','UNK','FP_gt','FP_al','Recall','Precision','Frac_NA','F1','TRUTH_TiTv_ratio','QUERY_TiTv_ratio','TRUTH_het_hom_ratio','QUERY_het_hom_ratio']
 
 		# Convert relevant columns to integers, handling potential NaN values
 		int_columns = ['TP_base', 'TP', 'FN', 'TP_call', 'FP', 'UNK', 'FP_gt', 'FP_al']
@@ -203,11 +224,13 @@ def get_intersect_results(file_paths):
 	# Iterate over each table file
 	for file in file_paths:
 		filename = os.path.basename(file)
+		caller = filename.split('.')[2]
 
 		df = pd.read_csv(file)
 
 		df['Tool'] = filename.split(".")[0]
 		df['File'] = filename
+		df['Caller'] = caller
 
 		# Convert relevant columns to integers, handling potential NaN values
 		int_columns = ['TP_base','TP_comp', 'FN', 'FP']
@@ -227,14 +250,16 @@ def get_sompy_results(file_paths, vartype):
 	# Iterate over each table file
 	for file in file_paths:
 		filename = os.path.basename(file)
+		caller = filename.split('.')[2]
 
 		df = pd.read_csv(file)
 
 		df['Tool'] = filename.split(".")[0]
 		df['File'] = filename
+		df['Caller'] = caller
 
-		df_redesigned = df[['Tool','File', 'type','total.truth','tp','fn','total.query','fp','unk','recall','precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']]
-		df_redesigned.columns = ['Tool', 'File', 'Type','TP_base','TP','FN','TP_call','FP','UNK','Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','F1']
+		df_redesigned = df[['Tool','File', 'Caller', 'type','total.truth','tp','fn','total.query','fp','unk','recall','precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']]
+		df_redesigned.columns = ['Tool', 'File', 'Caller', 'Type','TP_base','TP','FN','TP_call','FP','UNK','Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','F1']
 		# Convert relevant columns to integers, handling potential NaN values
 		int_columns = ['TP_base', 'TP', 'FN', 'TP_call', 'FP', 'UNK']
 		float_columns = ['Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','F1']

@@ -3,7 +3,22 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.3.0 - dev
+## 1.4.0 dev
+
+### `Added`
+
+- Truvari bench update to 5.3.0 [#200](https://github.com/nf-core/variantbenchmarking/pull/200)
+- Added a python script to plot indel distributions for SV variants [#216](https://github.com/nf-core/variantbenchmarking/pull/216)
+
+### `Fixed`
+
+### `Dependencies`
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| truvari    | 4.1.0       | 5.3.0       |
+
+## 1.3.0
 
 ### `Added`
 
