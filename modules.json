@@ -137,7 +137,7 @@
                     },
                     "svync": {
                         "branch": "master",
-                        "git_sha": "3df1a372b844c98c31ec3446faac7c75e64518a3",
+                        "git_sha": "0fc190096fa8dcc9878cef178479f22e03f174a1",
                         "installed_by": ["modules"]
                     },
                     "tabix/bgzip": {

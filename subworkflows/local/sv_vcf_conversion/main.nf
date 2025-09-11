@@ -53,7 +53,7 @@ workflow SV_VCF_CONVERSIONS {
     // RUN SVYNC tool to reformat SV callers
     if(params.sv_standardization.contains("svync")){
         out_vcf_ch = Channel.empty()
-        supported_callers = ["delly", "dragen", "gridss", "manta", "delly", "smoove"]
+        supported_callers = ["delly", "dragen", "gridss", "manta", "smoove"]
 
         vcf_ch
             .branch{ meta, vcf, tbi ->
