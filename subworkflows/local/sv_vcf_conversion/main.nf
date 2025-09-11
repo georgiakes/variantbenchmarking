@@ -4,9 +4,13 @@
 
 include { SVYNC                   } from '../../../modules/nf-core/svync'
 include { BGZIP_TABIX             } from '../../../modules/local/bgzip/tabix'
+include { TABIX_TABIX             } from '../../../modules/nf-core/tabix/tabix'
 include { VARIANT_EXTRACTOR       } from '../../../modules/local/custom/variant_extractor'
-include { BCFTOOLS_SORT           } from '../../../modules/nf-core/bcftools/sort'
+include { SVTK_STANDARDIZE        } from '../../../modules/nf-core/svtk/standardize/main.nf'
 include { RTGTOOLS_SVDECOMPOSE    } from '../../../modules/nf-core/rtgtools/svdecompose'
+include { BCFTOOLS_SORT as BCFTOOLS_SORT1 } from '../../../modules/nf-core/bcftools/sort'
+include { BCFTOOLS_SORT as BCFTOOLS_SORT2 } from '../../../modules/nf-core/bcftools/sort'
+
 
 workflow SV_VCF_CONVERSIONS {
     take:
@@ -17,21 +21,62 @@ workflow SV_VCF_CONVERSIONS {
     main:
     versions   = Channel.empty()
 
-    if (params.sv_standardization.contains("homogenize")){
+    if (params.sv_standardization.contains("variant_extractor")){
         // uses VariantExtractor to homogenize variants
         VARIANT_EXTRACTOR(
             input_ch,
             fasta,
             fai
         )
-        versions = versions.mix(VARIANT_EXTRACTOR.out.versions.first())
+        versions = versions.mix(VARIANT_EXTRACTOR.out.versions)
 
         // sort vcf
-        BCFTOOLS_SORT(
+        BCFTOOLS_SORT1(
             VARIANT_EXTRACTOR.out.output
         )
-        versions = versions.mix(BCFTOOLS_SORT.out.versions.first())
-        input_ch = BCFTOOLS_SORT.out.vcf
+        versions = versions.mix(BCFTOOLS_SORT1.out.versions)
+        input_ch = BCFTOOLS_SORT1.out.vcf
+
+    }
+
+    if (params.sv_standardization.contains("svtk")){
+
+        out_vcf_ch = Channel.empty()
+
+        supported_callers2 = ["delly", "melt", "manta", "wham", "dragen", "lumpy", "scrable", "smoove"]
+
+        input_ch
+            .branch{ meta, _vcf->
+                def caller = meta.caller
+                def supported = supported_callers2.contains(caller)
+                if(!supported) {
+                    log.warn("Standardization for SV caller '${caller}' is not supported in svtk. Skipping standardization...")
+                }
+                tool:  supported
+                other: !supported
+            }
+            .set{input}
+
+        TABIX_TABIX(
+            input.tool
+        )
+        versions = versions.mix(TABIX_TABIX.out.versions)
+
+        SVTK_STANDARDIZE(
+            input.tool.join(TABIX_TABIX.out.tbi),
+            fai
+        )
+        versions = versions.mix(SVTK_STANDARDIZE.out.versions)
+
+        BCFTOOLS_SORT2(
+            SVTK_STANDARDIZE.out.vcf
+        )
+        versions = versions.mix(BCFTOOLS_SORT2.out.versions)
+
+        out_vcf_ch.mix(
+                BCFTOOLS_SORT2.out.vcf,
+                input.other
+            ).set{input_ch}
 
     }
 
@@ -60,7 +105,7 @@ workflow SV_VCF_CONVERSIONS {
                 def caller = meta.caller
                 def supported = supported_callers.contains(caller)
                 if(!supported) {
-                    log.warn("Standardization for SV caller '${caller}' is not supported. Skipping standardization...")
+                    log.warn("Standardization for SV caller '${caller}' is not supported in svync. Skipping standardization...")
                 }
                 tool:  supported
                     return [ meta, vcf, tbi]
