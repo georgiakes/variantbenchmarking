@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a python script to plot indel distributions for SV variants [#216](https://github.com/nf-core/variantbenchmarking/pull/216)
 - Hirse promo badge [#217](https://github.com/nf-core/variantbenchmarking/pull/217)
 - svtk/standardize from GATK to standardize SVs to BND format. [#218](https://github.com/nf-core/variantbenchmarking/pull/218)
+- svync update to 0.3.0 [#219](https://github.com/nf-core/variantbenchmarking/pull/219)
 
 ### `Fixed`
 
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
 | truvari    | 4.1.0       | 5.3.0       |
+| svync      | 0.1.2       | 0.3.0       |
 
 ## 1.3.0
 
