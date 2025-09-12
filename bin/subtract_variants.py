@@ -98,7 +98,46 @@ def is_in_region(chrom, pos, bed_regions):
                 return True
     return False
 
-def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, zip_output=False):
+def get_sample_name_from_header(header_line):
+    """
+    Extracts the sample name from a VCF header line.
+
+    Args:
+        header_line (str): A VCF header line starting with '#CHROM'
+
+    Returns:
+        str: The sample name or None if not found
+    """
+    if not header_line.startswith('#CHROM'):
+        return None
+
+    parts = header_line.strip().split('\t')
+    if len(parts) >= 10:  # VCF format has at least 9 fixed columns + sample columns
+        return parts[9]  # First sample column
+    return None
+
+def update_sample_name_in_header(header_line, new_sample_name):
+    """
+    Updates the sample name in a VCF header line.
+
+    Args:
+        header_line (str): A VCF header line starting with '#CHROM'
+        new_sample_name (str): The new sample name to use
+
+    Returns:
+        str: The updated header line
+    """
+    if not header_line.startswith('#CHROM'):
+        return header_line
+
+    parts = header_line.strip().split('\t')
+    if len(parts) >= 10:
+        parts[9] = new_sample_name  # Update the first sample column
+        return '\t'.join(parts) + '\n'
+
+    return header_line
+
+def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, zip_output=False, sample_name=None):
     """
     Subtracts variants from the primary VCF that exist in the second VCF.
     It writes the filtered variants to a new output VCF file.
@@ -109,6 +148,7 @@ def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, 
         output_vcf (str): Path to the output VCF file.
         bed_file (str): Optional path to a BED file for region-based filtering.
         zip_output (bool): If True, the output VCF will be compressed with gzip.
+        sample_name (str): Optional new sample name for the output VCF.
     """
     print(f"Parsing variants from {to_subtract_vcf}...")
     variants_to_subtract = parse_vcf(to_subtract_vcf)
@@ -136,9 +176,14 @@ def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, 
 
         with out_file:
             for line in primary_file:
-                # Retain header lines from the primary VCF
+                # Handle header lines
                 if line.startswith('#'):
-                    out_file.write(line)
+                    # If this is the sample header line and we want to rename the sample
+                    if sample_name and line.startswith('#CHROM'):
+                        updated_line = update_sample_name_in_header(line, sample_name)
+                        out_file.write(updated_line)
+                    else:
+                        out_file.write(line)
                     continue
 
                 parts = line.strip().split('\t')
@@ -179,10 +224,11 @@ def main():
     parser.add_argument("output_vcf", help="The name of the output VCF file.")
     parser.add_argument("--bed-file", help="Optional BED file to restrict the output to specific regions.", default=None)
     parser.add_argument("--zip-output", action="store_true", help="Compress the output file with gzip.")
+    parser.add_argument("--sample-name", help="Optional new sample name for the output VCF.", default=None)
 
     args = parser.parse_args()
 
-    subtract_vcf_files(args.primary_vcf, args.to_subtract_vcf, args.output_vcf, args.bed_file, args.zip_output)
+    subtract_vcf_files(args.primary_vcf, args.to_subtract_vcf, args.output_vcf, args.bed_file, args.zip_output, args.sample_name)
 
 if __name__ == "__main__":
     main()

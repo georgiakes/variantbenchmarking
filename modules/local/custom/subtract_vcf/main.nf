@@ -23,7 +23,13 @@ process SUBTRACT_VCF {
     def bed = regions ? "--bed-file ${regions}" : ''
 
     """
-    subtract_variants.py $vcf $exclude ${prefix}.remain.vcf.gz $bed --zip-output
+    subtract_variants.py \\
+        $vcf \\
+        $exclude \\
+        ${prefix}.remain.vcf.gz \\
+        $bed \\
+        $args \\
+        --zip-output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

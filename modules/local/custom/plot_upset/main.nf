@@ -1,29 +1,32 @@
-process SPLIT_SOMPY_FEATURES {
+process PLOT_UPSET {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab3b0054e3111812d8f2deb12345d5b7ca7ea7b18a2dbcbf174d46274c28deba/data':
-        'community.wave.seqera.io/library/pip_pandas:40d2e76c16c136f0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bcc3d7359ce8c6c53e98534593b4a8a91fec5c1ab4bccd66f39f11128c39a1c3/data' :
+        'community.wave.seqera.io/library/pip_upsetplot_matplot_pandas:d9e1259bc972b7a4' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(files)
 
     output:
-    tuple val(meta), path("*TP.csv")   , emit: TP
-    tuple val(meta), path("*FP.csv")   , emit: FP
-    tuple val(meta), path("*FN.csv")   , emit: FN
-    path "versions.yml"                , emit: versions
+    path("*.png")         , emit: plot
+    path "versions.yml"   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-    split_sompy_features.py $input $prefix
+    plot_upset.py \\
+        --fp ${meta.id}.FP.csv \\
+        --fn ${meta.id}.FN.csv \\
+        --tp-base ${meta.id}.TP_base.csv \\
+        --tp-comp ${meta.id}.TP_comp.csv \\
+        --output ${prefix}.upset.mqc.png \\
+        --title "Upset plot"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,9 +36,7 @@ process SPLIT_SOMPY_FEATURES {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.TP.csv
-    touch ${prefix}.FP.csv
-    touch ${prefix}.FN.csv
+    touch ${prefix}.upset.mqc.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
