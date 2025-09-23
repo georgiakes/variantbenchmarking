@@ -87,6 +87,8 @@ def compute_statistics(truth_file, test_file):
     f1_score = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
 
     return {
+        "Tool": args.test_tool,
+        "Analysis": "Bedtools_Intersect",
         "TP_base": TP_base,
         "TP_comp": TP_comp,
         "FN": FN,

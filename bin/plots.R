@@ -6,6 +6,7 @@
 # Load necessary libraries
 suppressWarnings(library(ggplot2))
 suppressWarnings(library(reshape2))
+suppressWarnings(library(scales))
 
 # Function to generate plots
 generate_plots <- function(table, benchmark, type, filter, stats) {
@@ -27,38 +28,43 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
         name2 <- paste("variants_by_tool_", benchmark, "_mqc.png", sep = "")
         name3 <- paste("pr_recall_by_tool_", benchmark, "_mqc.png", sep = "")
     }
-    input_data_melted <- melt(table, id.vars = "Caller")
+    input_data_melted <- melt(table, id.vars = "Tool")
 
     tp_data <- input_data_melted[input_data_melted$variable %in% c("TP_base", "TP_comp", "FP", "FN"), ]
     metric_data <- input_data_melted[input_data_melted$variable %in% c("F1"), ]
+    metric_data$value <- as.numeric(as.character(metric_data$value))
     # Specify the order of levels for the variable aesthetic
     tp_data$variable <- factor(tp_data$variable, levels = c("TP_base", "TP_comp", "FP", "FN"))
     metric_data$variable <- factor(metric_data$variable, levels = c("F1"))
 
     # Visualize TP_base, TP_comp, FP, and FN in separate plots
-    tp_plot <- ggplot(tp_data, aes(x = Caller, y = value, color = Caller, group = interaction(variable, Caller))) +
+    tp_plot <- ggplot(tp_data, aes(x = Tool, y = value, color = Tool, group = interaction(variable, Tool))) +
         geom_line() +
         geom_point() +
-        labs(x = "Method", y = "Value", color = "Caller") +
+        labs(x = "Tool", y = "Value", color = "Tool") +
         facet_wrap(~variable, scales = "free_y") +
         theme_minimal() +
         theme(
-            legend.position = "right",
+            legend.position = "none",
             panel.background = element_rect(fill = "white"),
             axis.text.x = element_text(angle = 30, hjust = 0.5))
 
     # Visualize f1
-    f1_plot <- ggplot(metric_data, aes(x = Caller, y = value)) +
+    f1_plot <- ggplot(metric_data, aes(x = Tool, y = value, , color = Tool)) +
         geom_point() +
-        labs(x = "Method", y = "f1") +
+        labs(x = "Tool", y = "f1") +
         theme_minimal() +
         theme(
+            legend.position = "none",
             panel.background = element_rect(fill = "white"),
-            axis.text.x = element_text(angle = 30, hjust = 0.5))
+            axis.text.x = element_text(angle = 30, hjust = 0.5)
+            ) +
+            scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
+            scale_color_discrete()
 
     # Visualize Precision vs Recall
     pr_plot <- ggplot(table) +
-        geom_point(aes(x = Recall, y = Precision, color = Caller)) +
+        geom_point(aes(x = Recall, y = Precision, color = Tool)) +
         theme_minimal() +
         theme(
             legend.position = "right",
