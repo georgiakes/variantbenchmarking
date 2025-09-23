@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Fixed`
 
 - Use local copies of test files instead of AWS links from sarek [#214](https://github.com/nf-core/variantbenchmarking/pull/214)
+- Fixes and standardizations on headers and labels on tables and plots [#221](https://github.com/nf-core/variantbenchmarking/pull/221)
 
 ### `Dependencies`
 

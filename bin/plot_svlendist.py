@@ -20,7 +20,7 @@ def get_sample_name(vcf_file):
     base_name = os.path.basename(vcf_file)
     # Split the name by the dot '.' and take the second part, which is the sample name in this case.
     # For example, 'test1.HG002.manta.tp-base.vcf' becomes 'manta'.
-    return base_name.split('.')[2]
+    return base_name.split('.')[0]
 
 def format_bp_label(value, pos):
     """
@@ -216,7 +216,7 @@ def plot_svlen_distributions(svlen_data, max_svlen, output_file, plot_title):
     plt.xlabel("Deletions   |   Insertions")
     plt.ylabel("Count (Log10)")
     plt.title(plot_title)
-    plt.legend(title="Method")
+    plt.legend(title="Tool")
     plt.grid(True, which="both", linestyle='--', alpha=0.7)
 
     plt.xlim(-max_svlen, max_svlen)
