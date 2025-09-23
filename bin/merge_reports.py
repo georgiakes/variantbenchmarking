@@ -225,10 +225,15 @@ def get_intersect_results(file_paths):
 	for file in file_paths:
 		filename = os.path.basename(file)
 		caller = filename.split('.')[2]
+		stats = filename.split('.')[3]
 
 		df = pd.read_csv(file)
 
-		df['Tool'] = filename.split(".")[0]
+		if stats == "converted_stats":
+			df['Tool'] = filename.split(".")[0] + '_converted'
+		else:
+			df['Tool'] = filename.split(".")[0]
+
 		df['File'] = filename
 		df['Caller'] = caller
 
