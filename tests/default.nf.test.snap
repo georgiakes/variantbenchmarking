@@ -1,7 +1,7 @@
 {
     "Params: --analysis 'germline' --variant_type 'structural' --method 'svanalyzer'": {
         "content": [
-            72,
+            73,
             {
                 "BCFTOOLS_DEDUP": {
                     "bcftools": 1.21
@@ -38,6 +38,9 @@
                 },
                 "PLOT_SVLEN_DIST": {
                     "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
                 },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
@@ -146,6 +149,8 @@
                 "structural/summary/plots/svbenchmark/svbenchmark.FP.structural.mqc.png",
                 "structural/summary/plots/svbenchmark/svbenchmark.TP_base.structural.mqc.png",
                 "structural/summary/plots/svbenchmark/svbenchmark.TP_comp.structural.mqc.png",
+                "structural/summary/plots/svbenchmark/upset_svbenchmark_tp_fn_mqc.png",
+                "structural/summary/plots/svbenchmark/upset_svbenchmark_tp_fp_mqc.png",
                 "structural/summary/plots/svbenchmark/variants_by_tool_svbenchmark_mqc.png",
                 "structural/summary/tables",
                 "structural/summary/tables/svbenchmark",
@@ -216,13 +221,13 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-09-09T10:18:16.800851904"
+        "timestamp": "2025-09-24T15:18:52.7644923"
     },
     "-stub": {
         "content": [
-            72,
+            73,
             {
                 "BCFTOOLS_DEDUP": {
                     "bcftools": 1.21
@@ -259,6 +264,9 @@
                 },
                 "PLOT_SVLEN_DIST": {
                     "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
                 },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
@@ -339,6 +347,7 @@
                 "structural/summary/plots/svbenchmark/svbenchmark.FP.svlen.png",
                 "structural/summary/plots/svbenchmark/svbenchmark.TP_base.svlen.png",
                 "structural/summary/plots/svbenchmark/svbenchmark.TP_comp.svlen.png",
+                "structural/summary/plots/svbenchmark/upset_svbenchmark.upset.mqc.png",
                 "structural/summary/plots/svbenchmark/variants_by_tool_svbenchmark_mqc.png",
                 "structural/summary/tables",
                 "structural/summary/tables/svbenchmark",
@@ -406,8 +415,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-09-09T10:20:12.439451901"
+        "timestamp": "2025-09-24T15:21:19.575313741"
     }
 }

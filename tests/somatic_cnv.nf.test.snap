@@ -1,7 +1,7 @@
 {
     "Params: --analysis 'somatic' --variant_type 'copynumber' --method 'truvari,intersect'": {
         "content": [
-            51,
+            52,
             {
                 "BCFTOOLS_REHEADER_1": {
                     "bcftools": 1.2
@@ -44,6 +44,9 @@
                 },
                 "PLOT_SVLEN_DIST": {
                     "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
                 },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
@@ -204,6 +207,7 @@
                 "copynumber/summary/plots/truvari/truvari.FP.copynumber.mqc.png",
                 "copynumber/summary/plots/truvari/truvari.TP_base.copynumber.mqc.png",
                 "copynumber/summary/plots/truvari/truvari.TP_comp.copynumber.mqc.png",
+                "copynumber/summary/plots/truvari/upset_truvari_tp_fp_mqc.png",
                 "copynumber/summary/plots/truvari/variants_by_tool_truvari_mqc.png",
                 "copynumber/summary/plots/wittyer",
                 "copynumber/summary/plots/wittyer/Base_f1_by_tool_wittyer_mqc.png",
@@ -290,10 +294,10 @@
                 "test14.SEQC2.cnvkit.converted_TP_comp.bed:md5,6701a775463afc3a716864b8049f2153",
                 "test14.SEQC2.cnvkit.converted_stats.csv:md5,b18c5eedaa84bfe321c3c6ecb3abc6db",
                 "test14.SEQC2.cnvkit_FN.bed:md5,de53031d94e8e68b2aa602a7c8bdc633",
-                "test14.SEQC2.cnvkit_FP.bed:md5,f6b2bb85a3ceb2a35e03ab14981fb7ed",
+                "test14.SEQC2.cnvkit_FP.bed:md5,e0ae556c0325d04f1e0c61c2ef31595f",
                 "test14.SEQC2.cnvkit_TP_base.bed:md5,659abc497bbf1e95c90eec0521939d48",
-                "test14.SEQC2.cnvkit_TP_comp.bed:md5,3a3c92f49f3456fdf04295edee62a3e8",
-                "test14.SEQC2.cnvkit_converted.bed:md5,d4b1b7f9b5378c230523f3ffd53dfcb1",
+                "test14.SEQC2.cnvkit_TP_comp.bed:md5,7c24affc39b5ce9e00f0586ad2f6d585",
+                "test14.SEQC2.cnvkit_converted.bed:md5,d34b17a68de65b754d7402a5f133f421",
                 "test14.SEQC2.cnvkit_stats.csv:md5,f2d97f069697b4069fc3e723028ecb8a",
                 "test14.bed:md5,e2618e061f32b9c8545faa9eb5a3e1a4",
                 "test14.cnvkit.bcftools_stats.txt:md5,29028112b028b319064a36c98ba978d8",
@@ -307,8 +311,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-09-23T12:29:53.014498777"
+        "timestamp": "2025-09-24T15:40:47.319435368"
     }
 }
