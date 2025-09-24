@@ -13,20 +13,10 @@ import math
 import csv
 
 def get_sample_name(vcf_file):
-    """
-    Extracts the sample name from the VCF file name.
-    """
-    # Get the base name of the file (e.g., 'test1.HG002.manta.tp-base.vcf').
     base_name = os.path.basename(vcf_file)
-    # Split the name by the dot '.' and take the second part, which is the sample name in this case.
-    # For example, 'test1.HG002.manta.tp-base.vcf' becomes 'manta'.
     return base_name.split('.')[0]
 
 def format_bp_label(value, pos):
-    """
-    Formats a numeric value into a human-readable string with 'bp', 'kbp', or 'Mbp' suffixes.
-    This is used for the x-axis tick labels.
-    """
     value = abs(value)
     if value >= 1e6:
         return f'{value / 1e6:.1f} Mbp'
@@ -150,7 +140,6 @@ def parse_csv_data(csv_files):
                 for row in reader:
                     svlen_val = None
 
-                    # Use REF and ALT first
                     ref = row.get('REF', '')
                     alt = row.get('ALT', '')
 
@@ -160,7 +149,6 @@ def parse_csv_data(csv_files):
                         else:
                             svlen_val = -(len(ref) - len(alt))
 
-                    # If REF/ALT are empty, use REF.truth and ALT.truth as fallback
                     if svlen_val is None:
                         ref_truth = row.get('REF.truth', '')
                         alt_truth = row.get('ALT.truth', '')

@@ -11,10 +11,10 @@ process SPLIT_SOMPY_FEATURES {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*TP.csv")   , emit: TP
-    tuple val(meta), path("*FP.csv")   , emit: FP
-    tuple val(meta), path("*FN.csv")   , emit: FN
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*TP_comp.csv")   , emit: TP
+    tuple val(meta), path("*FP.csv")        , emit: FP
+    tuple val(meta), path("*FN.csv")        , emit: FN
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

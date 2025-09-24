@@ -86,8 +86,6 @@ workflow COMPARE_BENCHMARK_RESULTS {
         tuple(newMeta,csv)
     }.set{upset_input}
 
-    upset_input.groupTuple().view()
-
     PLOT_UPSET(
         upset_input.groupTuple()
     )

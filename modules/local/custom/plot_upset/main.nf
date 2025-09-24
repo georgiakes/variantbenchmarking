@@ -11,7 +11,7 @@ process PLOT_UPSET {
     tuple val(meta), path(files)
 
     output:
-    path("*.png")         , emit: plot
+    path("*.png")         , emit: plot, optional:true
     path "versions.yml"   , emit: versions
 
     when:
@@ -25,8 +25,8 @@ process PLOT_UPSET {
         --fn ${meta.id}.FN.csv \\
         --tp-base ${meta.id}.TP_base.csv \\
         --tp-comp ${meta.id}.TP_comp.csv \\
-        --output ${prefix}.upset.mqc.png \\
-        --title "Upset plot"
+        --output ${prefix} \\
+        --title "Upset plot for ${meta.id}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -6,123 +6,85 @@
 import argparse
 import sys
 import gzip
+import bisect
+
+def open_file(file_path, mode='r'):
+    if file_path.endswith('.gz'):
+        return gzip.open(file_path, f'{mode}t')
+    else:
+        return open(file_path, mode)
 
 def parse_vcf(file_path):
-    """
-    Parses a VCF file and returns a set of unique variants.
-    Variants are identified by a tuple of (chromosome, position, reference_allele, alternate_allele).
-    It returns a set of unique variant tuples.
-    """
     variants = set()
     try:
-        if file_path.endswith('.gz'):
-            vcf_file = gzip.open(file_path, 'rt')
-        else:
-            vcf_file = open(file_path, 'r')
-
-        for line in vcf_file:
-            # Skip header and comment lines
-            if line.startswith('#'):
-                continue
-
-            # Split the line into columns
-            parts = line.strip().split('\t')
-            if len(parts) >= 5:
-                # Extract the key fields for variant identification
-                # CHROM, POS, REF, ALT
-                chrom = parts[0]
-                pos = parts[1]
-                ref = parts[3]
-                alt = parts[4]
-
-                # Create a unique identifier for the variant
-                variant_id = (chrom, pos, ref, alt)
-                variants.add(variant_id)
-
-        vcf_file.close()
-
+        with open_file(file_path) as vcf_file:
+            for line in vcf_file:
+                if line.startswith('#'):
+                    continue
+                parts = line.strip().split('\t')
+                if len(parts) >= 5:
+                    variant_id = (parts[0], parts[1], parts[3], parts[4])
+                    variants.add(variant_id)
     except FileNotFoundError:
         print(f"Error: File not found at {file_path}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
         print(f"An error occurred while parsing {file_path}: {e}", file=sys.stderr)
         sys.exit(1)
-
     return variants
 
 def parse_bed_file(file_path):
-    """
-    Parses a BED file and returns a dictionary of regions.
-    The dictionary keys are chromosome names, and values are lists of (start, end) tuples.
-    """
     regions = {}
     try:
-        with open(file_path, 'r') as bed_file:
+        with open_file(file_path) as bed_file:
             for line in bed_file:
                 parts = line.strip().split('\t')
                 if len(parts) >= 3:
-                    chrom = parts[0]
-                    start = int(parts[1])
-                    end = int(parts[2])
+                    chrom, start, end = parts[0], int(parts[1]), int(parts[2])
                     if chrom not in regions:
                         regions[chrom] = []
                     regions[chrom].append((start, end))
+
+        for chrom in regions:
+            regions[chrom].sort(key=lambda x: x[0])
+
     except FileNotFoundError:
         print(f"Error: BED file not found at {file_path}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
         print(f"An error occurred while parsing {file_path}: {e}", file=sys.stderr)
         sys.exit(1)
-
     return regions
 
 def is_in_region(chrom, pos, bed_regions):
-    """
-    Checks if a given position is within any of the regions for a chromosome.
-    The BED format is 0-indexed, but VCF is 1-indexed. We'll handle this by
-    checking if the position is within [start+1, end].
+    if chrom not in bed_regions:
+        return False
 
-    Args:
-        chrom (str): The chromosome of the variant.
-        pos (int): The 1-based position of the variant.
-        bed_regions (dict): The dictionary of BED regions.
+    chrom_regions = bed_regions[chrom]
+    idx = bisect.bisect_left(chrom_regions, (pos - 1, float('inf')))
 
-    Returns:
-        bool: True if the position is in a region, False otherwise.
-    """
-    if chrom in bed_regions:
-        for start, end in bed_regions[chrom]:
-            # VCF position is 1-based, BED start is 0-based, BED end is exclusive.
-            # A common interpretation is to check if pos >= start+1 and pos <= end.
-            if pos >= start + 1 and pos <= end:
-                return True
+    if idx < len(chrom_regions):
+        start, end = chrom_regions[idx]
+        if pos >= start + 1 and pos <= end:
+            return True
+    if idx > 0:
+        start, end = chrom_regions[idx - 1]
+        if pos >= start + 1 and pos <= end:
+            return True
+
     return False
 
 def update_sample_name_in_header(line, new_sample_name):
-    """
-    Updates the sample name in VCF header lines.
-    Specifically handles the #CHROM line that contains sample names.
-    """
-    if line.startswith('#CHROM'):
+    if line.startswith('#CHROM') and len(line.strip().split('\t')) >= 10:
         parts = line.strip().split('\t')
-        if len(parts) >= 10:  # Assuming there's at least one sample column
-            # Replace the last column (sample name) with the new sample name
-            parts[-1] = new_sample_name
-            return '\t'.join(parts) + '\n'
+        parts[-1] = new_sample_name
+        return '\t'.join(parts) + '\n'
     return line
 
 def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, zip_output=False, sample_name=None):
     """
-    Subtracts variants from the primary VCF that exist in the second VCF.
-    It writes the filtered variants to a new output VCF file.
-
-    Args:
-        primary_vcf (str): Path to the main VCF file.
-        to_subtract_vcf (str): Path to the VCF file with variants to subtract.
-        output_vcf (str): Path to the output VCF file.
-        bed_file (str): Optional path to a BED file for region-based filtering.
-        zip_output (bool): If True, the output VCF will be compressed with gzip.
-        sample_name (str): Optional new sample name to use in the output VCF.
+    Subtracts variants from the primary VCF that exist in the second VCF,
+    with an optional BED file for region filtering.
     """
     print(f"Parsing variants from {to_subtract_vcf}...")
     variants_to_subtract = parse_vcf(to_subtract_vcf)
@@ -137,55 +99,43 @@ def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, 
     print(f"Filtering variants from {primary_vcf}...")
 
     try:
-        if primary_vcf.endswith('.gz'):
-            primary_file = gzip.open(primary_vcf, 'rt')
-        else:
-            primary_file = open(primary_vcf, 'r')
-
-        # Use gzip.open for writing if the zip_output flag is set
-        if zip_output:
-            out_file = gzip.open(output_vcf, 'wt')
-        else:
-            out_file = open(output_vcf, 'w')
-
-        with out_file:
+        with open_file(primary_vcf) as primary_file, open_file(output_vcf, 'w') as out_file:
             for line in primary_file:
-                # Handle header lines
                 if line.startswith('#'):
-                    # Update sample name in header if specified
                     if sample_name:
                         line = update_sample_name_in_header(line, sample_name)
                     out_file.write(line)
                     continue
 
                 parts = line.strip().split('\t')
-                    ref = parts[3]
-                    variant_id = (chrom, str(pos), ref, alt)
+                if len(parts) < 5:
+                    continue
 
-                    # Check if the variant is in the to_subtract list
-                    if variant_id not in variants_to_subtract:
-                        # If a BED file was provided, check if the variant is in a region
-                        if bed_regions:
-                            if is_in_region(chrom, pos, bed_regions):
-                                out_file.write(line)
-                        else:
-                            # If no BED file, write the line directly
-                            out_file.write(line)
+                chrom = parts[0]
+                pos = int(parts[1])
+                ref = parts[3]
+                alt = parts[4]
 
-        primary_file.close()
+                variant_id = (chrom, str(pos), ref, alt)
+
+                if variant_id in variants_to_subtract:
+                    continue
+
+                if bed_regions and not is_in_region(chrom, pos, bed_regions):
+                    continue
+
+                out_file.write(line)
+
         print(f"Successfully created filtered VCF at {output_vcf}.")
 
     except FileNotFoundError:
-        print(f"Error: File not found at {primary_vcf}", file=sys.stderr)
+        print(f"Error: File not found.", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"An error occurred while filtering {primary_vcf}: {e}", file=sys.stderr)
+        print(f"An error occurred during filtering: {e}", file=sys.stderr)
         sys.exit(1)
 
 def main():
-    """
-    Main function to handle command-line arguments and run the subtraction logic.
-    """
     parser = argparse.ArgumentParser(description="Subtracts variants from one VCF file if they exist in another, with an optional BED file for region filtering.")
     parser.add_argument("primary_vcf", help="The VCF file to filter.")
     parser.add_argument("to_subtract_vcf", help="The VCF file containing variants to remove.")

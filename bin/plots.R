@@ -30,14 +30,14 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
     }
     input_data_melted <- melt(table, id.vars = "Tool")
 
-    tp_data <- input_data_melted[input_data_melted$variable %in% c("TP_base", "TP_comp", "FP", "FN"), ]
+    tp_data <- input_data_melted[input_data_melted$variable %in% c( "TP_comp", "FP", "FN"), ]
     metric_data <- input_data_melted[input_data_melted$variable %in% c("F1"), ]
     metric_data$value <- as.numeric(as.character(metric_data$value))
     # Specify the order of levels for the variable aesthetic
-    tp_data$variable <- factor(tp_data$variable, levels = c("TP_base", "TP_comp", "FP", "FN"))
+    tp_data$variable <- factor(tp_data$variable, levels = c("TP_comp", "FP", "FN"))
     metric_data$variable <- factor(metric_data$variable, levels = c("F1"))
 
-    # Visualize TP_base, TP_comp, FP, and FN in separate plots
+    # Visualize TP_comp, FP, and FN in separate plots
     tp_plot <- ggplot(tp_data, aes(x = Tool, y = value, color = Tool, group = interaction(variable, Tool))) +
         geom_line() +
         geom_point() +
