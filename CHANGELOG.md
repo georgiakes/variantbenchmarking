@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hirse promo badge [#217](https://github.com/nf-core/variantbenchmarking/pull/217)
 - svtk/standardize from GATK to standardize SVs to BND format. [#218](https://github.com/nf-core/variantbenchmarking/pull/218)
 - svync update to 0.3.0 [#219](https://github.com/nf-core/variantbenchmarking/pull/219)
+- UPSET plot for TP/FP/FN numbers [#223](https://github.com/nf-core/variantbenchmarking/pull/223)
 
 ### `Fixed`
 
