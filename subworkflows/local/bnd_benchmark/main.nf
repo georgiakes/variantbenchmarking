@@ -2,41 +2,41 @@
 // BND_BENCHMARK: SUBWORKFLOW FOR BND VARIANTS
 //
 
-include { RTGTOOLS_BNDEVAL   } from '../../../modules/nf-core/rtgtools/bndeval'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4  } from '../../../modules/local/bcftools/reheader'
+include { RTGTOOLS_BNDEVAL                         } from '../../../modules/nf-core/rtgtools/bndeval'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1 } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2 } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3 } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4 } from '../../../modules/local/bcftools/reheader'
 
 workflow BND_BENCHMARK {
     take:
-    input_ch  // channel: [val(meta), test_vcf, test_index, truth_vcf, truth_index, regions_bed, targets_bed]
-    fai       // reference channel [val(meta), ref.fa.fai]
+    input_ch // channel: [val(meta), test_vcf, test_index, truth_vcf, truth_index, regions_bed, targets_bed]
+    fai      // reference channel [val(meta), ref.fa.fai]
 
     main:
 
-    versions        = Channel.empty()
+    versions = Channel.empty()
     tagged_variants = Channel.empty()
 
     RTGTOOLS_BNDEVAL(
-        input_ch.map{ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed  ->
-                    [ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed ]
-                }
+        input_ch.map { meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed ->
+            [meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed]
+        }
     )
     versions = versions.mix(RTGTOOLS_BNDEVAL.out.versions)
 
     RTGTOOLS_BNDEVAL.out.summary
-            .map { _meta, file -> tuple([vartype: params.variant_type] + [benchmark_tool: "rtgtools"], file) }
-            .groupTuple()
-            .set { summary_reports }
+        .map { _meta, file -> tuple([vartype: params.variant_type] + [benchmark_tool: "rtgtools"], file) }
+        .groupTuple()
+        .set { summary_reports }
 
 
     // reheader benchmarking results properly and tag meta
     BCFTOOLS_REHEADER_1(
-        RTGTOOLS_BNDEVAL.out.fn_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        RTGTOOLS_BNDEVAL.out.fn_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_1.out.versions.first())
 
@@ -46,10 +46,10 @@ workflow BND_BENCHMARK {
         .set { vcf_fn }
 
     BCFTOOLS_REHEADER_2(
-        RTGTOOLS_BNDEVAL.out.fp_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        RTGTOOLS_BNDEVAL.out.fp_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_2.out.versions)
 
@@ -59,10 +59,10 @@ workflow BND_BENCHMARK {
         .set { vcf_fp }
 
     BCFTOOLS_REHEADER_3(
-        RTGTOOLS_BNDEVAL.out.baseline_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        RTGTOOLS_BNDEVAL.out.baseline_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_3.out.versions)
 
@@ -72,10 +72,10 @@ workflow BND_BENCHMARK {
         .set { vcf_tp_base }
 
     BCFTOOLS_REHEADER_4(
-        RTGTOOLS_BNDEVAL.out.tp_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        RTGTOOLS_BNDEVAL.out.tp_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_4.out.versions)
 
@@ -88,12 +88,11 @@ workflow BND_BENCHMARK {
         vcf_fn,
         vcf_fp,
         vcf_tp_base,
-        vcf_tp_comp
+        vcf_tp_comp,
     )
 
-
     emit:
-    summary_reports  // channel: [val(meta), summary]
-    tagged_variants  // channel: [val(meta), vcfs]
-    versions         // channel: [versions.yml]
+    summary_reports // channel: [val(meta), summary]
+    tagged_variants // channel: [val(meta), vcfs]
+    versions        // channel: [versions.yml]
 }

@@ -2,8 +2,8 @@
 // SMALL_GERMLINE_BENCHMARK: SUBWORKFLOW FOR SMALL GERMLINE VARIANTS
 //
 
-include { RTGTOOLS_BENCHMARK  } from '../../../subworkflows/local/rtgtools_benchmark'
-include { HAPPY_BENCHMARK     } from '../../../subworkflows/local/happy_benchmark'
+include { RTGTOOLS_BENCHMARK } from '../../../subworkflows/local/rtgtools_benchmark'
+include { HAPPY_BENCHMARK    } from '../../../subworkflows/local/happy_benchmark'
 
 
 workflow SMALL_GERMLINE_BENCHMARK {
@@ -18,25 +18,24 @@ workflow SMALL_GERMLINE_BENCHMARK {
 
     main:
 
-    versions        = Channel.empty()
+    versions = Channel.empty()
     summary_reports = Channel.empty()
     tagged_variants = Channel.empty()
 
-    if (params.method.contains('rtgtools')){
+    if (params.method.contains('rtgtools')) {
 
         RTGTOOLS_BENCHMARK(
             input_ch,
             fasta,
             fai,
-            sdf
+            sdf,
         )
-        versions        = versions.mix(RTGTOOLS_BENCHMARK.out.versions.first())
+        versions = versions.mix(RTGTOOLS_BENCHMARK.out.versions.first())
         summary_reports = summary_reports.mix(RTGTOOLS_BENCHMARK.out.summary_reports)
         tagged_variants = tagged_variants.mix(RTGTOOLS_BENCHMARK.out.tagged_variants)
-
     }
 
-    if (params.method.contains('happy')){
+    if (params.method.contains('happy')) {
 
         HAPPY_BENCHMARK(
             input_ch,
@@ -44,17 +43,15 @@ workflow SMALL_GERMLINE_BENCHMARK {
             fai,
             falsepositive_bed,
             stratification_bed,
-            stratification_tsv
-
+            stratification_tsv,
         )
-        versions        = versions.mix(HAPPY_BENCHMARK.out.versions)
+        versions = versions.mix(HAPPY_BENCHMARK.out.versions)
         summary_reports = summary_reports.mix(HAPPY_BENCHMARK.out.summary_reports)
         tagged_variants = tagged_variants.mix(HAPPY_BENCHMARK.out.tagged_variants)
-
     }
+
     emit:
     summary_reports // channel: [val(meta), reports]
     tagged_variants // channel: [val(meta), vcfs]
     versions        // channel: [versions.yml]
-
 }

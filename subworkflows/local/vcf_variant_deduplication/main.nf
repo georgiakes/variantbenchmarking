@@ -2,13 +2,13 @@
 // VCF_VARIANT_DEDUPLICATION: deduplicate, sort and index vcf files
 //
 
-include { BCFTOOLS_SORT                     } from '../../../modules/nf-core/bcftools/sort'
-include { BCFTOOLS_NORM as BCFTOOLS_DEDUP   } from '../../../modules/nf-core/bcftools/norm'
+include { BCFTOOLS_SORT                   } from '../../../modules/nf-core/bcftools/sort'
+include { BCFTOOLS_NORM as BCFTOOLS_DEDUP } from '../../../modules/nf-core/bcftools/norm'
 
 workflow VCF_VARIANT_DEDUPLICATION {
     take:
-    vcf_ch    // channel: [val(meta), vcf]
-    fasta     // reference channel [val(meta), ref.fa]
+    vcf_ch // channel: [val(meta), vcf]
+    fasta  // reference channel [val(meta), ref.fa]
 
     main:
 
@@ -18,7 +18,7 @@ workflow VCF_VARIANT_DEDUPLICATION {
     // Deduplicates variants at the same position test
     BCFTOOLS_DEDUP(
         vcf_ch,
-        fasta
+        fasta,
     )
     versions = versions.mix(BCFTOOLS_DEDUP.out.versions.first())
 
@@ -28,11 +28,11 @@ workflow VCF_VARIANT_DEDUPLICATION {
     )
     versions = versions.mix(BCFTOOLS_SORT.out.versions.first())
 
-    BCFTOOLS_SORT.out.vcf.join(BCFTOOLS_SORT.out.tbi)
-        .set{ch_vcf}
+    BCFTOOLS_SORT.out.vcf
+        .join(BCFTOOLS_SORT.out.tbi)
+        .set { ch_vcf }
 
     emit:
-    ch_vcf      // channel: [ val(meta), vcf,index ]
-    versions    // channel: [versions.yml ]
-
+    ch_vcf   // channel: [ val(meta), vcf,index ]
+    versions // channel: [versions.yml ]
 }

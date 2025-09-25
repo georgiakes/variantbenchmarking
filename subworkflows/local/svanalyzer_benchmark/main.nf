@@ -2,28 +2,28 @@
 // SVANALYZER_BENCHMARK: SUBWORKFLOW FOR SVANALYZER BENCHMARK
 //
 
-include { SVANALYZER_SVBENCHMARK  } from '../../../modules/nf-core/svanalyzer/svbenchmark'
-include { SUBTRACT_VCF as SUBTRACT_VCF_TRUTH  } from '../../../modules/local/custom/subtract_vcf/'
-include { SUBTRACT_VCF as SUBTRACT_VCF_QUERY  } from '../../../modules/local/custom/subtract_vcf/'
+include { SVANALYZER_SVBENCHMARK             } from '../../../modules/nf-core/svanalyzer/svbenchmark'
+include { SUBTRACT_VCF as SUBTRACT_VCF_TRUTH } from '../../../modules/local/custom/subtract_vcf/'
+include { SUBTRACT_VCF as SUBTRACT_VCF_QUERY } from '../../../modules/local/custom/subtract_vcf/'
 
 workflow SVANALYZER_BENCHMARK {
     take:
-    input_ch  // channel: [val(meta), test_vcf, test_index, truth_vcf, truth_index, regionsbed, targets_bed ]
-    fasta     // reference channel [val(meta), ref.fa]
-    fai       // reference channel [val(meta), ref.fa.fai]
+    input_ch // channel: [val(meta), test_vcf, test_index, truth_vcf, truth_index, regionsbed, targets_bed ]
+    fasta    // reference channel [val(meta), ref.fa]
+    fai      // reference channel [val(meta), ref.fa.fai]
 
     main:
 
-    versions        = Channel.empty()
+    versions = Channel.empty()
     tagged_variants = Channel.empty()
 
     // apply svanalyzer to benchmark SVs
     SVANALYZER_SVBENCHMARK(
-        input_ch.map{ meta, vcf, tbi, truth_vcf, truth_tbi, regionsbed, _targets_bed  ->
-                [ meta, vcf, tbi, truth_vcf, truth_tbi, regionsbed ]
-            },
+        input_ch.map { meta, vcf, tbi, truth_vcf, truth_tbi, regionsbed, _targets_bed ->
+            [meta, vcf, tbi, truth_vcf, truth_tbi, regionsbed]
+        },
         fasta,
-        fai
+        fai,
     )
     versions = versions.mix(SVANALYZER_SVBENCHMARK.out.versions)
 
@@ -31,7 +31,7 @@ workflow SVANALYZER_BENCHMARK {
     SVANALYZER_SVBENCHMARK.out.report
         .map { _meta, file -> tuple([vartype: params.variant_type] + [benchmark_tool: "svbenchmark"], file) }
         .groupTuple()
-        .set{ report }
+        .set { report }
 
     // reheader fn vcf files for tagged results
     SVANALYZER_SVBENCHMARK.out.fns
@@ -44,16 +44,18 @@ workflow SVANALYZER_BENCHMARK {
 
     // subtract FPs from Query to find TPs in Query
     SUBTRACT_VCF_QUERY(
-        input_ch.map{ meta, vcf, tbi, _truth_vcf, _truth_tbi, regionsbed, targets_bed  ->
-            [ meta, vcf, tbi, regionsbed, targets_bed ]}.join(SVANALYZER_SVBENCHMARK.out.fps)
-        )
+        input_ch.map { meta, vcf, tbi, _truth_vcf, _truth_tbi, regionsbed, targets_bed ->
+            [meta, vcf, tbi, regionsbed, targets_bed]
+        }.join(SVANALYZER_SVBENCHMARK.out.fps)
+    )
     versions = versions.mix(SUBTRACT_VCF_QUERY.out.versions)
 
     // subtract Fns from Truth to find TPs in TRUTH
     SUBTRACT_VCF_TRUTH(
-        input_ch.map{ meta, _vcf, _tbi, truth_vcf, truth_tbi, regionsbed, targets_bed  ->
-            [ meta, truth_vcf, truth_tbi, regionsbed, targets_bed ]}.join(SVANALYZER_SVBENCHMARK.out.fns)
-        )
+        input_ch.map { meta, _vcf, _tbi, truth_vcf, truth_tbi, regionsbed, targets_bed ->
+            [meta, truth_vcf, truth_tbi, regionsbed, targets_bed]
+        }.join(SVANALYZER_SVBENCHMARK.out.fns)
+    )
     versions = versions.mix(SUBTRACT_VCF_TRUTH.out.versions)
 
     // reheader tp_comp vcf files for tagged results
@@ -70,7 +72,7 @@ workflow SVANALYZER_BENCHMARK {
         vcf_fn,
         vcf_fp,
         vcf_tp_comp,
-        vcf_tp_base
+        vcf_tp_base,
     )
 
     emit:

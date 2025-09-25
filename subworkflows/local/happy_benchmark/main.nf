@@ -2,8 +2,8 @@
 // HAPPY_BENCHMARK: SUBWORKFLOW FOR BENCHMARKING WITH HAPPY
 //
 
-include { HAPPY_HAPPY      } from '../../../modules/nf-core/happy/happy/main'
-include { HAPPY_PREPY      } from '../../../modules/nf-core/happy/prepy/main'
+include { HAPPY_HAPPY                                 } from '../../../modules/nf-core/happy/happy/main'
+include { HAPPY_PREPY                                 } from '../../../modules/nf-core/happy/prepy/main'
 include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1    } from '../../../modules/local/bcftools/reheader'
 include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2    } from '../../../modules/local/bcftools/reheader'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TRUTH        } from '../../../modules/nf-core/bcftools/view'
@@ -24,30 +24,30 @@ workflow HAPPY_BENCHMARK {
 
     main:
 
-    versions        = Channel.empty()
+    versions = Channel.empty()
     tagged_variants = Channel.empty()
 
     input_ch
-        .map{ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed  ->
-            [ meta, vcf ]
+        .map { meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed ->
+            [meta, vcf]
         }
         .set { test_ch }
 
     input_ch
-        .map{ meta, _vcf, _tbi, truth_vcf, _truth_tbi, _regionsbed, _targets_bed  ->
-            [ meta, truth_vcf, _regionsbed, _targets_bed ]
+        .map { meta, _vcf, _tbi, truth_vcf, _truth_tbi, _regionsbed, _targets_bed ->
+            [meta, truth_vcf, _regionsbed, _targets_bed]
         }
         .set { truth_ch }
 
-    if (params.preprocess.contains("prepy")){
+    if (params.preprocess.contains("prepy")) {
 
         // apply prepy if required
         HAPPY_PREPY(
-            input_ch.map{ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed  ->
-                [ meta, vcf, _regionsbed ]
+            input_ch.map { meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed ->
+                [meta, vcf, _regionsbed]
             },
             fasta,
-            fai
+            fai,
         )
         versions = versions.mix(HAPPY_PREPY.out.versions.first())
 
@@ -56,12 +56,12 @@ workflow HAPPY_BENCHMARK {
 
     // apply happy method for benchmarking
     HAPPY_HAPPY(
-        test_ch.join(truth_ch, failOnDuplicate:true, failOnMismatch:true),
+        test_ch.join(truth_ch, failOnDuplicate: true, failOnMismatch: true),
         fasta,
         fai,
         falsepositive_bed,
         stratification_tsv,
-        stratification_bed
+        stratification_bed,
     )
     versions = versions.mix(HAPPY_HAPPY.out.versions.first())
 
@@ -69,23 +69,23 @@ workflow HAPPY_BENCHMARK {
     HAPPY_HAPPY.out.summary_csv
         .map { _meta, file -> tuple([vartype: params.variant_type] + [benchmark_tool: "happy"], file) }
         .groupTuple()
-        .set{ summary_reports }
+        .set { summary_reports }
 
     // Subsample TRUTH column from happy results
     BCFTOOLS_VIEW_TRUTH(
         HAPPY_HAPPY.out.vcf.join(HAPPY_HAPPY.out.tbi),
         [],
         [],
-        []
-        )
+        [],
+    )
     versions = versions.mix(BCFTOOLS_VIEW_TRUTH.out.versions.first())
 
     // reheader benchmarking results properly and tag meta
     BCFTOOLS_REHEADER_1(
-        BCFTOOLS_VIEW_TRUTH.out.vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        BCFTOOLS_VIEW_TRUTH.out.vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_1.out.versions)
 
@@ -94,16 +94,16 @@ workflow HAPPY_BENCHMARK {
         HAPPY_HAPPY.out.vcf.join(HAPPY_HAPPY.out.tbi),
         [],
         [],
-        []
+        [],
     )
     versions = versions.mix(BCFTOOLS_VIEW_QUERY.out.versions)
 
     // reheader benchmarking results properly and tag meta
     BCFTOOLS_REHEADER_2(
-        BCFTOOLS_VIEW_QUERY.out.vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        BCFTOOLS_VIEW_QUERY.out.vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_2.out.versions)
 
@@ -151,12 +151,11 @@ workflow HAPPY_BENCHMARK {
         vcf_fn,
         vcf_fp,
         vcf_tp_base,
-        vcf_tp_comp
+        vcf_tp_comp,
     )
 
     emit:
     summary_reports // channel: [val(meta), reports]
     tagged_variants // channel: [val(meta), vcfs]
     versions        // channel: [versions.yml]
-
 }

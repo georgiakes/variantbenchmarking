@@ -3,7 +3,7 @@
 //
 
 include { MERGE_REPORTS         } from '../../../modules/local/custom/merge_reports'
-include { PLOTS                 } from '../../../modules/local/custom/plots'
+include { PLOT_METRICS          } from '../../../modules/local/custom/plot_metrics'
 include { CREATE_DATAVZRD_INPUT } from '../../../modules/local/custom/create_datavzrd_input'
 include { DATAVZRD              } from '../../../modules/nf-core/datavzrd'
 include { PLOT_SVLEN_DIST       } from '../../../modules/local/custom/plot_svlen_dist'
@@ -26,13 +26,13 @@ workflow REPORT_BENCHMARK_STATISTICS {
     versions = versions.mix(MERGE_REPORTS.out.versions.first())
 
     // plot summary statistics
-    PLOTS(
+    PLOT_METRICS(
         MERGE_REPORTS.out.summary
     )
-    ch_plots = ch_plots.mix(PLOTS.out.plots.flatten())
-    versions = versions.mix(PLOTS.out.versions.first())
+    ch_plots = ch_plots.mix(PLOT_METRICS.out.plots.flatten())
+    versions = versions.mix(PLOT_METRICS.out.versions.first())
 
-    if (params.variant_type != "snv"){
+    if (params.variant_type != "snv") {
         // plot INDEL/SV distribution plots
         PLOT_SVLEN_DIST(
             evaluations.groupTuple().mix(evaluations_csv.groupTuple())
@@ -48,22 +48,22 @@ workflow REPORT_BENCHMARK_STATISTICS {
     // add path to csv file to the datavzrd input
     summary
         .map { meta, summary_file ->
-                [ meta, summary_file, file("${projectDir}/assets/datavzrd/${meta.id}.datavzrd.template.yaml", checkIfExists:true) ]
-            }
-        .set {template}
+            [meta, summary_file, file("${projectDir}/assets/datavzrd/${meta.id}.datavzrd.template.yaml", checkIfExists: true)]
+        }
+        .set { template }
 
-    CREATE_DATAVZRD_INPUT (
+    CREATE_DATAVZRD_INPUT(
         template
     )
 
     // use datavzrd to render the report based on the create input
     // input consists of config file and the table itself
-    DATAVZRD (
+    DATAVZRD(
         CREATE_DATAVZRD_INPUT.out.config
     )
     versions = versions.mix(DATAVZRD.out.versions.first())
 
     emit:
-    versions        // channel: [versions.yml]
-    ch_plots        // channel: [plots.png]
+    versions // channel: [versions.yml]
+    ch_plots // channel: [plots.png]
 }

@@ -1,14 +1,13 @@
-
 //
 // COMPARE_BENCHMARK_RESULTS: SUBWORKFLOW to merge TP/FP/FN results from different tools.
 //
 
-include { SURVIVOR_MERGE       } from '../../../modules/nf-core/survivor/merge'
-include { BCFTOOLS_MERGE       } from '../../../modules/nf-core/bcftools/merge'
-include { VCF_TO_CSV           } from '../../../modules/local/custom/vcf_to_csv'
-include { REFORMAT_HEADER      } from '../../../modules/local/custom/reformat_header'
-include { MERGE_SOMPY_FEATURES } from '../../../modules/local/custom/merge_sompy_features'
-include { PLOT_UPSET           } from '../../../modules/local/custom/plot_upset'
+include { SURVIVOR_MERGE                   } from '../../../modules/nf-core/survivor/merge'
+include { BCFTOOLS_MERGE                   } from '../../../modules/nf-core/bcftools/merge'
+include { VCF_TO_CSV                       } from '../../../modules/local/custom/vcf_to_csv'
+include { REFORMAT_HEADER                  } from '../../../modules/local/custom/reformat_header'
+include { MERGE_SOMPY_FEATURES             } from '../../../modules/local/custom/merge_sompy_features'
+include { PLOT_UPSET                       } from '../../../modules/local/custom/plot_upset'
 include { TABIX_BGZIP as TABIX_BGZIP_UNZIP } from '../../../modules/nf-core/tabix/bgzip'
 
 workflow COMPARE_BENCHMARK_RESULTS {
@@ -19,11 +18,11 @@ workflow COMPARE_BENCHMARK_RESULTS {
     fai             // reference channel [val(meta), ref.fa.fai]
 
     main:
-    versions    = Channel.empty()
+    versions = Channel.empty()
     merged_vcfs = Channel.empty()
-    ch_plots    = Channel.empty()
+    ch_plots = Channel.empty()
 
-    if (params.variant_type == "small" | params.variant_type == "snv" | params.variant_type == "indel"){
+    if (params.variant_type == "small" | params.variant_type == "snv" | params.variant_type == "indel") {
 
         // Small Variants
         REFORMAT_HEADER(
@@ -36,12 +35,12 @@ workflow COMPARE_BENCHMARK_RESULTS {
             evaluations.groupTuple(),
             fasta,
             fai,
-            []
+            [],
         )
         versions = versions.mix(BCFTOOLS_MERGE.out.versions.first())
         merged_vcfs = merged_vcfs.mix(BCFTOOLS_MERGE.out.merged_variants)
     }
-    else{
+    else {
         // SV part
         // unzip vcfs
         TABIX_BGZIP_UNZIP(
@@ -51,7 +50,7 @@ workflow COMPARE_BENCHMARK_RESULTS {
 
         TABIX_BGZIP_UNZIP.out.output
             .groupTuple()
-            .set{vcf_ch}
+            .set { vcf_ch }
 
         // Merge Benchmark SVs from different tools
         SURVIVOR_MERGE(
@@ -61,11 +60,10 @@ workflow COMPARE_BENCHMARK_RESULTS {
             1,
             0,
             0,
-            30
+            30,
         )
         versions = versions.mix(SURVIVOR_MERGE.out.versions.first())
         merged_vcfs = merged_vcfs.mix(SURVIVOR_MERGE.out.vcf)
-
     }
 
     // convert vcf files to csv
@@ -80,12 +78,14 @@ workflow COMPARE_BENCHMARK_RESULTS {
     )
     versions = versions.mix(MERGE_SOMPY_FEATURES.out.versions.first())
 
-    VCF_TO_CSV.out.output.mix(MERGE_SOMPY_FEATURES.out.output).map{
-        meta, csv ->
+    VCF_TO_CSV.out.output
+        .mix(MERGE_SOMPY_FEATURES.out.output)
+        .map { meta, csv ->
             def newMeta = meta.clone()
             newMeta.remove('tag')
-        tuple(newMeta,csv)
-    }.set{upset_input}
+            tuple(newMeta, csv)
+        }
+        .set { upset_input }
 
     PLOT_UPSET(
         upset_input.groupTuple()
@@ -94,8 +94,7 @@ workflow COMPARE_BENCHMARK_RESULTS {
     ch_plots = ch_plots.mix(PLOT_UPSET.out.plot)
 
     emit:
-    merged_vcfs  // channel: [val(meta), vcf]
-    ch_plots     // channel: [val(meta), .png]
-    versions     // channel: [versions.yml]
-
+    merged_vcfs // channel: [val(meta), vcf]
+    ch_plots    // channel: [val(meta), .png]
+    versions    // channel: [versions.yml]
 }

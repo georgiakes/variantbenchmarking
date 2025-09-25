@@ -4,12 +4,12 @@
 
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_SUBSAMPLE     } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_FILTERMISSING } from '../../../modules/nf-core/bcftools/view'
-include { BCFTOOLS_SORT  } from '../../../modules/nf-core/bcftools/sort'
+include { BCFTOOLS_SORT                                } from '../../../modules/nf-core/bcftools/sort'
 
 
 workflow SUBSAMPLE_VCF_TEST {
     take:
-    input_ch    // channel: [val(meta), vcf]
+    input_ch // channel: [val(meta), vcf]
 
     main:
 
@@ -23,25 +23,24 @@ workflow SUBSAMPLE_VCF_TEST {
 
     // Subsample sample name for multisample vcfs
     BCFTOOLS_VIEW_SUBSAMPLE(
-        BCFTOOLS_SORT.out.vcf.map{ meta, vcf -> tuple(meta, vcf, []) },
+        BCFTOOLS_SORT.out.vcf.map { meta, vcf -> tuple(meta, vcf, []) },
         [],
         [],
-        []
+        [],
     )
     versions = versions.mix(BCFTOOLS_VIEW_SUBSAMPLE.out.versions.first())
 
     // filters out ./. genotypes (remaining from multisample vcf)
     BCFTOOLS_VIEW_FILTERMISSING(
-        BCFTOOLS_VIEW_SUBSAMPLE.out.vcf.map{ meta, vcf -> tuple(meta, vcf, []) },
+        BCFTOOLS_VIEW_SUBSAMPLE.out.vcf.map { meta, vcf -> tuple(meta, vcf, []) },
         [],
         [],
-        []
-
+        [],
     )
     versions = versions.mix(BCFTOOLS_VIEW_FILTERMISSING.out.versions.first())
-    vcf_ch   = BCFTOOLS_VIEW_FILTERMISSING.out.vcf
+    vcf_ch = BCFTOOLS_VIEW_FILTERMISSING.out.vcf
 
     emit:
-    vcf_ch      // channel: [val(meta), vcf]
-    versions    // channel: [versions.yml]
+    vcf_ch   // channel: [val(meta), vcf]
+    versions // channel: [versions.yml]
 }

@@ -2,31 +2,31 @@
 // SV_VCF_CONVERSIONS: SUBWORKFLOW to apply tool spesific conversions
 //
 
-include { SVYNC                   } from '../../../modules/nf-core/svync'
-include { BGZIP_TABIX             } from '../../../modules/local/bgzip/tabix'
-include { TABIX_TABIX             } from '../../../modules/nf-core/tabix/tabix'
-include { VARIANT_EXTRACTOR       } from '../../../modules/local/custom/variant_extractor'
-include { SVTK_STANDARDIZE        } from '../../../modules/nf-core/svtk/standardize/main.nf'
-include { RTGTOOLS_SVDECOMPOSE    } from '../../../modules/nf-core/rtgtools/svdecompose'
+include { SVYNC                           } from '../../../modules/nf-core/svync'
+include { BGZIP_TABIX                     } from '../../../modules/local/bgzip/tabix'
+include { TABIX_TABIX                     } from '../../../modules/nf-core/tabix/tabix'
+include { VARIANT_EXTRACTOR               } from '../../../modules/local/custom/variant_extractor'
+include { SVTK_STANDARDIZE                } from '../../../modules/nf-core/svtk/standardize/main.nf'
+include { RTGTOOLS_SVDECOMPOSE            } from '../../../modules/nf-core/rtgtools/svdecompose'
 include { BCFTOOLS_SORT as BCFTOOLS_SORT1 } from '../../../modules/nf-core/bcftools/sort'
 include { BCFTOOLS_SORT as BCFTOOLS_SORT2 } from '../../../modules/nf-core/bcftools/sort'
 
 
 workflow SV_VCF_CONVERSIONS {
     take:
-    input_ch    // channel: [val(meta), vcf]
-    fasta       // reference channel [val(meta), ref.fa]
-    fai         // reference channel [val(meta), ref.fa.fai]
+    input_ch // channel: [val(meta), vcf]
+    fasta    // reference channel [val(meta), ref.fa]
+    fai      // reference channel [val(meta), ref.fa.fai]
 
     main:
-    versions   = Channel.empty()
+    versions = Channel.empty()
 
-    if (params.sv_standardization.contains("variant_extractor")){
+    if (params.sv_standardization.contains("variant_extractor")) {
         // uses VariantExtractor to homogenize variants
         VARIANT_EXTRACTOR(
             input_ch,
             fasta,
-            fai
+            fai,
         )
         versions = versions.mix(VARIANT_EXTRACTOR.out.versions)
 
@@ -36,26 +36,25 @@ workflow SV_VCF_CONVERSIONS {
         )
         versions = versions.mix(BCFTOOLS_SORT1.out.versions)
         input_ch = BCFTOOLS_SORT1.out.vcf
-
     }
 
-    if (params.sv_standardization.contains("svtk")){
+    if (params.sv_standardization.contains("svtk")) {
 
         out_vcf_ch = Channel.empty()
 
         supported_callers2 = ["delly", "melt", "manta", "wham", "dragen", "lumpy", "scrable", "smoove"]
 
         input_ch
-            .branch{ meta, _vcf->
+            .branch { meta, _vcf ->
                 def caller = meta.caller
                 def supported = supported_callers2.contains(caller)
-                if(!supported) {
+                if (!supported) {
                     log.warn("Standardization for SV caller '${caller}' is not supported in svtk. Skipping standardization...")
                 }
-                tool:  supported
+                tool: supported
                 other: !supported
             }
-            .set{input}
+            .set { input }
 
         TABIX_TABIX(
             input.tool
@@ -64,7 +63,7 @@ workflow SV_VCF_CONVERSIONS {
 
         SVTK_STANDARDIZE(
             input.tool.join(TABIX_TABIX.out.tbi),
-            fai
+            fai,
         )
         versions = versions.mix(SVTK_STANDARDIZE.out.versions)
 
@@ -73,16 +72,17 @@ workflow SV_VCF_CONVERSIONS {
         )
         versions = versions.mix(BCFTOOLS_SORT2.out.versions)
 
-        out_vcf_ch.mix(
+        out_vcf_ch
+            .mix(
                 BCFTOOLS_SORT2.out.vcf,
-                input.other
-            ).set{input_ch}
-
+                input.other,
+            )
+            .set { input_ch }
     }
 
-    if (params.sv_standardization.contains("svdecompose")){
+    if (params.sv_standardization.contains("svdecompose")) {
         RTGTOOLS_SVDECOMPOSE(
-            input_ch.map{ meta, vcf -> tuple(meta, vcf, [])}
+            input_ch.map { meta, vcf -> tuple(meta, vcf, []) }
         )
         versions = versions.mix(RTGTOOLS_SVDECOMPOSE.out.versions)
         input_ch = RTGTOOLS_SVDECOMPOSE.out.vcf
@@ -96,43 +96,44 @@ workflow SV_VCF_CONVERSIONS {
     vcf_ch = BGZIP_TABIX.out.gz_tbi
 
     // RUN SVYNC tool to reformat SV callers
-    if(params.sv_standardization.contains("svync")){
+    if (params.sv_standardization.contains("svync")) {
         out_vcf_ch = Channel.empty()
         supported_callers = ["delly", "dragen", "gridss", "manta", "smoove"]
 
         vcf_ch
-            .branch{ meta, vcf, tbi ->
+            .branch { meta, vcf, tbi ->
                 def caller = meta.caller
                 def supported = supported_callers.contains(caller)
-                if(!supported) {
+                if (!supported) {
                     log.warn("Standardization for SV caller '${caller}' is not supported in svync. Skipping standardization...")
                 }
-                tool:  supported
-                    return [ meta, vcf, tbi]
+                tool: supported
+                return [meta, vcf, tbi]
                 other: !supported
-                    return [ meta, vcf ]
+                return [meta, vcf]
             }
-            .set{input}
+            .set { input }
 
 
         input.tool
             .map { meta, vcf, tbi ->
-                [ meta, vcf, tbi, file("${projectDir}/assets/svync/${meta.caller}.yaml", checkIfExists:true) ]
+                [meta, vcf, tbi, file("${projectDir}/assets/svync/${meta.caller}.yaml", checkIfExists: true)]
             }
-            .set {svync_ch}
+            .set { svync_ch }
 
         SVYNC(
             svync_ch
         )
         versions = versions.mix(SVYNC.out.versions.first())
-        out_vcf_ch.mix(
+        out_vcf_ch
+            .mix(
                 SVYNC.out.vcf,
-                input.other
+                input.other,
             )
-            .map{
+            .map {
                 def meta = it[0]
                 def vcf = it[1]
-                [ meta, vcf ]
+                [meta, vcf]
             }
             .set { vcf_ch }
     }

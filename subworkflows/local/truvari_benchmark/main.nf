@@ -2,29 +2,29 @@
 // TRUVARI_BENCHMARK: SUBWORKFLOW FOR TRUVARI BENCHMARKS
 //
 
-include { TRUVARI_BENCH                             } from '../../../modules/nf-core/truvari/bench'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4  } from '../../../modules/local/bcftools/reheader'
+include { TRUVARI_BENCH                            } from '../../../modules/nf-core/truvari/bench'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1 } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2 } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3 } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4 } from '../../../modules/local/bcftools/reheader'
 
 workflow TRUVARI_BENCHMARK {
     take:
-    input_ch  // channel: [val(meta), test_vcf, test_index, truth_vcf, truth_index, regionsbed, targets_bed ]
-    fasta     // reference channel [val(meta), ref.fa]
-    fai       // reference channel [val(meta), ref.fa.fai]
+    input_ch // channel: [val(meta), test_vcf, test_index, truth_vcf, truth_index, regionsbed, targets_bed ]
+    fasta    // reference channel [val(meta), ref.fa]
+    fai      // reference channel [val(meta), ref.fa.fai]
 
     main:
 
-    versions        = Channel.empty()
+    versions = Channel.empty()
     tagged_variants = Channel.empty()
 
     TRUVARI_BENCH(
-        input_ch.map{ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed  ->
-                [ meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed ]
-            },
+        input_ch.map { meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed, _targets_bed ->
+            [meta, vcf, _tbi, _truth_vcf, _truth_tbi, _regionsbed]
+        },
         fasta,
-        fai
+        fai,
     )
     versions = versions.mix(TRUVARI_BENCH.out.versions.first())
 
@@ -35,10 +35,10 @@ workflow TRUVARI_BENCHMARK {
 
     // reheader fn vcf files for tagged results
     BCFTOOLS_REHEADER_1(
-        TRUVARI_BENCH.out.fn_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        TRUVARI_BENCH.out.fn_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_1.out.versions)
 
@@ -49,10 +49,10 @@ workflow TRUVARI_BENCHMARK {
 
     // reheader fp vcf files for tagged results
     BCFTOOLS_REHEADER_2(
-        TRUVARI_BENCH.out.fp_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        TRUVARI_BENCH.out.fp_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_2.out.versions)
 
@@ -64,10 +64,10 @@ workflow TRUVARI_BENCHMARK {
 
     // reheader base tp vcf files for tagged results
     BCFTOOLS_REHEADER_3(
-        TRUVARI_BENCH.out.tp_base_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        TRUVARI_BENCH.out.tp_base_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_3.out.versions)
 
@@ -79,10 +79,10 @@ workflow TRUVARI_BENCHMARK {
 
     // reheader comp tp vcf files for tagged results
     BCFTOOLS_REHEADER_4(
-        TRUVARI_BENCH.out.tp_comp_vcf.map{ meta, vcf ->
-        [ meta, vcf, [], [] ]
+        TRUVARI_BENCH.out.tp_comp_vcf.map { meta, vcf ->
+            [meta, vcf, [], []]
         },
-        fai
+        fai,
     )
     versions = versions.mix(BCFTOOLS_REHEADER_4.out.versions)
 
@@ -93,10 +93,12 @@ workflow TRUVARI_BENCHMARK {
         .set { vcf_tp_comp }
 
     // collect tagged variant files
-    tagged_variants = tagged_variants.mix(vcf_fn,
-                                        vcf_fp,
-                                        vcf_tp_base,
-                                        vcf_tp_comp)
+    tagged_variants = tagged_variants.mix(
+        vcf_fn,
+        vcf_fp,
+        vcf_tp_base,
+        vcf_tp_comp,
+    )
 
     emit:
     tagged_variants // channel: [val(meta), vcfs]
