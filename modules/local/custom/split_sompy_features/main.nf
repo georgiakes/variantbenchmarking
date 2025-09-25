@@ -33,7 +33,7 @@ process SPLIT_SOMPY_FEATURES {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.TP.csv
+    touch ${prefix}.TP_comp.csv
     touch ${prefix}.FP.csv
     touch ${prefix}.FN.csv
 
