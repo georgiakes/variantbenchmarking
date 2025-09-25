@@ -21,6 +21,7 @@ workflow COMPARE_BENCHMARK_RESULTS {
     main:
     versions    = Channel.empty()
     merged_vcfs = Channel.empty()
+    ch_plots    = Channel.empty()
 
     if (params.variant_type == "small" | params.variant_type == "snv" | params.variant_type == "indel"){
 
@@ -90,10 +91,11 @@ workflow COMPARE_BENCHMARK_RESULTS {
         upset_input.groupTuple()
     )
     versions = versions.mix(PLOT_UPSET.out.versions)
-    //ch_plots = ch_plots.mix(PLOT_UPSET.out.plot)
+    ch_plots = ch_plots.mix(PLOT_UPSET.out.plot)
 
     emit:
     merged_vcfs  // channel: [val(meta), vcf]
+    ch_plots     // channel: [val(meta), .png]
     versions     // channel: [versions.yml]
 
 }
