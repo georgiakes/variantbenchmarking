@@ -229,9 +229,11 @@ def get_sompy_results(file_paths, vartype):
 		df['Tool'] = filename.split(".")[0]
 		df['File'] = filename
 		df['Caller'] = caller
+		df['F1'] = 2 * (df["precision"] * df["recall"]) / (df["precision"] + df["recall"])
+		df['F1'] = df['F1'].fillna(0)
+		df_redesigned = df[['Tool','File', 'Caller', 'F1', 'type','total.truth','tp','fn','total.query','fp','unk','recall','precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']]
+		df_redesigned.columns = ['Tool', 'File', 'Caller', 'F1', 'Type','TP_base','TP','FN','TP_comp','FP','UNK','Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']
 
-		df_redesigned = df[['Tool','File', 'Caller', 'type','total.truth','tp','fn','total.query','fp','unk','recall','precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']]
-		df_redesigned.columns = ['Tool', 'File', 'Caller', 'Type','TP_base','TP','FN','TP_comp','FP','UNK','Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','F1']
 		int_columns = ['TP_base', 'TP', 'FN', 'TP_comp', 'FP', 'UNK']
 		float_columns = ['Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','F1']
 		df_redesigned[int_columns] = df_redesigned[int_columns].fillna(0).astype(int)
