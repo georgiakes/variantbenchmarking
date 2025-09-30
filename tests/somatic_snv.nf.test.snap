@@ -1,7 +1,7 @@
 {
     "Params: --analysis 'somatic' --variant_type 'snv' --method 'sompy'": {
         "content": [
-            88,
+            90,
             {
                 "BCFTOOLS_FILTER": {
                     "bcftools": 1.2
@@ -59,6 +59,9 @@
                 },
                 "PLOTS": {
                     "r-base": "4.3.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
                 },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
@@ -174,9 +177,9 @@
                 "snv/summary/comparisons/rtgtools/rtgtools.TP_base.csv",
                 "snv/summary/comparisons/rtgtools/rtgtools.TP_comp.csv",
                 "snv/summary/comparisons/sompy",
-                "snv/summary/comparisons/sompy/sompy.FN.summary.csv",
-                "snv/summary/comparisons/sompy/sompy.FP.summary.csv",
-                "snv/summary/comparisons/sompy/sompy.TP.summary.csv",
+                "snv/summary/comparisons/sompy/sompy.FN.csv",
+                "snv/summary/comparisons/sompy/sompy.FP.csv",
+                "snv/summary/comparisons/sompy/sompy.TP_comp.csv",
                 "snv/summary/datavzrd",
                 "snv/summary/datavzrd/rtgtools",
                 "snv/summary/datavzrd/rtgtools/index.html",
@@ -237,6 +240,7 @@
                 "snv/summary/datavzrd/sompy/test/plots/plot_19.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_2.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_20.js",
+                "snv/summary/datavzrd/sompy/test/plots/plot_21.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_3.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_4.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_5.js",
@@ -249,10 +253,14 @@
                 "snv/summary/plots/rtgtools",
                 "snv/summary/plots/rtgtools/f1_by_tool_rtgtools_mqc.png",
                 "snv/summary/plots/rtgtools/pr_recall_by_tool_rtgtools_mqc.png",
+                "snv/summary/plots/rtgtools/upset_rtgtools_tp_fn_mqc.png",
+                "snv/summary/plots/rtgtools/upset_rtgtools_tp_fp_mqc.png",
                 "snv/summary/plots/rtgtools/variants_by_tool_rtgtools_mqc.png",
                 "snv/summary/plots/sompy",
                 "snv/summary/plots/sompy/f1_by_tool_sompy_mqc.png",
                 "snv/summary/plots/sompy/pr_recall_by_tool_sompy_mqc.png",
+                "snv/summary/plots/sompy/upset_sompy_tp_fn_mqc.png",
+                "snv/summary/plots/sompy/upset_sompy_tp_fp_mqc.png",
                 "snv/summary/plots/sompy/variants_by_tool_sompy_mqc.png",
                 "snv/summary/tables",
                 "snv/summary/tables/rtgtools",
@@ -382,11 +390,11 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-09T10:47:43.924073405"
+        "timestamp": "2025-09-30T09:05:25.948170606"
     },
     "-stub": {
         "content": [
-            88,
+            90,
             {
                 "BCFTOOLS_FILTER": {
                     "bcftools": 1.2
@@ -445,6 +453,9 @@
                 "PLOTS": {
                     "r-base": "4.3.1"
                 },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
+                },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
                 },
@@ -495,7 +506,7 @@
                 "snv/summary/comparisons/sompy",
                 "snv/summary/comparisons/sompy/sompy.FN.summary.csv",
                 "snv/summary/comparisons/sompy/sompy.FP.summary.csv",
-                "snv/summary/comparisons/sompy/sompy.TP.summary.csv",
+                "snv/summary/comparisons/sompy/sompy.TP_comp.summary.csv",
                 "snv/summary/datavzrd",
                 "snv/summary/datavzrd/rtgtools",
                 "snv/summary/datavzrd/rtgtools/index.html",
@@ -537,9 +548,11 @@
                 "snv/summary/plots",
                 "snv/summary/plots/rtgtools",
                 "snv/summary/plots/rtgtools/metric_by_tool_rtgtools_mqc.png",
+                "snv/summary/plots/rtgtools/upset_rtgtools.upset.mqc.png",
                 "snv/summary/plots/rtgtools/variants_by_tool_rtgtools_mqc.png",
                 "snv/summary/plots/sompy",
                 "snv/summary/plots/sompy/metric_by_tool_sompy_mqc.png",
+                "snv/summary/plots/sompy/upset_sompy.upset.mqc.png",
                 "snv/summary/plots/sompy/variants_by_tool_sompy_mqc.png",
                 "snv/summary/tables",
                 "snv/summary/tables/rtgtools",
@@ -645,6 +658,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-09T10:56:05.450460113"
+        "timestamp": "2025-09-25T08:11:55.383058813"
     }
 }

@@ -49,7 +49,7 @@ workflow SVANALYZER_BENCHMARK {
         )
     versions = versions.mix(SUBTRACT_VCF_QUERY.out.versions)
 
-    // subtract Fns from Truth to find TPs in tRUTH
+    // subtract Fns from Truth to find TPs in TRUTH
     SUBTRACT_VCF_TRUTH(
         input_ch.map{ meta, _vcf, _tbi, truth_vcf, truth_tbi, regionsbed, targets_bed  ->
             [ meta, truth_vcf, truth_tbi, regionsbed, targets_bed ]}.join(SVANALYZER_SVBENCHMARK.out.fns)

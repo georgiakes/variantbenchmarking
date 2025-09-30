@@ -9,24 +9,13 @@ import os
 import argparse
 import numpy as np
 import gzip
-import math
 import csv
 
 def get_sample_name(vcf_file):
-    """
-    Extracts the sample name from the VCF file name.
-    """
-    # Get the base name of the file (e.g., 'test1.HG002.manta.tp-base.vcf').
     base_name = os.path.basename(vcf_file)
-    # Split the name by the dot '.' and take the second part, which is the sample name in this case.
-    # For example, 'test1.HG002.manta.tp-base.vcf' becomes 'manta'.
     return base_name.split('.')[0]
 
 def format_bp_label(value, pos):
-    """
-    Formats a numeric value into a human-readable string with 'bp', 'kbp', or 'Mbp' suffixes.
-    This is used for the x-axis tick labels.
-    """
     value = abs(value)
     if value >= 1e6:
         return f'{value / 1e6:.1f} Mbp'
@@ -150,7 +139,6 @@ def parse_csv_data(csv_files):
                 for row in reader:
                     svlen_val = None
 
-                    # Use REF and ALT first
                     ref = row.get('REF', '')
                     alt = row.get('ALT', '')
 
@@ -160,7 +148,6 @@ def parse_csv_data(csv_files):
                         else:
                             svlen_val = -(len(ref) - len(alt))
 
-                    # If REF/ALT are empty, use REF.truth and ALT.truth as fallback
                     if svlen_val is None:
                         ref_truth = row.get('REF.truth', '')
                         alt_truth = row.get('ALT.truth', '')
@@ -190,7 +177,19 @@ def plot_svlen_distributions(svlen_data, max_svlen, output_file, plot_title):
     """
     Plots the SVLEN distributions based on the parsed data using a mirrored linear scale and a log y-axis.
     """
-    plt.figure(figsize=(12, 8))
+    plt.rcParams.update({
+        'font.size': 14,
+        'axes.titlesize': 18,
+        'axes.labelsize': 16,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+        'legend.fontsize': 14,
+        'legend.title_fontsize': 16,
+        'figure.titlesize': 20
+    })
+
+    # Create larger figure
+    plt.figure(figsize=(14, 10))
 
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
     line_styles = ['-', '--', ':', '-.']
@@ -209,21 +208,27 @@ def plot_svlen_distributions(svlen_data, max_svlen, output_file, plot_title):
             bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
 
             plt.plot(bin_centers, counts, label=file_name,
-                     color=current_color, linestyle=current_linestyle)
+                     color=current_color, linestyle=current_linestyle, linewidth=3)
 
     plt.yscale('log')
 
-    plt.xlabel("Deletions   |   Insertions")
-    plt.ylabel("Count (Log10)")
-    plt.title(plot_title)
-    plt.legend(title="Tool")
+    plt.xlabel("Deletions   |   Insertions", fontsize=16, fontweight='bold')
+    plt.ylabel("Count (Log10)", fontsize=16, fontweight='bold')
+    plt.title(plot_title, fontsize=18, fontweight='bold', pad=20)
+
+    legend = plt.legend(title="Tool", title_fontsize=16, fontsize=14)
+    for handle in legend.legendHandles:
+        handle.set_linewidth(4.0)
+
     plt.grid(True, which="both", linestyle='--', alpha=0.7)
 
     plt.xlim(-max_svlen, max_svlen)
 
     plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(format_bp_label))
 
-    plt.savefig(output_file)
+    plt.tight_layout()
+
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
     print(f"Plot saved to {output_file}")
 
 if __name__ == "__main__":

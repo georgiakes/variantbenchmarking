@@ -15,7 +15,7 @@ views:
           display-mode: normal
         FN:
           display-mode: normal
-        TP_call:
+        TP_comp:
           display-mode: normal
         FP:
           display-mode: normal

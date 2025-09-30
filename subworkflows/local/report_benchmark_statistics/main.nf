@@ -37,7 +37,7 @@ workflow REPORT_BENCHMARK_STATISTICS {
         PLOT_SVLEN_DIST(
             evaluations.groupTuple().mix(evaluations_csv.groupTuple())
         )
-        versions = versions.mix(PLOT_SVLEN_DIST.out.versions.first())
+        versions = versions.mix(PLOT_SVLEN_DIST.out.versions)
         ch_plots = ch_plots.mix(PLOT_SVLEN_DIST.out.plot)
     }
 

@@ -1,17 +1,17 @@
-process PLOT_SVLEN_DIST {
+process PLOT_UPSET {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/matplotlib:3.1.2--2' :
-        'biocontainers/matplotlib:3.1.2--2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bcc3d7359ce8c6c53e98534593b4a8a91fec5c1ab4bccd66f39f11128c39a1c3/data' :
+        'community.wave.seqera.io/library/pip_upsetplot_matplot_pandas:d9e1259bc972b7a4' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(files)
 
     output:
-    path("*.png")         , emit: plot
+    path("*.png")         , emit: plot, optional:true
     path "versions.yml"   , emit: versions
 
     when:
@@ -20,10 +20,13 @@ process PLOT_SVLEN_DIST {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    plot_svlendist.py \\
-        $input \\
-        -o ${prefix}.${params.variant_type}.mqc.png \\
-        --title "INDEL Length Distributions of ${meta.tag} Variants"
+    plot_upset.py \\
+        --fp ${meta.id}.FP.csv \\
+        --fn ${meta.id}.FN.csv \\
+        --tp-base ${meta.id}.TP_base.csv \\
+        --tp-comp ${meta.id}.TP_comp.csv \\
+        --output ${prefix} \\
+        --title "Upset plot for ${meta.id}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,7 +36,7 @@ process PLOT_SVLEN_DIST {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.svlen.png
+    touch ${prefix}.upset.mqc.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

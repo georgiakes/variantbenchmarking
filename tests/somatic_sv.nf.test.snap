@@ -1,7 +1,7 @@
 {
     "Params: --analysis 'somatic' --variant_type 'structural' --method 'truvari,svbenchmark'": {
         "content": [
-            60,
+            61,
             {
                 "BCFTOOLS_NORM": {
                     "bcftools": 1.21
@@ -44,6 +44,9 @@
                 },
                 "PLOT_SVLEN_DIST": {
                     "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
                 },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
@@ -149,6 +152,8 @@
                 "structural/summary/plots/truvari/truvari.FP.structural.mqc.png",
                 "structural/summary/plots/truvari/truvari.TP_base.structural.mqc.png",
                 "structural/summary/plots/truvari/truvari.TP_comp.structural.mqc.png",
+                "structural/summary/plots/truvari/upset_truvari_tp_fn_mqc.png",
+                "structural/summary/plots/truvari/upset_truvari_tp_fp_mqc.png",
                 "structural/summary/plots/truvari/variants_by_tool_truvari_mqc.png",
                 "structural/summary/tables",
                 "structural/summary/tables/truvari",
@@ -209,8 +214,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-09-09T11:00:10.053548663"
+        "timestamp": "2025-09-24T15:54:55.779419269"
     }
 }

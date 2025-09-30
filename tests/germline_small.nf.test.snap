@@ -1,7 +1,7 @@
 {
     "-stub": {
         "content": [
-            98,
+            100,
             {
                 "BCFTOOLS_DEDUP": {
                     "bcftools": 1.21
@@ -65,6 +65,9 @@
                 },
                 "PLOT_SVLEN_DIST": {
                     "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
                 },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
@@ -157,6 +160,7 @@
                 "small/summary/plots/happy/happy.TP_base.svlen.png",
                 "small/summary/plots/happy/happy.TP_comp.svlen.png",
                 "small/summary/plots/happy/metric_by_tool_happy_mqc.png",
+                "small/summary/plots/happy/upset_happy.upset.mqc.png",
                 "small/summary/plots/happy/variants_by_tool_happy_mqc.png",
                 "small/summary/plots/rtgtools",
                 "small/summary/plots/rtgtools/metric_by_tool_rtgtools_mqc.png",
@@ -164,6 +168,7 @@
                 "small/summary/plots/rtgtools/rtgtools.FP.svlen.png",
                 "small/summary/plots/rtgtools/rtgtools.TP_base.svlen.png",
                 "small/summary/plots/rtgtools/rtgtools.TP_comp.svlen.png",
+                "small/summary/plots/rtgtools/upset_rtgtools.upset.mqc.png",
                 "small/summary/plots/rtgtools/variants_by_tool_rtgtools_mqc.png",
                 "small/summary/tables",
                 "small/summary/tables/happy",
@@ -268,13 +273,13 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-09-09T10:25:53.096595069"
+        "timestamp": "2025-09-24T15:27:40.228475911"
     },
     "Params: --analysis 'germline' --variant_type 'small' --method 'happy,rtgtools'": {
         "content": [
-            98,
+            100,
             {
                 "BCFTOOLS_DEDUP": {
                     "bcftools": 1.21
@@ -338,6 +343,9 @@
                 },
                 "PLOT_SVLEN_DIST": {
                     "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
                 },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
@@ -537,6 +545,8 @@
                 "small/summary/plots/happy/happy.FP.small.mqc.png",
                 "small/summary/plots/happy/happy.TP_base.small.mqc.png",
                 "small/summary/plots/happy/happy.TP_comp.small.mqc.png",
+                "small/summary/plots/happy/upset_happy_tp_fn_mqc.png",
+                "small/summary/plots/happy/upset_happy_tp_fp_mqc.png",
                 "small/summary/plots/rtgtools",
                 "small/summary/plots/rtgtools/f1_by_tool_rtgtools_mqc.png",
                 "small/summary/plots/rtgtools/pr_recall_by_tool_rtgtools_mqc.png",
@@ -544,6 +554,8 @@
                 "small/summary/plots/rtgtools/rtgtools.FP.small.mqc.png",
                 "small/summary/plots/rtgtools/rtgtools.TP_base.small.mqc.png",
                 "small/summary/plots/rtgtools/rtgtools.TP_comp.small.mqc.png",
+                "small/summary/plots/rtgtools/upset_rtgtools_tp_fn_mqc.png",
+                "small/summary/plots/rtgtools/upset_rtgtools_tp_fp_mqc.png",
                 "small/summary/plots/rtgtools/variants_by_tool_rtgtools_mqc.png",
                 "small/summary/tables",
                 "small/summary/tables/happy",
@@ -671,8 +683,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-09-09T10:23:41.790482238"
+        "timestamp": "2025-09-24T15:25:18.995734991"
     }
 }
