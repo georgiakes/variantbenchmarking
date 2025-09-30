@@ -183,6 +183,7 @@
                 "indel/summary/datavzrd/sompy/test/plots/plot_19.js",
                 "indel/summary/datavzrd/sompy/test/plots/plot_2.js",
                 "indel/summary/datavzrd/sompy/test/plots/plot_20.js",
+                "indel/summary/datavzrd/sompy/test/plots/plot_21.js",
                 "indel/summary/datavzrd/sompy/test/plots/plot_3.js",
                 "indel/summary/datavzrd/sompy/test/plots/plot_4.js",
                 "indel/summary/datavzrd/sompy/test/plots/plot_5.js",
@@ -355,8 +356,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.09.0"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-24T15:44:32.946454649"
+        "timestamp": "2025-09-29T14:50:12.281437286"
     }
 }
