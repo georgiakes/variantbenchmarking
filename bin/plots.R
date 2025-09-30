@@ -37,38 +37,64 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
     tp_data$variable <- factor(tp_data$variable, levels = c("TP_comp", "FP", "FN"))
     metric_data$variable <- factor(metric_data$variable, levels = c("F1"))
 
+    axis_text_size <- 12
+    axis_title_size <- 14
+    point_size <- 3
+    line_size <- 1.2
+    title_size <- 16
+    facet_text_size <- 14
+    legend_text_size <- 12
+    legend_title_size <- 14
+
     # Visualize TP_comp, FP, and FN in separate plots
     tp_plot <- ggplot(tp_data, aes(x = Tool, y = value, color = Tool, group = interaction(variable, Tool))) +
-        geom_line() +
-        geom_point() +
-        labs(x = "Tool", y = "Value", color = "Tool") +
+        geom_line(size = line_size) +
+        geom_point(size = point_size) +
+        labs(x = "Tool", y = "Value", color = "Tool", title = "Variant Comparison Metrics") +
         facet_wrap(~variable, scales = "free_y") +
         theme_minimal() +
         theme(
             legend.position = "none",
             panel.background = element_rect(fill = "white"),
-            axis.text.x = element_text(angle = 30, hjust = 0.5))
+            axis.text.x = element_text(angle = 30, hjust = 0.5, size = axis_text_size),
+            axis.text.y = element_text(size = axis_text_size),
+            axis.title.x = element_text(size = axis_title_size),
+            axis.title.y = element_text(size = axis_title_size),
+            plot.title = element_text(size = title_size, face = "bold", hjust = 0.5),
+            strip.text = element_text(size = facet_text_size, face = "bold"))
 
     # Visualize f1
-    f1_plot <- ggplot(metric_data, aes(x = Tool, y = value, , color = Tool)) +
-        geom_point() +
-        labs(x = "Tool", y = "f1") +
+    f1_plot <- ggplot(metric_data, aes(x = Tool, y = value, color = Tool)) +
+        geom_point(size = point_size) +
+        labs(x = "Tool", y = "F1 Score", title = "F1 Score") +
         theme_minimal() +
         theme(
             legend.position = "none",
             panel.background = element_rect(fill = "white"),
-            axis.text.x = element_text(angle = 30, hjust = 0.5)
+            axis.text.x = element_text(angle = 30, hjust = 0.5, size = axis_text_size),
+            axis.text.y = element_text(size = axis_text_size),
+            axis.title.x = element_text(size = axis_title_size),
+            axis.title.y = element_text(size = axis_title_size),
+            plot.title = element_text(size = title_size, face = "bold", hjust = 0.5)
             ) +
             scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
             scale_color_discrete()
 
     # Visualize Precision vs Recall
     pr_plot <- ggplot(table) +
-        geom_point(aes(x = Recall, y = Precision, color = Tool)) +
+        geom_point(aes(x = Recall, y = Precision, color = Tool), size = point_size) +
+        labs(x = "Recall", y = "Precision", title = "Precision vs Recall") +
         theme_minimal() +
         theme(
             legend.position = "right",
-            panel.background = element_rect(fill = "white"))
+            panel.background = element_rect(fill = "white"),
+            axis.text.x = element_text(size = axis_text_size),
+            axis.text.y = element_text(size = axis_text_size),
+            axis.title.x = element_text(size = axis_title_size),
+            axis.title.y = element_text(size = axis_title_size),
+            plot.title = element_text(size = title_size, face = "bold", hjust = 0.5),
+            legend.text = element_text(size = legend_text_size),
+            legend.title = element_text(size = legend_title_size))
 
     # Save the plots
     tryCatch({

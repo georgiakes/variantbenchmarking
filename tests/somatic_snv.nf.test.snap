@@ -240,6 +240,7 @@
                 "snv/summary/datavzrd/sompy/test/plots/plot_19.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_2.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_20.js",
+                "snv/summary/datavzrd/sompy/test/plots/plot_21.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_3.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_4.js",
                 "snv/summary/datavzrd/sompy/test/plots/plot_5.js",
@@ -389,7 +390,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-25T07:43:28.587046041"
+        "timestamp": "2025-09-30T09:05:25.948170606"
     },
     "-stub": {
         "content": [
