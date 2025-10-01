@@ -13,8 +13,6 @@ views:
           display-mode: normal
         TP_base:
           display-mode: normal
-        TP:
-          display-mode: normal
         FN:
           display-mode: normal
         TP_comp:

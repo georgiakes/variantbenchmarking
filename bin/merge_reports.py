@@ -4,11 +4,9 @@
 # Author: Kuebra Narci - @kubranarci
 
 import pandas as pd
-import glob
 import re
 import os
 import sys
-import errno
 import argparse
 import json
 
@@ -179,9 +177,9 @@ def get_happy_results(file_paths):
 		df['Caller'] = caller
 
 		df_redesigned = df[['Tool', 'File', 'Caller', 'Type','Filter','TRUTH.TOTAL','TRUTH.TP','TRUTH.FN','QUERY.TOTAL','QUERY.FP','QUERY.UNK','FP.gt','FP.al','METRIC.Recall','METRIC.Precision','METRIC.Frac_NA','METRIC.F1_Score','TRUTH.TOTAL.TiTv_ratio','QUERY.TOTAL.TiTv_ratio','TRUTH.TOTAL.het_hom_ratio','QUERY.TOTAL.het_hom_ratio']]
-		df_redesigned.columns = ['Tool', 'File', 'Caller', 'Type','Filter','TP_base','TP','FN','TP_comp','FP','UNK','FP_gt','FP_al','Recall','Precision','Frac_NA','F1','TRUTH_TiTv_ratio','QUERY_TiTv_ratio','TRUTH_het_hom_ratio','QUERY_het_hom_ratio']
+		df_redesigned.columns = ['Tool', 'File', 'Caller', 'Type','Filter','TP_base','TP_comp','FN','TP_Total','FP','UNK','FP_gt','FP_al','Recall','Precision','Frac_NA','F1','TRUTH_TiTv_ratio','QUERY_TiTv_ratio','TRUTH_het_hom_ratio','QUERY_het_hom_ratio']
 
-		int_columns = ['TP_base', 'TP', 'FN', 'TP_comp', 'FP', 'UNK', 'FP_gt', 'FP_al']
+		int_columns = ['TP_base','FN', 'TP_comp', 'FP', 'UNK', 'FP_gt', 'FP_al']
 		float_columns = ['Recall','Precision','Frac_NA','F1','TRUTH_TiTv_ratio','QUERY_TiTv_ratio','TRUTH_het_hom_ratio','QUERY_het_hom_ratio']
 		df_redesigned[int_columns] = df_redesigned[int_columns].fillna(0).astype(int)
 		df_redesigned[float_columns] = df_redesigned[float_columns].fillna(0).astype(float)
@@ -232,9 +230,9 @@ def get_sompy_results(file_paths, vartype):
 		df['F1'] = 2 * (df["precision"] * df["recall"]) / (df["precision"] + df["recall"])
 		df['F1'] = df['F1'].fillna(0)
 		df_redesigned = df[['Tool','File', 'Caller', 'F1', 'type','total.truth','tp','fn','total.query','fp','unk','recall','precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']]
-		df_redesigned.columns = ['Tool', 'File', 'Caller', 'F1', 'Type','TP_base','TP','FN','TP_comp','FP','UNK','Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']
+		df_redesigned.columns = ['Tool', 'File', 'Caller', 'F1', 'Type','TP_base','TP_comp','FN','TP_Total','FP','UNK','Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','fp.rate']
 
-		int_columns = ['TP_base', 'TP', 'FN', 'TP_comp', 'FP', 'UNK']
+		int_columns = ['TP_base', 'FN', 'TP_comp', 'FP', 'UNK']
 		float_columns = ['Recall','Precision','recall_lower','recall_upper','recall2','precision_lower','precision_upper','na','ambiguous','fp.region.size','F1']
 		df_redesigned[int_columns] = df_redesigned[int_columns].fillna(0).astype(int)
 		df_redesigned[float_columns] = df_redesigned[float_columns].fillna(0).astype(float)

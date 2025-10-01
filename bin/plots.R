@@ -10,9 +10,6 @@ suppressWarnings(library(scales))
 
 # Function to generate plots
 generate_plots <- function(table, benchmark, type, filter, stats) {
-    # Melt the data for easier plotting
-    ## where type and filter are both none
-
     if (type != "None" && filter != "None") {
         table <- table[table$Type == type & table$Filter == filter, ]
         name1 <- paste(type, "_", filter, "_f1_by_tool_", benchmark, "_mqc.png", sep = "")
@@ -33,6 +30,9 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
     tp_data <- input_data_melted[input_data_melted$variable %in% c( "TP_comp", "FP", "FN"), ]
     metric_data <- input_data_melted[input_data_melted$variable %in% c("F1"), ]
     metric_data$value <- as.numeric(as.character(metric_data$value))
+    tp_data$value <- as.numeric(as.character(tp_data$value))
+
+    print(tp_data)
     # Specify the order of levels for the variable aesthetic
     tp_data$variable <- factor(tp_data$variable, levels = c("TP_comp", "FP", "FN"))
     metric_data$variable <- factor(metric_data$variable, levels = c("F1"))
@@ -61,7 +61,8 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
             axis.title.x = element_text(size = axis_title_size),
             axis.title.y = element_text(size = axis_title_size),
             plot.title = element_text(size = title_size, face = "bold", hjust = 0.5),
-            strip.text = element_text(size = facet_text_size, face = "bold"))
+            strip.text = element_text(size = facet_text_size, face = "bold")) +
+        scale_y_continuous(labels = scales::label_number(), limits = c(0, NA))
 
     # Visualize f1
     f1_plot <- ggplot(metric_data, aes(x = Tool, y = value, color = Tool)) +
@@ -77,7 +78,7 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
             axis.title.y = element_text(size = axis_title_size),
             plot.title = element_text(size = title_size, face = "bold", hjust = 0.5)
             ) +
-            scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
+            scale_y_continuous(labels = scales::label_number(accuracy = 0.01), limits = c(0, 1)) +
             scale_color_discrete()
 
     # Visualize Precision vs Recall
@@ -94,7 +95,9 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
             axis.title.y = element_text(size = axis_title_size),
             plot.title = element_text(size = title_size, face = "bold", hjust = 0.5),
             legend.text = element_text(size = legend_text_size),
-            legend.title = element_text(size = legend_title_size))
+            legend.title = element_text(size = legend_title_size)) +
+        scale_x_continuous(limits = c(0, 1)) +
+        scale_y_continuous(limits = c(0, 1))
 
     # Save the plots
     tryCatch({

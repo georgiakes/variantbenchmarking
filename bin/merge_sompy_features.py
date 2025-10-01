@@ -12,7 +12,6 @@ Use --help for more information.
 import csv
 import argparse
 from collections import defaultdict
-import os
 
 KEY_COLUMNS = ["CHROM", "POS"]
 
