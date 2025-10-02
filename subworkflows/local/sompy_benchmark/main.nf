@@ -41,7 +41,7 @@ workflow SOMPY_BENCHMARK {
     versions = versions.mix(SPLIT_SOMPY_FEATURES.out.versions)
 
     SPLIT_SOMPY_FEATURES.out.TP
-        .map { _meta, file -> tuple([vartype: params.variant_type] + [tag: "TP"] + [id: "sompy"], file) }
+        .map { _meta, file -> tuple([vartype: params.variant_type] + [tag: "TP_comp"] + [id: "sompy"], file) }
         .set{tp_vars}
 
     SPLIT_SOMPY_FEATURES.out.FP

@@ -6,12 +6,10 @@
 # Load necessary libraries
 suppressWarnings(library(ggplot2))
 suppressWarnings(library(reshape2))
+suppressWarnings(library(scales))
 
 # Function to generate plots
 generate_plots <- function(table, benchmark, type, filter, stats) {
-    # Melt the data for easier plotting
-    ## where type and filter are both none
-
     if (type != "None" && filter != "None") {
         table <- table[table$Type == type & table$Filter == filter, ]
         name1 <- paste(type, "_", filter, "_f1_by_tool_", benchmark, "_mqc.png", sep = "")
@@ -29,40 +27,77 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
     }
     input_data_melted <- melt(table, id.vars = "Tool")
 
-    tp_data <- input_data_melted[input_data_melted$variable %in% c("TP_base", "TP_comp", "FP", "FN"), ]
+    tp_data <- input_data_melted[input_data_melted$variable %in% c( "TP_comp", "FP", "FN"), ]
     metric_data <- input_data_melted[input_data_melted$variable %in% c("F1"), ]
+    metric_data$value <- as.numeric(as.character(metric_data$value))
+    tp_data$value <- as.numeric(as.character(tp_data$value))
+
+    print(tp_data)
     # Specify the order of levels for the variable aesthetic
-    tp_data$variable <- factor(tp_data$variable, levels = c("TP_base", "TP_comp", "FP", "FN"))
+    tp_data$variable <- factor(tp_data$variable, levels = c("TP_comp", "FP", "FN"))
     metric_data$variable <- factor(metric_data$variable, levels = c("F1"))
 
-    # Visualize TP_base, TP_comp, FP, and FN in separate plots
+    axis_text_size <- 12
+    axis_title_size <- 14
+    point_size <- 3
+    line_size <- 1.2
+    title_size <- 16
+    facet_text_size <- 14
+    legend_text_size <- 12
+    legend_title_size <- 14
+
+    # Visualize TP_comp, FP, and FN in separate plots
     tp_plot <- ggplot(tp_data, aes(x = Tool, y = value, color = Tool, group = interaction(variable, Tool))) +
-        geom_line() +
-        geom_point() +
-        labs(x = "Tool", y = "Value", color = "Tool") +
+        geom_line(size = line_size) +
+        geom_point(size = point_size) +
+        labs(x = "Tool", y = "Value", color = "Tool", title = "Variant Comparison Metrics") +
         facet_wrap(~variable, scales = "free_y") +
         theme_minimal() +
         theme(
-            legend.position = "right",
+            legend.position = "none",
             panel.background = element_rect(fill = "white"),
-            axis.text.x = element_text(angle = 30, hjust = 0.5))
+            axis.text.x = element_text(angle = 30, hjust = 0.5, size = axis_text_size),
+            axis.text.y = element_text(size = axis_text_size),
+            axis.title.x = element_text(size = axis_title_size),
+            axis.title.y = element_text(size = axis_title_size),
+            plot.title = element_text(size = title_size, face = "bold", hjust = 0.5),
+            strip.text = element_text(size = facet_text_size, face = "bold")) +
+        scale_y_continuous(labels = scales::label_number(), limits = c(0, NA))
 
     # Visualize f1
-    f1_plot <- ggplot(metric_data, aes(x = Tool, y = value)) +
-        geom_point() +
-        labs(x = "Tool", y = "f1") +
+    f1_plot <- ggplot(metric_data, aes(x = Tool, y = value, color = Tool)) +
+        geom_point(size = point_size) +
+        labs(x = "Tool", y = "F1 Score", title = "F1 Score") +
         theme_minimal() +
         theme(
+            legend.position = "none",
             panel.background = element_rect(fill = "white"),
-            axis.text.x = element_text(angle = 30, hjust = 0.5))
+            axis.text.x = element_text(angle = 30, hjust = 0.5, size = axis_text_size),
+            axis.text.y = element_text(size = axis_text_size),
+            axis.title.x = element_text(size = axis_title_size),
+            axis.title.y = element_text(size = axis_title_size),
+            plot.title = element_text(size = title_size, face = "bold", hjust = 0.5)
+            ) +
+            scale_y_continuous(labels = scales::label_number(accuracy = 0.01), limits = c(0, 1)) +
+            scale_color_discrete()
 
     # Visualize Precision vs Recall
     pr_plot <- ggplot(table) +
-        geom_point(aes(x = Recall, y = Precision, color = Tool)) +
+        geom_point(aes(x = Recall, y = Precision, color = Tool), size = point_size) +
+        labs(x = "Recall", y = "Precision", title = "Precision vs Recall") +
         theme_minimal() +
         theme(
             legend.position = "right",
-            panel.background = element_rect(fill = "white"))
+            panel.background = element_rect(fill = "white"),
+            axis.text.x = element_text(size = axis_text_size),
+            axis.text.y = element_text(size = axis_text_size),
+            axis.title.x = element_text(size = axis_title_size),
+            axis.title.y = element_text(size = axis_title_size),
+            plot.title = element_text(size = title_size, face = "bold", hjust = 0.5),
+            legend.text = element_text(size = legend_text_size),
+            legend.title = element_text(size = legend_title_size)) +
+        scale_x_continuous(limits = c(0, 1)) +
+        scale_y_continuous(limits = c(0, 1))
 
     # Save the plots
     tryCatch({

@@ -4,8 +4,8 @@ process SUBTRACT_VCF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1cc0a8019c9e5473261c959c2ca234914fa61267cd4bd7c66a2f8cbfc7e06f70/data' :
-        'community.wave.seqera.io/library/bcftools_bedtools:8ae45183a3924432' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab3b0054e3111812d8f2deb12345d5b7ca7ea7b18a2dbcbf174d46274c28deba/data':
+        'community.wave.seqera.io/library/pip_pandas:40d2e76c16c136f0' }"
 
     input:
     tuple val(meta), path(vcf), path(index), path(regions), path(targets), path(exclude)
@@ -20,27 +20,20 @@ process SUBTRACT_VCF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def bed = regions ? "--bed-file ${regions}" : ''
 
     """
-    #!/usr/bin/env bash
-    zcat $exclude | awk 'BEGIN{OFS="\\t"} {print \$1, \$2-1, \$2}' > exclude.bed
-
-    if [ -s "${regions}" ]; then
-        bcftools view -R ${regions} $vcf -O z -o ${prefix}.truth.vcf.gz
-    elif [ -s "${targets}" ]; then
-        bcftools view -T ${targets} $vcf -O z -o ${prefix}.truth.vcf.gz
-    else
-        mv $vcf ${prefix}.truth.vcf.gz
-    fi
-
-    if [ -s exclude.bed ]; then
-        bedtools intersect -v -a ${prefix}.truth.vcf.gz -b exclude.bed > ${prefix}.remain.vcf
-        gzip -c ${prefix}.remain.vcf > ${prefix}.remain.vcf.gz
-    fi
+    subtract_variants.py \\
+        $vcf \\
+        $exclude \\
+        ${prefix}.remain.vcf.gz \\
+        $bed \\
+        --zip-output \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+        python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """
 
@@ -49,11 +42,11 @@ process SUBTRACT_VCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.vcf.gz
+    touch ${prefix}.remain.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+        python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """
 }

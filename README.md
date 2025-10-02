@@ -18,6 +18,8 @@
 
 [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23variantbenchmarking-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/variantbenchmarking)[![Follow on Bluesky](https://img.shields.io/badge/bluesky-%40nf__core-1185fe?labelColor=000000&logo=bluesky)](https://bsky.app/profile/nf-co.re)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
+![HiRSE Code Promo Badge](https://img.shields.io/badge/Promo-8db427?label=HiRSE&labelColor=005aa0&link=https%3A%2F%2Fgo.fzj.de%2FCodePromo)
+
 ## Introduction
 
 **nf-core/variantbenchmarking** is designed to evaluate and validate the accuracy of variant calling methods in genomic research. Initially, the pipeline is tuned well for available gold standard truth sets (for example, Genome in a Bottle and SEQC2 samples) but it can be used to compare any two variant calling results. The workflow provides benchmarking tools for small variants including SNVs and INDELs, Structural Variants (SVs) and Copy Number Variations (CNVs) for germline and somatic analysis.
@@ -37,6 +39,8 @@ This initial step ensures consistent formatting and alignment of variants in tes
 - Subsample if input test vcf is multisample ([bcftools view](https://samtools.github.io/bcftools/bcftools.html#view))
 - Homogenization of multi-allelic variants, MNPs and SVs (including imprecise paired breakends and single breakends) ([variant-extractor](https://github.com/EUCANCan/variant-extractor))
 - Reformatting test VCF files from different SV callers ([svync](https://github.com/nvnieuwk/svync))
+- Standardize SV variants to BND ([SVTK standardize](https://github.com/broadinstitute/gatk-sv/blob/main/src/svtk/scripts/svtk))
+- Decompose SVs to BND [rtgtools svdecompose](https://cn.animalgenome.org/bioinfo/resources/manuals/RTGOperationsManual.pdf)
 - Rename sample names in test and truth VCF files ([bcftools reheader](https://samtools.github.io/bcftools/bcftools.html#reheader))
 - Splitting multi-allelic variants in test and truth VCF files ([bcftools norm](https://samtools.github.io/bcftools/bcftools.html#norm))
 - Deduplication of variants in test and truth VCF files ([bcftools norm](https://samtools.github.io/bcftools/bcftools.html#norm))
@@ -187,11 +191,12 @@ nf-core/variantbenchmarking was originally written by Kübra Narcı ([@kubranarc
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
-- Nicolas Vannieuwkerke ([@nvnienwk](https://github.com/nvnieuwk)),
-- Maxime Garcia ([@maxulysse](https://github.com/maxulysse)),
+- Nicolas Vannieuwkerke ([@nvnienwk](https://github.com/nvnieuwk))
+- Maxime Garcia ([@maxulysse](https://github.com/maxulysse))
 - Sameesh Kher ([@khersameesh24](https://github.com/khersameesh24))
 - Florian Heyl ([@heylf](https://github.com/heyl))
 - Krešimir Beštak ([@kbestak](https://github.com/kbestak))
+- Ata Jadidahari ([@AtaJadidAhari](https://github.com/AtaJadidAhari))
 - Elad Herz ([@EladH1](https://github.com/EladH1))
 
 ## Acknowledgements

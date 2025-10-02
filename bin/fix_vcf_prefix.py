@@ -37,32 +37,25 @@ def determine_genome_version(vcf_file):
 
 
 def fix_vcf_prefix(input_vcf, output_vcf, rename_file, target_version):
-    """
-    Check the prefix of chromosome names in the VCF and fix it if necessary using the provided rename file.
-    """
     # Determine genome version from input VCF
     current_version = determine_genome_version(input_vcf)
     print(f"Detected genome version: {current_version}")
 
-    # If the current genome version matches the target, simply copy the input VCF
     if current_version == target_version:
         print(f"Genome version matches the target ({target_version}). Copying input VCF to output.")
         shutil.copy(input_vcf, output_vcf)
-        shutil.copy(input_vcf + ".tbi", output_vcf + ".tbi")  # Copy index as well
+        shutil.copy(input_vcf + ".tbi", output_vcf + ".tbi")
         return
 
-    # Verify the rename file exists
     if not os.path.isfile(rename_file):
         raise FileNotFoundError(f"Rename file '{rename_file}' not found.")
 
-    # Use bcftools to rename chromosomes without modifying the header
     subprocess.check_call(
         f"bcftools annotate --rename-chrs {rename_file} --no-version {input_vcf} -Oz -o {output_vcf}",
         shell=True,
     )
     subprocess.check_call(f"bcftools index {output_vcf}", shell=True)
     print(f"Chromosome names updated and output written to {output_vcf}")
-
 
 def main():
     parser = argparse.ArgumentParser(description="Check and fix VCF chromosome naming prefix.")

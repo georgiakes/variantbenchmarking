@@ -130,6 +130,11 @@
                         "git_sha": "8a2dd9e84cde68ebba45fb2c602c312c999c02a0",
                         "installed_by": ["modules"]
                     },
+                    "svtk/standardize": {
+                        "branch": "master",
+                        "git_sha": "41dfa3f7c0ffabb96a6a813fe321c6d1cc5b6e46",
+                        "installed_by": ["modules"]
+                    },
                     "svtk/vcf2bed": {
                         "branch": "master",
                         "git_sha": "68abc8db1794ab6be75c235c2725d19668632501",
@@ -137,7 +142,7 @@
                     },
                     "svync": {
                         "branch": "master",
-                        "git_sha": "3df1a372b844c98c31ec3446faac7c75e64518a3",
+                        "git_sha": "0fc190096fa8dcc9878cef178479f22e03f174a1",
                         "installed_by": ["modules"]
                     },
                     "tabix/bgzip": {
@@ -157,7 +162,7 @@
                     },
                     "truvari/bench": {
                         "branch": "master",
-                        "git_sha": "3f5420aa22e00bd030a2556dfdffc9e164ec0ec5",
+                        "git_sha": "bfb4e62ef77634eb25e067893b44e411a28aba62",
                         "installed_by": ["modules"]
                     },
                     "ucsc/liftover": {

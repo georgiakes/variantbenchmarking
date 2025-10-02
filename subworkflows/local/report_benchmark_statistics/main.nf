@@ -6,10 +6,13 @@ include { MERGE_REPORTS         } from '../../../modules/local/custom/merge_repo
 include { PLOTS                 } from '../../../modules/local/custom/plots'
 include { CREATE_DATAVZRD_INPUT } from '../../../modules/local/custom/create_datavzrd_input'
 include { DATAVZRD              } from '../../../modules/nf-core/datavzrd'
+include { PLOT_SVLEN_DIST       } from '../../../modules/local/custom/plot_svlen_dist'
 
 workflow REPORT_BENCHMARK_STATISTICS {
     take:
-    reports    // channel: [meta, report1, report2, ...]
+    reports         // channel: [meta, report1, report2, ...]
+    evaluations     // channel: [val(meta), vcf.gz, index]
+    evaluations_csv // channel: [val(meta), csv]
 
     main:
 
@@ -28,6 +31,15 @@ workflow REPORT_BENCHMARK_STATISTICS {
     )
     ch_plots = ch_plots.mix(PLOTS.out.plots.flatten())
     versions = versions.mix(PLOTS.out.versions.first())
+
+    if (params.variant_type != "snv"){
+        // plot INDEL/SV distribution plots
+        PLOT_SVLEN_DIST(
+            evaluations.groupTuple().mix(evaluations_csv.groupTuple())
+        )
+        versions = versions.mix(PLOT_SVLEN_DIST.out.versions)
+        ch_plots = ch_plots.mix(PLOT_SVLEN_DIST.out.plot)
+    }
 
     MERGE_REPORTS.out.summary
         .map { meta, file -> tuple([vartype: params.variant_type] + [id: meta.benchmark_tool], file) }

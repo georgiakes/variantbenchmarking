@@ -1,7 +1,7 @@
 {
     "Params: --analysis 'germline' --variant_type 'structural' --method 'truvari,svbenchmark,wittyer'": {
         "content": [
-            132,
+            149,
             {
                 "BCFTOOLS_DEDUP": {
                     "bcftools": 1.21
@@ -30,6 +30,9 @@
                 "BCFTOOLS_REHEADER_TRUTH": {
                     "bcftools": 1.2
                 },
+                "BCFTOOLS_SORT2": {
+                    "bcftools": 1.2
+                },
                 "BCFTOOLS_SORT": {
                     "bcftools": 1.2
                 },
@@ -51,14 +54,20 @@
                 "PLOTS": {
                     "r-base": "4.3.1"
                 },
+                "PLOT_SVLEN_DIST": {
+                    "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
+                },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
                 },
                 "SUBTRACT_VCF_QUERY": {
-                    "bedtools": "2.31.1"
+                    "python": "3.13.0"
                 },
                 "SUBTRACT_VCF_TRUTH": {
-                    "bedtools": "2.31.1"
+                    "python": "3.13.0"
                 },
                 "SURVIVOR_MERGE": {
                     "survivor": "1.0.7"
@@ -69,8 +78,8 @@
                 "SVANALYZER_SVBENCHMARK": {
                     "svanalyzer": 0.36
                 },
-                "SVYNC": {
-                    "svync": "0.1.2"
+                "SVTK_STANDARDIZE": {
+                    "svtk": "0.0.20190615"
                 },
                 "TABIX_BGZIP_QUERY": {
                     "tabix": "1.19.1"
@@ -81,8 +90,11 @@
                 "TABIX_BGZIP_UNZIP": {
                     "tabix": "1.19.1"
                 },
+                "TABIX_TABIX": {
+                    "tabix": "1.19.1"
+                },
                 "TRUVARI_BENCH": {
-                    "truvari": "4.1.0)"
+                    "truvari": "5.3.0)"
                 },
                 "VCF_TO_CSV": {
                     "python": "3.13.0"
@@ -168,6 +180,7 @@
                 "structural/summary/datavzrd/svbenchmark/test/plots/plot_6.js",
                 "structural/summary/datavzrd/svbenchmark/test/plots/plot_7.js",
                 "structural/summary/datavzrd/svbenchmark/test/plots/plot_8.js",
+                "structural/summary/datavzrd/svbenchmark/test/plots/plot_9.js",
                 "structural/summary/datavzrd/truvari",
                 "structural/summary/datavzrd/truvari/index.html",
                 "structural/summary/datavzrd/truvari/static",
@@ -194,6 +207,7 @@
                 "structural/summary/datavzrd/truvari/test/plots/plot_6.js",
                 "structural/summary/datavzrd/truvari/test/plots/plot_7.js",
                 "structural/summary/datavzrd/truvari/test/plots/plot_8.js",
+                "structural/summary/datavzrd/truvari/test/plots/plot_9.js",
                 "structural/summary/datavzrd/versions.yml",
                 "structural/summary/datavzrd/wittyer",
                 "structural/summary/datavzrd/wittyer/index.html",
@@ -214,6 +228,7 @@
                 "structural/summary/datavzrd/wittyer/test/plots",
                 "structural/summary/datavzrd/wittyer/test/plots/plot_0.js",
                 "structural/summary/datavzrd/wittyer/test/plots/plot_1.js",
+                "structural/summary/datavzrd/wittyer/test/plots/plot_10.js",
                 "structural/summary/datavzrd/wittyer/test/plots/plot_2.js",
                 "structural/summary/datavzrd/wittyer/test/plots/plot_3.js",
                 "structural/summary/datavzrd/wittyer/test/plots/plot_4.js",
@@ -226,10 +241,22 @@
                 "structural/summary/plots/svbenchmark",
                 "structural/summary/plots/svbenchmark/f1_by_tool_svbenchmark_mqc.png",
                 "structural/summary/plots/svbenchmark/pr_recall_by_tool_svbenchmark_mqc.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.FN.structural.mqc.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.FP.structural.mqc.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.TP_base.structural.mqc.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.TP_comp.structural.mqc.png",
+                "structural/summary/plots/svbenchmark/upset_svbenchmark_tp_fn_mqc.png",
+                "structural/summary/plots/svbenchmark/upset_svbenchmark_tp_fp_mqc.png",
                 "structural/summary/plots/svbenchmark/variants_by_tool_svbenchmark_mqc.png",
                 "structural/summary/plots/truvari",
                 "structural/summary/plots/truvari/f1_by_tool_truvari_mqc.png",
                 "structural/summary/plots/truvari/pr_recall_by_tool_truvari_mqc.png",
+                "structural/summary/plots/truvari/truvari.FN.structural.mqc.png",
+                "structural/summary/plots/truvari/truvari.FP.structural.mqc.png",
+                "structural/summary/plots/truvari/truvari.TP_base.structural.mqc.png",
+                "structural/summary/plots/truvari/truvari.TP_comp.structural.mqc.png",
+                "structural/summary/plots/truvari/upset_truvari_tp_fn_mqc.png",
+                "structural/summary/plots/truvari/upset_truvari_tp_fp_mqc.png",
                 "structural/summary/plots/truvari/variants_by_tool_truvari_mqc.png",
                 "structural/summary/plots/wittyer",
                 "structural/summary/plots/wittyer/Base_f1_by_tool_wittyer_mqc.png",
@@ -339,27 +366,27 @@
             [
                 "HG002.bcftools_stats.txt:md5,bc95472c545c41b97fc6c657ebb1132b",
                 "HG002_mqc.stats:md5,ba6a6398a99b95579872576cacde4c8c",
-                "multiqc_bcftools_stats.txt:md5,e8d53120deaf86c44159757d587035db",
+                "multiqc_bcftools_stats.txt:md5,8a39c0f312176292b27cf545aa86fbb6",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
-                "multiqc_general_stats.txt:md5,1b9c0295ce5c8ce4282ff872fa4e875c",
-                "multiqc_survivor.txt:md5,70c8bd08ee63a75a8913bacf3b8cf571",
-                "test1.manta.bcftools_stats.txt:md5,e649e55cb381e7ac51605ec3649b2756",
-                "test1.manta_mqc.stats:md5,f32d0269e380f1f7ddfdcec72dc7288b",
-                "test2.lumpy.bcftools_stats.txt:md5,29bcff200d6617d091714c28ffbd68ab",
-                "test2.lumpy_mqc.stats:md5,d022b5f0a670f969be1702f9171f3e04",
-                "test3.delly.bcftools_stats.txt:md5,eb33578d2d6e9f74bdf7e678ad3ab556",
-                "test3.delly_mqc.stats:md5,b850d4d0430b41ac1ff269aadbb8c1ce"
+                "multiqc_general_stats.txt:md5,3c4ac5775a919c8bb03aec3de5ef8bec",
+                "multiqc_survivor.txt:md5,9d7cb093118b42cabfc8d9d9f7cc21bd",
+                "test1.manta.bcftools_stats.txt:md5,2112d58e5f7ab395ca1930c2c83a0bcc",
+                "test1.manta_mqc.stats:md5,011ad66fec4287d32cb728c40e240c0b",
+                "test2.lumpy.bcftools_stats.txt:md5,410c81a7d4d092aed89c18e9d2ae5b29",
+                "test2.lumpy_mqc.stats:md5,f3a75d802c37cd363f1b68695463a5b3",
+                "test3.delly.bcftools_stats.txt:md5,58af253c5c343d191b30390905c00adc",
+                "test3.delly_mqc.stats:md5,f5fa584015eadb2ef33c831f3479c0d4"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-07-29T16:10:48.291007276"
+        "timestamp": "2025-09-24T15:31:02.31089741"
     },
     "-stub": {
         "content": [
-            122,
+            149,
             {
                 "BCFTOOLS_DEDUP": {
                     "bcftools": 1.21
@@ -388,6 +415,9 @@
                 "BCFTOOLS_REHEADER_TRUTH": {
                     "bcftools": 1.2
                 },
+                "BCFTOOLS_SORT2": {
+                    "bcftools": 1.2
+                },
                 "BCFTOOLS_SORT": {
                     "bcftools": 1.2
                 },
@@ -409,14 +439,20 @@
                 "PLOTS": {
                     "r-base": "4.3.1"
                 },
+                "PLOT_SVLEN_DIST": {
+                    "python": "3.8.1"
+                },
+                "PLOT_UPSET": {
+                    "python": "3.13.7"
+                },
                 "PUBLISH_PROCESSED_VCF": {
                     "cp": 8.3
                 },
                 "SUBTRACT_VCF_QUERY": {
-                    "bedtools": "2.31.1"
+                    "python": "3.13.0"
                 },
                 "SUBTRACT_VCF_TRUTH": {
-                    "bedtools": "2.31.1"
+                    "python": "3.13.0"
                 },
                 "SURVIVOR_MERGE": {
                     "survivor": "1.0.7"
@@ -427,8 +463,8 @@
                 "SVANALYZER_SVBENCHMARK": {
                     "svanalyzer": 0.36
                 },
-                "SVYNC": {
-                    "svync": "0.1.2"
+                "SVTK_STANDARDIZE": {
+                    "svtk": "0.0.20190615"
                 },
                 "TABIX_BGZIP_QUERY": {
                     "tabix": "1.19.1"
@@ -439,8 +475,11 @@
                 "TABIX_BGZIP_UNZIP": {
                     "tabix": "1.19.1"
                 },
+                "TABIX_TABIX": {
+                    "tabix": "1.19.1"
+                },
                 "TRUVARI_BENCH": {
-                    "truvari": "4.1.0)"
+                    "truvari": "5.3.0)"
                 },
                 "VCF_TO_CSV": {
                     "python": "3.13.0"
@@ -474,6 +513,8 @@
                 "structural/summary/comparisons/svbenchmark",
                 "structural/summary/comparisons/svbenchmark/svbenchmark.FN.csv",
                 "structural/summary/comparisons/svbenchmark/svbenchmark.FP.csv",
+                "structural/summary/comparisons/svbenchmark/svbenchmark.TP_base.csv",
+                "structural/summary/comparisons/svbenchmark/svbenchmark.TP_comp.csv",
                 "structural/summary/comparisons/truvari",
                 "structural/summary/comparisons/truvari/truvari.FN.csv",
                 "structural/summary/comparisons/truvari/truvari.FP.csv",
@@ -538,9 +579,19 @@
                 "structural/summary/plots",
                 "structural/summary/plots/svbenchmark",
                 "structural/summary/plots/svbenchmark/metric_by_tool_svbenchmark_mqc.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.FN.svlen.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.FP.svlen.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.TP_base.svlen.png",
+                "structural/summary/plots/svbenchmark/svbenchmark.TP_comp.svlen.png",
+                "structural/summary/plots/svbenchmark/upset_svbenchmark.upset.mqc.png",
                 "structural/summary/plots/svbenchmark/variants_by_tool_svbenchmark_mqc.png",
                 "structural/summary/plots/truvari",
                 "structural/summary/plots/truvari/metric_by_tool_truvari_mqc.png",
+                "structural/summary/plots/truvari/truvari.FN.svlen.png",
+                "structural/summary/plots/truvari/truvari.FP.svlen.png",
+                "structural/summary/plots/truvari/truvari.TP_base.svlen.png",
+                "structural/summary/plots/truvari/truvari.TP_comp.svlen.png",
+                "structural/summary/plots/truvari/upset_truvari.upset.mqc.png",
                 "structural/summary/plots/truvari/variants_by_tool_truvari_mqc.png",
                 "structural/summary/plots/wittyer",
                 "structural/summary/plots/wittyer/metric_by_tool_wittyer_mqc.png",
@@ -659,8 +710,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.09.0"
         },
-        "timestamp": "2025-07-29T16:13:23.960962791"
+        "timestamp": "2025-09-24T15:33:29.220574439"
     }
 }

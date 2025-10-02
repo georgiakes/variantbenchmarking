@@ -65,10 +65,11 @@ Please note that you should still provide chain and reame_chr files, and lifting
 
 Consistent formatting and alignment of variants in test and truth VCF files for accurate comparison is controlled by _sv_standardization_ and _preprocesses_.
 
-- `--sv_standardization`: The standardization methods to perform on the input files. Should be a comma-separated list of one or more of the following options: `homogenize,svync,svdecompose`.
+- `sv_standardization`: The standardization methods to perform on the input files. Should be a comma-separated list of one or more of the following options: `homogenize,svync,svdecompose,svtk`.
   - `homogenize`: makes use of [variant-extractor](https://github.com/EUCANCan/variant-extractor). Homogenizes the structural variants in a common format.
   - `svync`: makes use of [svync](https://github.com/nvnieuwk/svync). Reformats VCF headers properly.
   - `svdecompose`: makes use of [rtgtools svdecompose](https://cn.animalgenome.org/bioinfo/resources/manuals/RTGOperationsManual.pdf). Decomposes SVs into BND. Combine it only if you plan to run rtgtools bndeval!
+  - `svtk`: use [svtk standardize - from GATK](https://github.com/broadinstitute/gatk-sv/tree/main/src/svtk) to standardize structural variants. The standardization process may change by tool and may produce BND calls. Should be aplied very carefully. Applicable only to delly, manta, lumpy, dragen, scrable, smoove, melt and wham.
 
 - `preprocesses`: The preprocessing steps to perform on the input files. Should be a comma-separated list of one or more of the following options: `split_multiallelic,normalize,deduplicate,prepy,filter_contigs`
   - `split_multiallelic`: Splits multi-allelic variants in test and truth VCF files ([bcftools norm](https://samtools.github.io/bcftools/bcftools.html#norm))
@@ -77,7 +78,7 @@ Consistent formatting and alignment of variants in test and truth VCF files for 
   - `prepy`: Uses prepy in order to normalize test files. This option is only applicable for happy benchmarking of germline analysis ([prepy](https://github.com/Illumina/hap.py/tree/master))
   - `filter_contigs`: Filter out extra contigs. It is common for truth files not to include extra contigs.
 
-Filtration of tst variants are controlled through the following parameters:
+Filtration of the variants are controlled through the following parameters:
 
 - `exclude_expression`: Use ([bcftools expressions](https://samtools.github.io/bcftools/bcftools.html#expressions) to exclude variants)
 - `include_expression`: Use ([bcftools expressions](https://samtools.github.io/bcftools/bcftools.html#expressions) to include variants)
@@ -124,8 +125,8 @@ _Truvari_
 
 ```csv title="samplesheet.csv"
 id,test_vcf,caller,pctsize,pctseq,pctovl,refdist,chunksize,dup_to_ins,typeignore
-test1,test1.vcf.gz,delly,0.7,0.7,0.7,100000,50000,true,true
-test2,test2.vcf,gatk,0.6,0.5,0.7,110000,40000,false,true
+test1,test1.vcf.gz,delly,0.7,0.7,0.7,1000,50000,true,true
+test2,test2.vcf,gatk,0.6,0.5,0.7,1100,40000,false,true
 ```
 
 - `pctsize`: Has to be between 0-1. Ratio of min(base_size, comp_size)/max(base_size, comp_size)

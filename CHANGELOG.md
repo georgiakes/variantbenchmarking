@@ -3,7 +3,31 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.3.0 - dev
+## 1.4.0 dev
+
+### `Added`
+
+- Truvari bench update to 5.3.0 [#215](https://github.com/nf-core/variantbenchmarking/pull/215)
+- Added a python script to plot indel distributions for SV variants [#216](https://github.com/nf-core/variantbenchmarking/pull/216)
+- Hirse promo badge [#217](https://github.com/nf-core/variantbenchmarking/pull/217)
+- svtk/standardize from GATK to standardize SVs to BND format. [#218](https://github.com/nf-core/variantbenchmarking/pull/218)
+- svync update to 0.3.0 [#219](https://github.com/nf-core/variantbenchmarking/pull/219)
+- UPSET plot for TP/FP/FN numbers [#223](https://github.com/nf-core/variantbenchmarking/pull/223)
+
+### `Fixed`
+
+- Use local copies of test files instead of AWS links from sarek [#214](https://github.com/nf-core/variantbenchmarking/pull/214)
+- Fixes and standardizations on headers and labels on tables and plots [#221](https://github.com/nf-core/variantbenchmarking/pull/221)
+- Fixing wrongly transmitted TP numbers and plots [#224](https://github.com/nf-core/variantbenchmarking/pull/224)
+
+### `Dependencies`
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| truvari    | 4.1.0       | 5.3.0       |
+| svync      | 0.1.2       | 0.3.0       |
+
+## 1.3.0
 
 ### `Added`
 
