@@ -14,7 +14,9 @@
 
 ## [nf-prov](https://github.com/nextflow-io/nf-prov)
 
-## [nf-schema](https://nextflow-io.github.io/nf-schema/latest/)
+## [nf-schema](https://nextflow-io.github.io/nf-schema)
+
+## [nf-co2footprint](https://github.com/nextflow-io/nf-co2footprint)
 
 ## Pipeline tools
 
