@@ -10,7 +10,6 @@ Use --help for more information.
 '''
 import csv
 import argparse
-import os
 
 def split_csv_by_tag(input_file, prefix):
     """
@@ -26,8 +25,8 @@ def split_csv_by_tag(input_file, prefix):
     try:
         with open(input_file, newline='') as infile:
             reader = csv.reader(infile)
-            next(reader)
             new_header = ['CHROM', 'POS', 'REF', 'ALT', 'FILTER', f'{prefix}.GT']
+
             writers = {}
             files = {}
             for tag, filename in output_files.items():
@@ -43,9 +42,20 @@ def split_csv_by_tag(input_file, prefix):
                     if tag in writers:
                         chrom = row[1]
                         pos = row[2]
-                        ref = row[4]
-                        alt = row[6]
-                        filt = row[8]
+
+                        if tag == 'TP' or tag == 'FP':
+                            ref = row[4]   # REF
+                            alt = row[6]   # ALT
+                            filt = row[8]  # FILTER
+                        elif tag == 'FN':
+                            ref = row[5]   # REF.truth
+                            alt = row[7]   # ALT.truth
+                            filt = row[9]  # FILTER.truth
+
+                        # Handle empty filter values
+                        if not filt:
+                            filt = '.'
+
                         gt = '1/1'
                         new_row = [chrom, pos, ref, alt, filt, gt]
                         writers[tag].writerow(new_row)
