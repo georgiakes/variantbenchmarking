@@ -196,7 +196,7 @@ Example cmd:
 - ([svanalyzer benchmark](https://github.com/nhansen/SVanalyzer/blob/master/docs/svbenchmark.rst))
 - ([witty.er](https://github.com/Illumina/witty.er/tree/master))
 
-Please note that truvari is the only tool which can work with UNRESOLVED (without sequence) structural variants. Moreover, svbenchmark and wittyer analysis will require explicte SVTYPE and SVLEN annotations.
+Please note that truvari is the only tool which can work with UNRESOLVED (without sequence) structural variants. Moreover, svbenchmark and wittyer analysis will require explicte SVTYPE and SVLEN annotations. Moreover, wittyer does not support BND type of variants. It is recommended to either exclude (filter) them out or convert them to other types before analysis.
 
 - A special analysis for Break-Ends (SVTYPE=BND) is also possible. Please combine it with (_svdecompose_) to convert structural variants (both from truth and test cases) to Break-Ends if your inputs are not already in that type.
   - ([rtg bndeval](https://realtimegenomics.com/products/rtg-tools))
