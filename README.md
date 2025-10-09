@@ -93,6 +93,9 @@ Available methods for germline and somatic _CNVs (copy number variations)_ are:
 > [!NOTE]
 > Please note that there is no somatic specific tool for CNV benchmarking in this pipeline.
 
+> [!NOTE]
+> Wittyer does not support BND type of variants. It is recommended to either exclude (filter) them out or convert them to other types before analysis.
+
 Available methods for *small variants: SNVs and INDEL*s:
 
 - Germline variant benchmarking using ([rtg vcfeval](https://realtimegenomics.com/products/rtg-tools))
