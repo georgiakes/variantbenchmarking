@@ -4,7 +4,7 @@
 
 include { HAPPY_SOMPY          } from '../../../modules/nf-core/happy/sompy'
 include { SPLIT_SOMPY_FEATURES } from '../../../modules/local/custom/split_sompy_features'
-
+include { FILTER_VARIANTS      } from '../../../modules/local/custom/filter_variants/'
 
 workflow SOMPY_BENCHMARK {
     take:
@@ -41,8 +41,8 @@ workflow SOMPY_BENCHMARK {
     versions = versions.mix(SPLIT_SOMPY_FEATURES.out.versions)
 
     SPLIT_SOMPY_FEATURES.out.TP
-        .map { _meta, file -> tuple([vartype: params.variant_type] + [tag: "TP_comp"] + [id: "sompy"], file) }
-        .set{tp_vars}
+        .map { _meta, file -> tuple([vartype: params.variant_type] + [tag: "TP_base"] + [id: "sompy"], file) }
+        .set{tp_vars_base}
 
     SPLIT_SOMPY_FEATURES.out.FP
         .map { _meta, file -> tuple([vartype: params.variant_type] + [tag: "FP"] + [id: "sompy"], file) }
@@ -52,11 +52,23 @@ workflow SOMPY_BENCHMARK {
         .map { _meta, file -> tuple([vartype: params.variant_type] + [tag: "FN"] + [id: "sompy"], file) }
         .set{fn_vars}
 
+    FILTER_VARIANTS(
+        input_ch.map{meta, test, test_index, _truth, _truth_index, regions, target ->
+            [ meta, test, test_index, regions, target ]}.join(SPLIT_SOMPY_FEATURES.out.TP)
+        )
+    versions = versions.mix(FILTER_VARIANTS.out.versions)
+
+    // reheader tp_comp vcf files for tagged results
+    FILTER_VARIANTS.out.csv
+        .map { _meta, file -> tuple([vartype: params.variant_type] + [tag: "TP_comp"] + [id: "sompy"], file) }
+        .set { tp_vars_comp }
+
+
     tagged_variants_csv = tagged_variants_csv
-                            .mix(tp_vars)
+                            .mix(tp_vars_base)
                             .mix(fp_vars)
                             .mix(fn_vars)
-
+                            .mix(tp_vars_comp)
 
     emit:
     summary_reports     // channel: [val(meta), reports]
