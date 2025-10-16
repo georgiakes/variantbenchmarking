@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixing wrongly transmitted TP numbers and plots [#224](https://github.com/nf-core/variantbenchmarking/pull/224)
 - Fixing sompy split tag script [#230](https://github.com/nf-core/variantbenchmarking/pull/230)
 - Wittyer doesnt support BND type of variants, added better documentation [#231](https://github.com/nf-core/variantbenchmarking/pull/231)
+- Fixing the handling of params (when value is 0) from schema_input.json [#234](https://github.com/nf-core/variantbenchmarking/pull/234)
 
 ### `Dependencies`
 
