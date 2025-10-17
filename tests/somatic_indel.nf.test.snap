@@ -99,8 +99,9 @@
                 "indel/SEQC2/stats/bcftools/SEQC2.bcftools_stats.txt",
                 "indel/multiqc",
                 "indel/multiqc/multiqc_data",
-                "indel/multiqc/multiqc_data/BETA-multiqc.parquet",
+                "indel/multiqc/multiqc_data/llms-full.txt",
                 "indel/multiqc/multiqc_data/multiqc.log",
+                "indel/multiqc/multiqc_data/multiqc.parquet",
                 "indel/multiqc/multiqc_data/multiqc_bcftools_stats.txt",
                 "indel/multiqc/multiqc_data/multiqc_citations.txt",
                 "indel/multiqc/multiqc_data/multiqc_data.json",
@@ -355,9 +356,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-09-29T14:50:12.281437286"
+        "timestamp": "2025-10-17T11:54:08.432838023"
     }
 }

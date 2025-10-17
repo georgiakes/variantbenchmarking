@@ -400,7 +400,6 @@
                 "small/HG002/stats/bcftools/HG002.bcftools_stats.txt",
                 "small/multiqc",
                 "small/multiqc/multiqc_data",
-                "small/multiqc/multiqc_data/BETA-multiqc.parquet",
                 "small/multiqc/multiqc_data/bcftools-stats-subtypes.txt",
                 "small/multiqc/multiqc_data/bcftools_stats_indel-lengths.txt",
                 "small/multiqc/multiqc_data/bcftools_stats_variant_depths.txt",
@@ -408,7 +407,9 @@
                 "small/multiqc/multiqc_data/bcftools_stats_vqc_Count_SNP.txt",
                 "small/multiqc/multiqc_data/bcftools_stats_vqc_Count_Transitions.txt",
                 "small/multiqc/multiqc_data/bcftools_stats_vqc_Count_Transversions.txt",
+                "small/multiqc/multiqc_data/llms-full.txt",
                 "small/multiqc/multiqc_data/multiqc.log",
+                "small/multiqc/multiqc_data/multiqc.parquet",
                 "small/multiqc/multiqc_data/multiqc_bcftools_stats.txt",
                 "small/multiqc/multiqc_data/multiqc_citations.txt",
                 "small/multiqc/multiqc_data/multiqc_data.json",
@@ -682,9 +683,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.09.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-09-24T15:25:18.995734991"
+        "timestamp": "2025-10-17T11:23:38.378227971"
     }
 }

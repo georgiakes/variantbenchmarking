@@ -90,8 +90,9 @@
                 "copynumber/SEQC2/stats/bcftools/SEQC2.bcftools_stats.txt",
                 "copynumber/multiqc",
                 "copynumber/multiqc/multiqc_data",
-                "copynumber/multiqc/multiqc_data/BETA-multiqc.parquet",
+                "copynumber/multiqc/multiqc_data/llms-full.txt",
                 "copynumber/multiqc/multiqc_data/multiqc.log",
+                "copynumber/multiqc/multiqc_data/multiqc.parquet",
                 "copynumber/multiqc/multiqc_data/multiqc_bcftools_stats.txt",
                 "copynumber/multiqc/multiqc_data/multiqc_citations.txt",
                 "copynumber/multiqc/multiqc_data/multiqc_data.json",
@@ -310,9 +311,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.09.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-09-24T15:40:47.319435368"
+        "timestamp": "2025-10-17T11:46:20.771826667"
     }
 }
