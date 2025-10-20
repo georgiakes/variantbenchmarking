@@ -11,12 +11,20 @@ import numpy as np
 import gzip
 import csv
 
+def log_modulus(x):
+    y=np.sign(x)*np.log10(np.abs(x))
+    return y
+
+def log_modulus_inv(x):
+    y=np.sign(x)*( 10**np.abs(x) )
+    return y
+
 def get_sample_name(vcf_file):
     base_name = os.path.basename(vcf_file)
     return base_name.split('.')[0]
 
 def format_bp_label(value, pos):
-    value = abs(value)
+    value = abs(log_modulus_inv(value))
     if value >= 1e6:
         return f'{value / 1e6:.1f} Mbp'
     elif value >= 1e3:
@@ -194,21 +202,21 @@ def plot_svlen_distributions(svlen_data, max_svlen, output_file, plot_title):
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
     line_styles = ['-', '--', ':', '-.']
 
-    num_bins = 50
-    bins = np.linspace(-max_svlen, max_svlen, num_bins * 2)
-
+    
     for i, (file_name, lengths_dict) in enumerate(svlen_data.items()):
         current_color = colors[i % len(colors)]
         current_linestyle = line_styles[i % len(line_styles)]
 
         all_lengths = lengths_dict['positive'] + lengths_dict['negative']
 
-        if all_lengths:
-            counts, bin_edges = np.histogram(all_lengths, bins=bins)
+        if all_lengths:            
+            counts, bin_edges = np.histogram(all_lengths, bins="doane")
             bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-
-            plt.plot(bin_centers, counts, label=file_name,
-                     color=current_color, linestyle=current_linestyle, linewidth=3)
+            bin_centers=log_modulus(bin_centers)
+            plt.bar(bin_centers, counts, label=file_name,
+                    color=current_color,edgecolor="black",alpha=0.6,
+                    width=0.1
+                    )
 
     plt.yscale('log')
 
@@ -217,14 +225,18 @@ def plot_svlen_distributions(svlen_data, max_svlen, output_file, plot_title):
     plt.title(plot_title, fontsize=18, fontweight='bold', pad=20)
 
     legend = plt.legend(title="Tool", title_fontsize=16, fontsize=14)
-    for handle in legend.legendHandles:
-        handle.set_linewidth(4.0)
+    try:
+        for handle in legend.legendHandles:
+            handle.set_linewidth(4.0)
+    except:
+        pass
 
     plt.grid(True, which="both", linestyle='--', alpha=0.7)
 
-    plt.xlim(-max_svlen, max_svlen)
+    plt.xlim(log_modulus(-max_svlen), log_modulus(max_svlen) )
 
-    plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(format_bp_label))
+    plt.gca().xaxis.set_major_formatter( plt.FuncFormatter(format_bp_label) )
+
 
     plt.tight_layout()
 
