@@ -67,7 +67,7 @@
                     "python": "3.13.0"
                 },
                 "Workflow": {
-                    "nf-core/variantbenchmarking": "v1.3.0"
+                    "nf-core/variantbenchmarking": "v1.4.0-dev"
                 }
             },
             [
@@ -85,8 +85,9 @@
                 "structural/HG002/stats/survivor/HG002_mqc.stats",
                 "structural/multiqc",
                 "structural/multiqc/multiqc_data",
-                "structural/multiqc/multiqc_data/BETA-multiqc.parquet",
+                "structural/multiqc/multiqc_data/llms-full.txt",
                 "structural/multiqc/multiqc_data/multiqc.log",
+                "structural/multiqc/multiqc_data/multiqc.parquet",
                 "structural/multiqc/multiqc_data/multiqc_bcftools_stats.txt",
                 "structural/multiqc/multiqc_data/multiqc_citations.txt",
                 "structural/multiqc/multiqc_data/multiqc_data.json",
@@ -220,10 +221,10 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.09.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-09-24T15:18:52.7644923"
+        "timestamp": "2025-10-17T13:53:21.575721742"
     },
     "-stub": {
         "content": [
@@ -293,7 +294,7 @@
                     "python": "3.13.0"
                 },
                 "Workflow": {
-                    "nf-core/variantbenchmarking": "v1.3.0"
+                    "nf-core/variantbenchmarking": "v1.4.0-dev"
                 }
             },
             [
@@ -414,9 +415,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.09.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-09-24T15:21:19.575313741"
+        "timestamp": "2025-10-17T13:54:46.624772708"
     }
 }

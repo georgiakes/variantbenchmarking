@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - svtk/standardize from GATK to standardize SVs to BND format. [#218](https://github.com/nf-core/variantbenchmarking/pull/218)
 - svync update to 0.3.0 [#219](https://github.com/nf-core/variantbenchmarking/pull/219)
 - UPSET plot for TP/FP/FN numbers [#223](https://github.com/nf-core/variantbenchmarking/pull/223)
-- 228 nf-co2footplot plugin is added [#224](https://github.com/nf-core/variantbenchmarking/pull/224)
+- nf-co2footplot plugin is added [#224](https://github.com/nf-core/variantbenchmarking/pull/224)
+- Template update for nf-core/tools v3.4.1 [#235](https://github.com/nf-core/variantbenchmarking/pull/235)
 
 ### `Fixed`
 

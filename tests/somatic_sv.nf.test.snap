@@ -70,7 +70,7 @@
                     "python": "3.13.0"
                 },
                 "Workflow": {
-                    "nf-core/variantbenchmarking": "v1.3.0"
+                    "nf-core/variantbenchmarking": "v1.4.0-dev"
                 }
             },
             [
@@ -88,8 +88,9 @@
                 "structural/SEQC2/stats/survivor/SEQC2_mqc.stats",
                 "structural/multiqc",
                 "structural/multiqc/multiqc_data",
-                "structural/multiqc/multiqc_data/BETA-multiqc.parquet",
+                "structural/multiqc/multiqc_data/llms-full.txt",
                 "structural/multiqc/multiqc_data/multiqc.log",
+                "structural/multiqc/multiqc_data/multiqc.parquet",
                 "structural/multiqc/multiqc_data/multiqc_bcftools_stats.txt",
                 "structural/multiqc/multiqc_data/multiqc_citations.txt",
                 "structural/multiqc/multiqc_data/multiqc_data.json",
@@ -213,9 +214,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.09.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-09-24T15:54:55.779419269"
+        "timestamp": "2025-10-20T10:31:31.647882568"
     }
 }
