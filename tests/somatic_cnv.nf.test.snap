@@ -76,7 +76,7 @@
                     "wittyer": "0.5.2.0"
                 },
                 "Workflow": {
-                    "nf-core/variantbenchmarking": "v1.3.0"
+                    "nf-core/variantbenchmarking": "v1.4.0-dev"
                 }
             },
             [
@@ -314,6 +314,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-17T11:46:20.771826667"
+        "timestamp": "2025-10-20T09:38:49.750242144"
     }
 }

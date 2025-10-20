@@ -100,7 +100,7 @@
                     "python": "3.13.0"
                 },
                 "Workflow": {
-                    "nf-core/variantbenchmarking": "v1.3.0"
+                    "nf-core/variantbenchmarking": "v1.4.0-dev"
                 }
             },
             [
@@ -432,6 +432,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-17T11:40:59.722832547"
+        "timestamp": "2025-10-20T09:25:03.913911472"
     }
 }
