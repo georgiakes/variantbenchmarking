@@ -23,12 +23,12 @@ include { SV_VCF_CONVERSIONS          } from '../subworkflows/local/sv_vcf_conve
 include { REPORT_VCF_STATISTICS       } from '../subworkflows/local/report_vcf_statistics'
 include { SV_GERMLINE_BENCHMARK       } from '../subworkflows/local/sv_germline_benchmark'
 include { SMALL_GERMLINE_BENCHMARK    } from '../subworkflows/local/small_germline_benchmark'
-include { CNV_GERMLINE_BENCHMARK      } from '../subworkflows/local/cnv_germline_benchmark'
 include { SMALL_SOMATIC_BENCHMARK     } from '../subworkflows/local/small_somatic_benchmark'
 include { REPORT_BENCHMARK_STATISTICS } from '../subworkflows/local/report_benchmark_statistics'
 include { COMPARE_BENCHMARK_RESULTS   } from '../subworkflows/local/compare_benchmark_results'
 include { INTERSECT_STATISTICS        } from '../subworkflows/local/intersect_statistics'
 include { BND_BENCHMARK               } from '../subworkflows/local/bnd_benchmark'
+include { CONCORDANCE_ANALYSIS        } from '../subworkflows/local/concordance_analysis'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,6 +57,13 @@ workflow VARIANTBENCHMARKING {
                     .map{ fai -> tuple([id: fai.getSimpleName()], fai) }.collect()
 
     //// check Truth Files ////
+
+    if (params.method ==~ /.*(?:truvari|svanalyzer|happy|sompy|rtgtools|wittyer|intersect|bndeval).*/) {
+        if(!params.truth_id){
+            log.error "Please specify params.truth_id to perform benchmarking or intersection analysis"
+            exit 1        
+        }
+    }
 
     if (params.truth_vcf || params.regions_bed){
         truth_ch        = params.truth_vcf ? Channel.fromPath(params.truth_vcf, checkIfExists: true)
@@ -216,6 +223,16 @@ workflow VARIANTBENCHMARKING {
 
     }
 
+    if (params.method.contains("concordance")){
+      CONCORDANCE_ANALYSIS(
+            PREPARE_VCFS_TEST.out.vcf_ch,
+            regions_bed_ch,
+            fasta,
+            fai,
+            dictionary
+        )
+    }
+
     // Prepare benchmark channel
     PREPARE_VCFS_TEST.out.vcf_ch.combine(PREPARE_VCFS_TRUTH.out.vcf_ch)
         .combine(regions_bed_ch.ifEmpty([[]]))
@@ -226,7 +243,6 @@ workflow VARIANTBENCHMARKING {
 
     evals_ch     = Channel.empty()
     evals_csv_ch = Channel.empty()
-
 
     if (params.variant_type == "structural" || params.variant_type == "copynumber"){
         // Perform SV benchmarking - for now it also works for somatic cases!
