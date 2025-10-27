@@ -16,6 +16,7 @@ include { methodsDescriptionText      } from '../subworkflows/local/utils_nfcore
 //
 // SUBWORKFLOWS: Local Subworkflows
 //
+include { PREPARE_REFERENCES          } from '../subworkflows/local/prepare_references'
 include { SUBSAMPLE_VCF_TEST          } from '../subworkflows/local/subsample_vcf_test'
 include { PREPARE_VCFS_TRUTH          } from '../subworkflows/local/prepare_vcfs_truth'
 include { PREPARE_VCFS_TEST           } from '../subworkflows/local/prepare_vcfs_test'
@@ -139,6 +140,16 @@ workflow VARIANTBENCHMARKING {
         }
     }
 
+    //prepare references and libraries
+    PREPARE_REFERENCES(
+        fasta,
+        dictionary,
+        sdf
+    )
+    ch_versions = ch_versions.mix(PREPARE_REFERENCES.out.versions)
+    dictionary  = PREPARE_REFERENCES.out.dictionary
+    sdf         = PREPARE_REFERENCES.out.sdf
+
     // PREPROCESSES
 
     // subsample multisample vcf if necessary, filter out cases without test vcf (only regions)
@@ -223,7 +234,11 @@ workflow VARIANTBENCHMARKING {
 
     }
 
-    if (params.method.contains("concordance")){
+    evals_ch     = Channel.empty()
+    evals_csv_ch = Channel.empty()
+    
+    // Concordance analysis can only be performed small variants for now
+    if (params.method.contains("concordance") && (params.variant_type ==~ /.*(?:small|snv|indel).*/) ){
       CONCORDANCE_ANALYSIS(
             PREPARE_VCFS_TEST.out.vcf_ch,
             regions_bed_ch,
@@ -231,6 +246,9 @@ workflow VARIANTBENCHMARKING {
             fai,
             dictionary
         )
+        ch_versions      = ch_versions.mix(CONCORDANCE_ANALYSIS.out.versions)
+        ch_reports       = ch_reports.mix(CONCORDANCE_ANALYSIS.out.summary_reports)
+        evals_ch         = evals_ch.mix(CONCORDANCE_ANALYSIS.out.tagged_variants)
     }
 
     // Prepare benchmark channel
@@ -240,10 +258,7 @@ workflow VARIANTBENCHMARKING {
         .map{ test_meta, test_vcf, test_tbi, _truth_meta, truth_vcf, truth_tbi, regions_bed, targets_bed  ->
                     [ test_meta, test_vcf, test_tbi, truth_vcf, truth_tbi, regions_bed, targets_bed ]}
         .set{bench}
-
-    evals_ch     = Channel.empty()
-    evals_csv_ch = Channel.empty()
-
+    
     if (params.variant_type == "structural" || params.variant_type == "copynumber"){
         // Perform SV benchmarking - for now it also works for somatic cases!
         // this part will be changed!

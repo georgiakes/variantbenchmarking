@@ -115,6 +115,10 @@ Intersecting test and truth BED regions produces benchmark metrics. Intersection
 - Convert VCF file to BED file, if no regions file is provided for test case using ([Bedops convert2bed](https://bedops.readthedocs.io/en/latest/content/reference/file-management/conversion/convert2bed.html#convert2bed))
 - Intersect the regions and gether benchmarking statistics using ([bedtools intersect](https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html))
 
+### Concordance analysis between test VCFs:
+
+- Concordance analysis enables comparison of test VCFs with each other and it can be coupled to benchmarking analysis ([GATK4 concordance](https://gatk.broadinstitute.org/hc/en-us/articles/360040509811-Concordance))
+
 ### Comparison of benchmarking results per TP, FP and FN files
 
 It is essential to compare benchmarking results in order to infer uniquely or commonly seen TPs, FPs and FNs.

@@ -2,8 +2,11 @@
 // CONCORDANCE_ANALYSIS: SUBWORKFLOW FOR CONCORDANCE ANALYSIS BETWEEN BASE AND TEST VCFS
 //
 
-include { GATK4_CONCORDANCE                 } from '../../../modules/nf-core/gatk4/concordance'
-include { PICARD_CREATESEQUENCEDICTIONARY   } from '../../../modules/nf-core/picard/createsequencedictionary'
+include { GATK4_CONCORDANCE                      } from '../../../modules/nf-core/gatk4/concordance'
+include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TP_BASE } from '../../../modules/nf-core/bcftools/view'
+include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_FN      } from '../../../modules/nf-core/bcftools/view'
+include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_FP      } from '../../../modules/nf-core/bcftools/view'
+include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TP_COMP } from '../../../modules/nf-core/bcftools/view'
 
 workflow CONCORDANCE_ANALYSIS {
     take:
@@ -16,15 +19,7 @@ workflow CONCORDANCE_ANALYSIS {
     main:
 
     versions        = Channel.empty()
-
-    //prepare dict file for liftover of vcf files
-    if (!params.dictionary){
-        PICARD_CREATESEQUENCEDICTIONARY(
-            fasta_ch
-        )
-        dictionary = PICARD_CREATESEQUENCEDICTIONARY.out.reference_dict
-        versions = versions.mix(PICARD_CREATESEQUENCEDICTIONARY.out.versions)
-    }
+    tagged_variants = Channel.empty()
 
     ch_pairs = input_ch
         .map { meta, vcf1, tbi1 -> 
@@ -53,7 +48,7 @@ workflow CONCORDANCE_ANALYSIS {
             }
             return result
         }
-            
+    // GATK4 concordance does not support structural variants now - GATK4 SVCONCORDANCE is in beta        
     GATK4_CONCORDANCE(
         ch_pairs,
         bed_ch,
@@ -63,6 +58,77 @@ workflow CONCORDANCE_ANALYSIS {
     )
     versions = versions.mix(GATK4_CONCORDANCE.out.versions)
 
+    // tag meta and collect summary reports
+    GATK4_CONCORDANCE.out.summary
+        .map { _meta, file -> tuple([vartype: params.variant_type] + [benchmark_tool: "concordance"], file) }
+        .groupTuple()
+        .set{ summary_reports }
+
+    // Subsample sample name for multisample vcfs
+    BCFTOOLS_VIEW_FN(
+        GATK4_CONCORDANCE.out.tpfn.map{ meta, vcf -> tuple(meta, vcf, []) },
+        [],
+        [],
+        []
+    )
+    versions = versions.mix(BCFTOOLS_VIEW_FN.out.versions.first())
+
+    BCFTOOLS_VIEW_FN.out.vcf
+        .join(BCFTOOLS_VIEW_FN.out.tbi)
+        .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "FN"] + [id: "concordance"], file, index) }
+        .set { vcf_fn }
+
+    // Subsample sample name for multisample vcfs
+    BCFTOOLS_VIEW_TP_BASE(
+        GATK4_CONCORDANCE.out.tpfn.map{ meta, vcf -> tuple(meta, vcf, []) },
+        [],
+        [],
+        []
+    )
+    versions = versions.mix(BCFTOOLS_VIEW_TP_BASE.out.versions.first())
+
+    BCFTOOLS_VIEW_TP_BASE.out.vcf
+        .join(BCFTOOLS_VIEW_TP_BASE.out.tbi)
+        .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "TP_base"] + [id: "concordance"], file, index) }
+        .set { vcf_tp_base }
+
+    // Subsample sample name for multisample vcfs
+    BCFTOOLS_VIEW_TP_COMP(
+        GATK4_CONCORDANCE.out.tpfp.map{ meta, vcf -> tuple(meta, vcf, []) },
+        [],
+        [],
+        []
+    )
+    versions = versions.mix(BCFTOOLS_VIEW_TP_COMP.out.versions.first())
+
+    BCFTOOLS_VIEW_TP_COMP.out.vcf
+        .join(BCFTOOLS_VIEW_TP_COMP.out.tbi)
+        .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "TP_comp"] + [id: "concordance"], file, index) }
+        .set { vcf_tp_comp }
+
+    // Subsample sample name for multisample vcfs
+    BCFTOOLS_VIEW_FP(
+        GATK4_CONCORDANCE.out.tpfp.map{ meta, vcf -> tuple(meta, vcf, []) },
+        [],
+        [],
+        []
+    )
+    versions = versions.mix(BCFTOOLS_VIEW_FP.out.versions.first())
+
+    BCFTOOLS_VIEW_FP.out.vcf
+        .join(BCFTOOLS_VIEW_FP.out.tbi)
+        .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "FP"] + [id: "concordance"], file, index) }
+        .set { vcf_fp }
+
+    tagged_variants = tagged_variants.mix(
+        vcf_fn,
+        vcf_fp,
+        vcf_tp_base,
+        vcf_tp_comp
+    )
+
     emit:
-    versions     // channel: [val(meta), versions.yml]
+    versions        // channel: [val(meta), versions.yml]
+    summary_reports // channel: [val(meta), reports]
+    tagged_variants // channel: [val(meta), vcfs]
 }
