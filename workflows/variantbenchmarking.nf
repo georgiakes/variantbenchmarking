@@ -58,27 +58,30 @@ workflow VARIANTBENCHMARKING {
                     .map{ fai -> tuple([id: fai.getSimpleName()], fai) }.collect()
 
     //// check Truth Files ////
+    truth_ch        = params.truth_vcf ? Channel.fromPath(params.truth_vcf, checkIfExists: true)
+                                            .map{ vcf -> tuple([id: params.truth_id, vartype:params.variant_type], vcf) }.collect()
+                                        : Channel.empty()
 
-    if (params.method ==~ /.*(?:truvari|svanalyzer|happy|sompy|rtgtools|wittyer|intersect|bndeval).*/) {
-        if(!params.truth_id){
-            log.error "Please specify params.truth_id to perform benchmarking or intersection analysis"
-            exit 1        
+    regions_bed_ch = params.regions_bed ? Channel.fromPath(params.regions_bed, checkIfExists: true).collect()
+                                        : Channel.empty()
+    targets_bed_ch = params.targets_bed ? Channel.fromPath(params.targets_bed, checkIfExists: true).collect()
+                                        : Channel.empty()
+                
+
+    if (params.method ==~ /.*(?:truvari|svanalyzer|happy|sompy|rtgtools|wittyer|bndeval).*/) {
+        if (!params.truth_vcf || !params.truth_id){
+            log.error "Please specify params.truth_id and params.truth_vcf to perform benchmarking analysis"
+            exit 1
         }
     }
-
-    if (params.truth_vcf || params.regions_bed){
-        truth_ch        = params.truth_vcf ? Channel.fromPath(params.truth_vcf, checkIfExists: true)
-                                                    .map{ vcf -> tuple([id: params.truth_id, vartype:params.variant_type], vcf) }.collect()
-                                                    : Channel.empty()
-
-        regions_bed_ch = params.regions_bed ? Channel.fromPath(params.regions_bed, checkIfExists: true).collect()
-                                                    : Channel.empty()
-        targets_bed_ch = params.targets_bed ? Channel.fromPath(params.targets_bed, checkIfExists: true).collect()
-                                                    : Channel.empty()
-    }else{
-        log.error "Please specify params.truth_id and params.truth_vcf or params.regions_bed to perform benchmarking analysis"
-        exit 1
-    }
+    if (params.method ==~ /.*(?:intersect).*/) {
+        if (!params.regions_bed || !params.truth_vcf){
+            log.error "Please specify params.regions_bed to perform intersect analysis"
+            exit 1
+        }
+    }     
+    
+    // Note: concordance analysis does not require truth files
 
     // Optional files for Happy or Sompy
     falsepositive_bed   = params.falsepositive_bed  ? Channel.fromPath(params.falsepositive_bed, checkIfExists: true).map{ bed -> tuple([id: "falsepositive"], bed) }.collect()
@@ -131,13 +134,6 @@ workflow VARIANTBENCHMARKING {
     }else{
         chain           = Channel.empty()
         dictionary      = Channel.empty()
-    }
-
-    if(params.method.contains("intersect")){
-        if(!params.regions_bed){
-            log.error "Regions BED is required for intersection analysis"
-            exit 1
-        }
     }
 
     //prepare references and libraries

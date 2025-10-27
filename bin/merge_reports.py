@@ -224,7 +224,7 @@ def get_concordance_results(file_paths):
 		df['File'] = filename
 		df['Tool'] = filename.split(".")[0]
 
-		df['F1'] = 2 * (df["PRECISION"] * df["PRECISION"]) / (df["PRECISION"] + df["RECALL"])
+		df['F1'] = 2 * (df["PRECISION"] * df["RECALL"]) / (df["PRECISION"] + df["RECALL"])
 		df['F1'] = df['F1'].fillna(0)
 
 		int_columns = ['TP', 'FN', 'FP']

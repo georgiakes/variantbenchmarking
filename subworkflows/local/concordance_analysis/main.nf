@@ -7,6 +7,10 @@ include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TP_BASE } from '../../../modules/nf-cor
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_FN      } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_FP      } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TP_COMP } from '../../../modules/nf-core/bcftools/view'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TP_BASE } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_FN      } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_FP      } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TP_COMP } from '../../../modules/local/bcftools/reheader'
 
 workflow CONCORDANCE_ANALYSIS {
     take:
@@ -48,6 +52,10 @@ workflow CONCORDANCE_ANALYSIS {
             }
             return result
         }
+
+    if (!params.regions_bed){
+        bed_ch = Channel.of([[id: "bed"],[]]).collect()
+        }
     // GATK4 concordance does not support structural variants now - GATK4 SVCONCORDANCE is in beta        
     GATK4_CONCORDANCE(
         ch_pairs,
@@ -64,7 +72,7 @@ workflow CONCORDANCE_ANALYSIS {
         .groupTuple()
         .set{ summary_reports }
 
-    // Subsample sample name for multisample vcfs
+    // Split FN variants from TPFN variants
     BCFTOOLS_VIEW_FN(
         GATK4_CONCORDANCE.out.tpfn.map{ meta, vcf -> tuple(meta, vcf, []) },
         [],
@@ -73,12 +81,23 @@ workflow CONCORDANCE_ANALYSIS {
     )
     versions = versions.mix(BCFTOOLS_VIEW_FN.out.versions.first())
 
-    BCFTOOLS_VIEW_FN.out.vcf
-        .join(BCFTOOLS_VIEW_FN.out.tbi)
+    // Reheader FN variants
+    BCFTOOLS_REHEADER_FN(
+
+        BCFTOOLS_VIEW_FN.out.vcf.map{ meta, file ->
+            [ meta, file, [], [] ]
+        },
+        fai_ch
+    )
+    versions = versions.mix(BCFTOOLS_REHEADER_FN.out.versions.first())
+
+    // Tag FN variants
+    BCFTOOLS_REHEADER_FN.out.vcf
+        .join(BCFTOOLS_REHEADER_FN.out.index)
         .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "FN"] + [id: "concordance"], file, index) }
         .set { vcf_fn }
 
-    // Subsample sample name for multisample vcfs
+    // Split TP base variants from TPFN variants
     BCFTOOLS_VIEW_TP_BASE(
         GATK4_CONCORDANCE.out.tpfn.map{ meta, vcf -> tuple(meta, vcf, []) },
         [],
@@ -87,12 +106,23 @@ workflow CONCORDANCE_ANALYSIS {
     )
     versions = versions.mix(BCFTOOLS_VIEW_TP_BASE.out.versions.first())
 
-    BCFTOOLS_VIEW_TP_BASE.out.vcf
-        .join(BCFTOOLS_VIEW_TP_BASE.out.tbi)
+    // Reheader TP variants
+    BCFTOOLS_REHEADER_TP_BASE(
+
+        BCFTOOLS_VIEW_TP_BASE.out.vcf.map{ meta, file ->
+            [ meta, file, [], [] ]
+        },
+        fai_ch
+    )
+    versions = versions.mix(BCFTOOLS_REHEADER_TP_BASE.out.versions.first())
+
+    // Tag TP variants
+    BCFTOOLS_REHEADER_TP_BASE.out.vcf
+        .join(BCFTOOLS_REHEADER_TP_BASE.out.index)
         .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "TP_base"] + [id: "concordance"], file, index) }
         .set { vcf_tp_base }
 
-    // Subsample sample name for multisample vcfs
+    // Split TP comp variants from TPFP variants
     BCFTOOLS_VIEW_TP_COMP(
         GATK4_CONCORDANCE.out.tpfp.map{ meta, vcf -> tuple(meta, vcf, []) },
         [],
@@ -101,12 +131,23 @@ workflow CONCORDANCE_ANALYSIS {
     )
     versions = versions.mix(BCFTOOLS_VIEW_TP_COMP.out.versions.first())
 
-    BCFTOOLS_VIEW_TP_COMP.out.vcf
-        .join(BCFTOOLS_VIEW_TP_COMP.out.tbi)
+    // Reheader TP comp variants
+    BCFTOOLS_REHEADER_TP_COMP(
+
+        BCFTOOLS_VIEW_TP_COMP.out.vcf.map{ meta, file ->
+            [ meta, file, [], [] ]
+        },
+        fai_ch
+    )
+    versions = versions.mix(BCFTOOLS_REHEADER_TP_COMP.out.versions.first())
+
+    // Tag TP comp variants
+    BCFTOOLS_REHEADER_TP_COMP.out.vcf
+        .join(BCFTOOLS_REHEADER_TP_COMP.out.index)
         .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "TP_comp"] + [id: "concordance"], file, index) }
         .set { vcf_tp_comp }
 
-    // Subsample sample name for multisample vcfs
+    // Split FP variants from TPFP variants
     BCFTOOLS_VIEW_FP(
         GATK4_CONCORDANCE.out.tpfp.map{ meta, vcf -> tuple(meta, vcf, []) },
         [],
@@ -115,8 +156,18 @@ workflow CONCORDANCE_ANALYSIS {
     )
     versions = versions.mix(BCFTOOLS_VIEW_FP.out.versions.first())
 
-    BCFTOOLS_VIEW_FP.out.vcf
-        .join(BCFTOOLS_VIEW_FP.out.tbi)
+    // Reheader FP variants
+    BCFTOOLS_REHEADER_FP(
+        BCFTOOLS_VIEW_FP.out.vcf.map{ meta, file ->
+            [ meta, file, [], [] ]
+        },
+        fai_ch
+    )
+    versions = versions.mix(BCFTOOLS_REHEADER_FP.out.versions.first())
+
+    // Tag FP variants
+    BCFTOOLS_REHEADER_FP.out.vcf
+        .join(BCFTOOLS_REHEADER_FP.out.index)
         .map { _meta, file, index -> tuple([vartype: params.variant_type] + [tag: "FP"] + [id: "concordance"], file, index) }
         .set { vcf_fp }
 
