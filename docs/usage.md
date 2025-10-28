@@ -227,6 +227,19 @@ test2,,cnvkit,cnvkit.cns
 
 - `test_regions`: Test regions to be used for intersection analysis. Default: .bed format.
 
+## Concordance analysis
+
+Concordance analysis enables comparison of test VCFs with each other without the need of truth VCF. GATK4 Concordance can only be applied to small (including snv and indel for somatic samples) variants.
+
+In order to perform concordance analysis, just add _--method "concordance"_ . There is no need to provide truth VCF or id for concordance analysis. However, be carefull as concordance can be coupled to benchmarking analysis which requires truth VCF.
+
+```csv title="samplesheet.csv"
+id,test_vcf,caller
+test1,test1.vcf.gz,delly
+test2,test2.vcf,gatk
+test3,test3.vcf.gz,cnvkit
+```
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
