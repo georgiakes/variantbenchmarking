@@ -58,7 +58,8 @@
                     "gatk4/concordance": {
                         "branch": "master",
                         "git_sha": "98c35fb628b56273fc097453118679769715e288",
-                        "installed_by": ["modules"]
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/gatk4/concordance/gatk4-concordance.diff"
                     },
                     "happy/happy": {
                         "branch": "master",
