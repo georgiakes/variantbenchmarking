@@ -66,7 +66,7 @@ workflow VARIANTBENCHMARKING {
                                         : Channel.empty()
     targets_bed_ch = params.targets_bed ? Channel.fromPath(params.targets_bed, checkIfExists: true).collect()
                                         : Channel.empty()
-                
+
 
     if (params.method ==~ /.*(?:truvari|svanalyzer|happy|sompy|rtgtools|wittyer|bndeval).*/) {
         if (!params.truth_vcf || !params.truth_id){
@@ -79,8 +79,8 @@ workflow VARIANTBENCHMARKING {
             log.error "Please specify params.regions_bed to perform intersect analysis"
             exit 1
         }
-    }     
-    
+    }
+
     // Note: concordance analysis does not require truth files
 
     // Optional files for Happy or Sompy
@@ -232,7 +232,7 @@ workflow VARIANTBENCHMARKING {
 
     evals_ch     = Channel.empty()
     evals_csv_ch = Channel.empty()
-    
+
     // Concordance analysis can only be performed small variants for now
     if (params.method.contains("concordance") && (params.variant_type ==~ /.*(?:small|snv|indel).*/) ){
       CONCORDANCE_ANALYSIS(
@@ -254,7 +254,7 @@ workflow VARIANTBENCHMARKING {
         .map{ test_meta, test_vcf, test_tbi, _truth_meta, truth_vcf, truth_tbi, regions_bed, targets_bed  ->
                     [ test_meta, test_vcf, test_tbi, truth_vcf, truth_tbi, regions_bed, targets_bed ]}
         .set{bench}
-    
+
     if (params.variant_type == "structural" || params.variant_type == "copynumber"){
         // Perform SV benchmarking - for now it also works for somatic cases!
         // this part will be changed!
