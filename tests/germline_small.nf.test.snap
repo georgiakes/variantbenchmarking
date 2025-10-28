@@ -356,7 +356,7 @@
                 "RTGTOOLS_FORMAT": {
                     "rtg-tools": "3.12.1"
                 },
-                "RTGTOOLS_EVAL":{
+                "RTGTOOLS_VCFEVAL":{
                     "rtg-tools": "3.12.1"
                 },
                 "VCF_TO_CSV": {
