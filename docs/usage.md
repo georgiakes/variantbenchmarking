@@ -229,9 +229,9 @@ test2,,cnvkit,cnvkit.cns
 
 ## Concordance analysis
 
-Concordance analysis enables comparison of test VCFs with each other without the need of truth VCF. GATK4 Concordance can only be applied to small (including snv and indel for somatic samples) variants. 
+Concordance analysis enables comparison of test VCFs with each other without the need of truth VCF. GATK4 Concordance can only be applied to small (including snv and indel for somatic samples) variants.
 
-In order to perform concordance analysis, just add _--method "concordance"_ . There is no need to provide truth VCF or id for concordance analysis. However, be carefull as concordance can be coupled to benchmarking analysis which requires truth VCF.  
+In order to perform concordance analysis, just add _--method "concordance"_ . There is no need to provide truth VCF or id for concordance analysis. However, be carefull as concordance can be coupled to benchmarking analysis which requires truth VCF.
 
 ```csv title="samplesheet.csv"
 id,test_vcf,caller

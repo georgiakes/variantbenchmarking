@@ -10,7 +10,7 @@ views:
         Tool:
           display-mode: normal
         Type:
-          display-mode: normal          
+          display-mode: normal
         TP:
           display-mode: normal
         FN:
