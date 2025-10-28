@@ -78,6 +78,9 @@
                 "RTGTOOLS_FORMAT": {
                     "rtg-tools": "3.12.1"
                 },
+                "RTGTOOLS_VCFEVAL":{
+                    "rtg-tools": "3.12.1"
+                },
                 "VCF_TO_CSV": {
                     "python": "3.13.0"
                 },
