@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UPSET plot for TP/FP/FN numbers [#223](https://github.com/nf-core/variantbenchmarking/pull/223)
 - nf-co2footplot plugin is added [#224](https://github.com/nf-core/variantbenchmarking/pull/224)
 - Template update for nf-core/tools v3.4.1 [#235](https://github.com/nf-core/variantbenchmarking/pull/235)
+- Adding concordance analysis (pairwise comparison of test VCFs) can be used without peforming benchmarking with truth VCF [#237](https://github.com/nf-core/variantbenchmarking/pull/237)
 
 ### `Fixed`
 

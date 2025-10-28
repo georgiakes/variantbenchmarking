@@ -16,7 +16,7 @@ workflow PREPARE_REFERENCES {
     versions = Channel.empty()
 
     //prepare dict file for liftover of vcf files
-    if (!params.dictionary && params.method.contains("concordance") || !params.liftover ){
+    if (!params.dictionary && (params.method.contains("concordance") || params.liftover ) ){
         PICARD_CREATESEQUENCEDICTIONARY(
             fasta_ch
         )
