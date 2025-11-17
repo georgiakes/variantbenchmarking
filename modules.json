@@ -168,7 +168,7 @@
                     },
                     "truvari/bench": {
                         "branch": "master",
-                        "git_sha": "bfb4e62ef77634eb25e067893b44e411a28aba62",
+                        "git_sha": "94c8a56a51f14bef3e62b35476a34deb7b84e589",
                         "installed_by": ["modules"]
                     },
                     "ucsc/liftover": {

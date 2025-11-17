@@ -208,7 +208,6 @@ workflow VARIANTBENCHMARKING {
         PREPARE_VCFS_TEST.out.vcf_ch.mix(PREPARE_VCFS_TRUTH.out.vcf_ch)
     )
     ch_versions       = ch_versions.mix(REPORT_VCF_STATISTICS.out.versions)
-    ch_multiqc_files  = ch_multiqc_files.mix(REPORT_VCF_STATISTICS.out.ch_stats)
 
 
     // If intersect is in the methods, perform bedtools intersect to region files given
@@ -266,6 +265,7 @@ workflow VARIANTBENCHMARKING {
         ch_versions      = ch_versions.mix(SV_GERMLINE_BENCHMARK.out.versions)
         ch_reports       = ch_reports.mix(SV_GERMLINE_BENCHMARK.out.summary_reports)
         evals_ch         = evals_ch.mix(SV_GERMLINE_BENCHMARK.out.tagged_variants)
+        ch_multiqc_files = ch_multiqc_files.mix(SV_GERMLINE_BENCHMARK.out.logs.map{ meta, log -> log })
 
         if (params.method.contains("bndeval")){
             // running bndeval might require svdecompose
@@ -362,8 +362,11 @@ workflow VARIANTBENCHMARKING {
     ch_methods_description                = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
     ch_multiqc_files                      = ch_multiqc_files.mix(ch_collated_versions)
     ch_multiqc_files                      = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml',sort: true))
-    ch_multiqc_files                      = ch_multiqc_files.mix(COMPARE_BENCHMARK_RESULTS.out.ch_plots)
-    ch_multiqc_files                      = ch_multiqc_files.mix(REPORT_BENCHMARK_STATISTICS.out.ch_plots)
+    ch_multiqc_files                      = ch_multiqc_files.mix(REPORT_VCF_STATISTICS.out.ch_stats)
+    ch_multiqc_files                      = ch_multiqc_files.mix(COMPARE_BENCHMARK_RESULTS.out.ch_plots.flatten())
+    ch_multiqc_files                      = ch_multiqc_files.mix(REPORT_BENCHMARK_STATISTICS.out.ch_plots.flatten())
+    ch_multiqc_files                      = ch_multiqc_files.mix(REPORT_BENCHMARK_STATISTICS.out.merged_reports.map{ meta, report -> report }.flatten())
+    ch_multiqc_files                      = ch_multiqc_files.mix(ch_reports.map{ meta, report -> report }.flatten())
 
     MULTIQC (
         ch_multiqc_files.collect(),
