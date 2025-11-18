@@ -242,15 +242,8 @@
                 "SEQC2_mqc.stats:md5,75fd7f87d3534ab64b95b5490317b11f",
                 "multiqc_bcftools_stats.txt:md5,d15679c9ce48a885c28263f78302ae28",
                 "multiqc_citations.txt:md5,38f633e1381fe6da4bcbec213cd00061",
-                "multiqc_general_stats.txt:md5,75294612bd7982144e7ba443f8dc1678",
                 "multiqc_survivor.txt:md5,dac25d5e28bd8fa745bd11fb8ef456da",
-                "multiqc_truvari_bench.txt:md5,89d86a46f53e0b36d2b7268191123c21",
                 "multiqc_variant_calling_summary.txt:md5,b40fdc152b64968b6959098e7d4efba7",
-                "truvari-bench-classifications-plot_Base.txt:md5,28842baa36a9e898154b1ad08da8a6cf",
-                "truvari-bench-classifications-plot_Comp.txt:md5,fead3986f9b26986126d15c23367d075",
-                "truvari-bench-classifications-plot_TP_base_GT.txt:md5,460d54b5b1c2fa2711a8cbf84e485f0b",
-                "truvari-bench-classifications-plot_TP_comp_GT.txt:md5,460d54b5b1c2fa2711a8cbf84e485f0b",
-                "truvari-bench-pre-rec-plot.txt:md5,96bd3ca94ed16939f726355df1a4a022",
                 "test11.manta.bcftools_stats.txt:md5,3b1da2e2c9c96f4aae2f3bc0490e1346",
                 "test11.manta_mqc.stats:md5,a5844dbf1ea78ed263259e3a79b7bedd",
                 "test12.tiddit.bcftools_stats.txt:md5,d24a1fee7a43e7bc6c09c595371eda59",
@@ -259,8 +252,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.3"
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-17T17:07:34.9893903"
+        "timestamp": "2025-11-18T10:33:58.958494895"
     }
 }

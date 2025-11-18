@@ -394,7 +394,6 @@
                 "bcftools_stats_vqc_Count_Transversions.txt:md5,9c2b74d2ddd5e7641c7d5073eec92495",
                 "multiqc_bcftools_stats.txt:md5,3b19b56f8e973ff8ff84ede82423639d",
                 "multiqc_citations.txt:md5,5cbab4ecbe14049d965fd97bd61d252b",
-                "multiqc_general_stats.txt:md5,1c5bccfd2ce6c1026990523b61324a65",
                 "multiqc_sompy_combined_data.txt:md5,3bd6af235dc43259ab2339d56058b173",
                 "multiqc_sompy_indel_data.txt:md5,f1ebe01cf94e2ab7c93cbc3440678e27",
                 "multiqc_sompy_snv_data.txt:md5,83086233bdcb21dffd99e3d1f74345c7",

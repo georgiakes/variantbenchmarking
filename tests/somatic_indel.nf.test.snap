@@ -346,7 +346,6 @@
                 "SEQC2.bcftools_stats.txt:md5,52f437871e43b97f6517ddc7aa735c4b",
                 "multiqc_bcftools_stats.txt:md5,b3f6f4a4e8c7064f742bf676a408389b",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
-                "multiqc_general_stats.txt:md5,06c9cee32071789decd885e763cdc1c2",
                 "multiqc_sompy_combined_data.txt:md5,7d40f9616b09a8007b428146e1790fed",
                 "multiqc_sompy_indel_data.txt:md5,548e19b89c54743136dca3a587062c1e",
                 "multiqc_sompy_snv_data.txt:md5,2b303933a9f2483727e062b850ff5990",

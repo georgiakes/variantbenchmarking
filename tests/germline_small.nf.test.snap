@@ -679,7 +679,6 @@
                 "happy_snp_plot.txt:md5,ffb95929d2cc0acb352103680ae75291",
                 "multiqc_bcftools_stats.txt:md5,5657aab7df35255ebf1e623bc1161d7b",
                 "multiqc_citations.txt:md5,5cbab4ecbe14049d965fd97bd61d252b",
-                "multiqc_general_stats.txt:md5,c648e31bda67c932061fdfcaaaa77c0c",
                 "multiqc_variant_calling_summary.txt:md5,7415f8d3087bdc14d3f89cafa9c68724",
                 "test6.HG002.strelka.extended.csv:md5,1d7e794eec466dcc9b26259ad5d977c0",
                 "test6.HG002.strelka.roc.Locations.INDEL.PASS.csv.gz:md5,60563576cb01b0f8c29e6c4249d26a29",

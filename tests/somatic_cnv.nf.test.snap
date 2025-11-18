@@ -319,14 +319,7 @@
                 "SEQC2.bcftools_stats.txt:md5,2a3294dcbb89d63042d713a7bb6f32ee",
                 "multiqc_bcftools_stats.txt:md5,e50d652f48e58b3a96f04837acf7185b",
                 "multiqc_citations.txt:md5,38f633e1381fe6da4bcbec213cd00061",
-                "multiqc_general_stats.txt:md5,63f377cb0ea392877409dad45c82662c",
-                "multiqc_truvari_bench.txt:md5,5a2ffd252ae144652edb386889d0eeb8",
                 "multiqc_variant_calling_summary.txt:md5,c403fa3d80e0bc667f6220d646a54c83",
-                "truvari-bench-classifications-plot_Base.txt:md5,394cf7c087529ae952aac17fe35edb4f",
-                "truvari-bench-classifications-plot_Comp.txt:md5,0da5d23e3afa9b81f010433fa4316d07",
-                "truvari-bench-classifications-plot_TP_base_GT.txt:md5,e777dec298400bbaa533c47da87f67b2",
-                "truvari-bench-classifications-plot_TP_comp_GT.txt:md5,e777dec298400bbaa533c47da87f67b2",
-                "truvari-bench-pre-rec-plot.txt:md5,9926a7bab7c36bbf3d9b21155625c774",
                 "test13.SEQC2.controlfreec_FN.bed:md5,bcbdf273e3d60c0aaa8afb4a8b0a5ff5",
                 "test13.SEQC2.controlfreec_FP.bed:md5,36be4b1c9f99af66e548eb1a7ce5548c",
                 "test13.SEQC2.controlfreec_TP_base.bed:md5,e5c439e0e4b2136e44d5fde760785795",
@@ -358,6 +351,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-18T09:15:59.158140482"
+        "timestamp": "2025-11-18T10:22:00.953028725"
     }
 }
