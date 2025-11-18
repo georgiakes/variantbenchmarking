@@ -168,8 +168,9 @@
                     },
                     "truvari/bench": {
                         "branch": "master",
-                        "git_sha": "bfb4e62ef77634eb25e067893b44e411a28aba62",
-                        "installed_by": ["modules"]
+                        "git_sha": "94c8a56a51f14bef3e62b35476a34deb7b84e589",
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/truvari/bench/truvari-bench.diff"
                     },
                     "ucsc/liftover": {
                         "branch": "master",

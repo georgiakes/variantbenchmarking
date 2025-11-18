@@ -90,7 +90,7 @@
                 "RTGTOOLS_FORMAT": {
                     "rtg-tools": "3.12.1"
                 },
-                "RTGTOOLS_VCFEVAL":{
+                "RTGTOOLS_VCFEVAL": {
                     "rtg-tools": "3.12.1"
                 },
                 "SORT_BED": {
@@ -155,6 +155,8 @@
                 "small/multiqc/multiqc_data/bcftools_stats_vqc_Count_SNP.txt",
                 "small/multiqc/multiqc_data/bcftools_stats_vqc_Count_Transitions.txt",
                 "small/multiqc/multiqc_data/bcftools_stats_vqc_Count_Transversions.txt",
+                "small/multiqc/multiqc_data/happy_indel_plot.txt",
+                "small/multiqc/multiqc_data/happy_snp_plot.txt",
                 "small/multiqc/multiqc_data/llms-full.txt",
                 "small/multiqc/multiqc_data/multiqc.log",
                 "small/multiqc/multiqc_data/multiqc.parquet",
@@ -164,6 +166,7 @@
                 "small/multiqc/multiqc_data/multiqc_general_stats.txt",
                 "small/multiqc/multiqc_data/multiqc_software_versions.txt",
                 "small/multiqc/multiqc_data/multiqc_sources.txt",
+                "small/multiqc/multiqc_data/multiqc_variant_calling_summary.txt",
                 "small/multiqc/multiqc_plots",
                 "small/multiqc/multiqc_plots/pdf",
                 "small/multiqc/multiqc_plots/pdf/bcftools-stats-subtypes-cnt.pdf",
@@ -175,6 +178,9 @@
                 "small/multiqc/multiqc_plots/pdf/bcftools_stats_vqc_Count_SNP.pdf",
                 "small/multiqc/multiqc_plots/pdf/bcftools_stats_vqc_Count_Transitions.pdf",
                 "small/multiqc/multiqc_plots/pdf/bcftools_stats_vqc_Count_Transversions.pdf",
+                "small/multiqc/multiqc_plots/pdf/happy_indel_plot.pdf",
+                "small/multiqc/multiqc_plots/pdf/happy_snp_plot.pdf",
+                "small/multiqc/multiqc_plots/pdf/variant_calling_summary.pdf",
                 "small/multiqc/multiqc_plots/png",
                 "small/multiqc/multiqc_plots/png/bcftools-stats-subtypes-cnt.png",
                 "small/multiqc/multiqc_plots/png/bcftools-stats-subtypes-pct.png",
@@ -185,6 +191,9 @@
                 "small/multiqc/multiqc_plots/png/bcftools_stats_vqc_Count_SNP.png",
                 "small/multiqc/multiqc_plots/png/bcftools_stats_vqc_Count_Transitions.png",
                 "small/multiqc/multiqc_plots/png/bcftools_stats_vqc_Count_Transversions.png",
+                "small/multiqc/multiqc_plots/png/happy_indel_plot.png",
+                "small/multiqc/multiqc_plots/png/happy_snp_plot.png",
+                "small/multiqc/multiqc_plots/png/variant_calling_summary.png",
                 "small/multiqc/multiqc_plots/svg",
                 "small/multiqc/multiqc_plots/svg/bcftools-stats-subtypes-cnt.svg",
                 "small/multiqc/multiqc_plots/svg/bcftools-stats-subtypes-pct.svg",
@@ -195,6 +204,9 @@
                 "small/multiqc/multiqc_plots/svg/bcftools_stats_vqc_Count_SNP.svg",
                 "small/multiqc/multiqc_plots/svg/bcftools_stats_vqc_Count_Transitions.svg",
                 "small/multiqc/multiqc_plots/svg/bcftools_stats_vqc_Count_Transversions.svg",
+                "small/multiqc/multiqc_plots/svg/happy_indel_plot.svg",
+                "small/multiqc/multiqc_plots/svg/happy_snp_plot.svg",
+                "small/multiqc/multiqc_plots/svg/variant_calling_summary.svg",
                 "small/multiqc/multiqc_report.html",
                 "small/summary",
                 "small/summary/comparisons",
@@ -406,9 +418,11 @@
                 "bcftools_stats_vqc_Count_SNP.txt:md5,cfd88145d6a5b9c92db8c00ed9ad54c5",
                 "bcftools_stats_vqc_Count_Transitions.txt:md5,47342e090c15bfb1667d4871f5a31f3a",
                 "bcftools_stats_vqc_Count_Transversions.txt:md5,8e1f8d503ff652c09df1c4f73cf60c50",
+                "happy_indel_plot.txt:md5,2e9b1288afeabd6b62431630108ff59f",
+                "happy_snp_plot.txt:md5,b41aa6387ed8e9a44e7b91d103e7d1d3",
                 "multiqc_bcftools_stats.txt:md5,06efbea184d493e6f4b555014adbaf22",
                 "multiqc_citations.txt:md5,5cbab4ecbe14049d965fd97bd61d252b",
-                "multiqc_general_stats.txt:md5,d7fe18792ea8919edfa54e9c608670bf",
+                "multiqc_variant_calling_summary.txt:md5,6b5ba7190677d6d0899af2e39380ace3",
                 "test6.HG002.strelka.extended.csv:md5,f18ca7e3374f3ce7861d6907d7e1cb3d",
                 "test6.HG002.strelka.roc.Locations.INDEL.PASS.csv.gz:md5,3c8622a36372debd7f34378950290e12",
                 "test6.HG002.strelka.roc.Locations.INDEL.csv.gz:md5,e42507fb78a4117875f70517ae96b8c6",
@@ -433,8 +447,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-10-20T09:25:03.913911472"
+        "timestamp": "2025-11-17T16:20:17.63697071"
     }
 }
