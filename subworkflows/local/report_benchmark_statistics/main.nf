@@ -18,12 +18,14 @@ workflow REPORT_BENCHMARK_STATISTICS {
 
     versions = Channel.empty()
     ch_plots = Channel.empty()
+    merged_reports = Channel.empty()
 
     // merge summary statistics from the same benchmarking tool
     MERGE_REPORTS(
         reports
     )
     versions = versions.mix(MERGE_REPORTS.out.versions.first())
+    merged_reports = merged_reports.mix(MERGE_REPORTS.out.summary)
 
     // plot summary statistics
     PLOTS(
@@ -66,4 +68,5 @@ workflow REPORT_BENCHMARK_STATISTICS {
     emit:
     versions        // channel: [versions.yml]
     ch_plots        // channel: [plots.png]
+    merged_reports  // channel: [ summary.csv]
 }

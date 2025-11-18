@@ -85,7 +85,7 @@
                     "python": "3.13.0"
                 },
                 "Workflow": {
-                    "nf-core/variantbenchmarking": "v1.3.0"
+                    "nf-core/variantbenchmarking": "v1.4.0-dev"
                 }
             },
             [
@@ -99,18 +99,38 @@
                 "indel/SEQC2/stats/bcftools/SEQC2.bcftools_stats.txt",
                 "indel/multiqc",
                 "indel/multiqc/multiqc_data",
-                "indel/multiqc/multiqc_data/BETA-multiqc.parquet",
+                "indel/multiqc/multiqc_data/llms-full.txt",
                 "indel/multiqc/multiqc_data/multiqc.log",
+                "indel/multiqc/multiqc_data/multiqc.parquet",
                 "indel/multiqc/multiqc_data/multiqc_bcftools_stats.txt",
                 "indel/multiqc/multiqc_data/multiqc_citations.txt",
                 "indel/multiqc/multiqc_data/multiqc_data.json",
                 "indel/multiqc/multiqc_data/multiqc_general_stats.txt",
                 "indel/multiqc/multiqc_data/multiqc_software_versions.txt",
+                "indel/multiqc/multiqc_data/multiqc_sompy_combined_data.txt",
+                "indel/multiqc/multiqc_data/multiqc_sompy_indel_data.txt",
+                "indel/multiqc/multiqc_data/multiqc_sompy_snv_data.txt",
                 "indel/multiqc/multiqc_data/multiqc_sources.txt",
+                "indel/multiqc/multiqc_data/multiqc_variant_calling_summary.txt",
+                "indel/multiqc/multiqc_data/sompy_combined_plot.txt",
+                "indel/multiqc/multiqc_data/sompy_indel_plot.txt",
+                "indel/multiqc/multiqc_data/sompy_snv_plot.txt",
                 "indel/multiqc/multiqc_plots",
                 "indel/multiqc/multiqc_plots/pdf",
+                "indel/multiqc/multiqc_plots/pdf/sompy_combined_plot.pdf",
+                "indel/multiqc/multiqc_plots/pdf/sompy_indel_plot.pdf",
+                "indel/multiqc/multiqc_plots/pdf/sompy_snv_plot.pdf",
+                "indel/multiqc/multiqc_plots/pdf/variant_calling_summary.pdf",
                 "indel/multiqc/multiqc_plots/png",
+                "indel/multiqc/multiqc_plots/png/sompy_combined_plot.png",
+                "indel/multiqc/multiqc_plots/png/sompy_indel_plot.png",
+                "indel/multiqc/multiqc_plots/png/sompy_snv_plot.png",
+                "indel/multiqc/multiqc_plots/png/variant_calling_summary.png",
                 "indel/multiqc/multiqc_plots/svg",
+                "indel/multiqc/multiqc_plots/svg/sompy_combined_plot.svg",
+                "indel/multiqc/multiqc_plots/svg/sompy_indel_plot.svg",
+                "indel/multiqc/multiqc_plots/svg/sompy_snv_plot.svg",
+                "indel/multiqc/multiqc_plots/svg/variant_calling_summary.svg",
                 "indel/multiqc/multiqc_report.html",
                 "indel/summary",
                 "indel/summary/comparisons",
@@ -326,7 +346,13 @@
                 "SEQC2.bcftools_stats.txt:md5,52f437871e43b97f6517ddc7aa735c4b",
                 "multiqc_bcftools_stats.txt:md5,b3f6f4a4e8c7064f742bf676a408389b",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
-                "multiqc_general_stats.txt:md5,5e4ba07846cf94f50707e5a6fbc0b344",
+                "multiqc_sompy_combined_data.txt:md5,7d40f9616b09a8007b428146e1790fed",
+                "multiqc_sompy_indel_data.txt:md5,548e19b89c54743136dca3a587062c1e",
+                "multiqc_sompy_snv_data.txt:md5,2b303933a9f2483727e062b850ff5990",
+                "multiqc_variant_calling_summary.txt:md5,c403e826bff07362e82c5c00125ba95e",
+                "sompy_combined_plot.txt:md5,c0caebce9263f14d00f8fefadfeb2da7",
+                "sompy_indel_plot.txt:md5,d6ca1cd7f77350bde131c6af4bb33eb8",
+                "sompy_snv_plot.txt:md5,370db91dd8d8ec6b98a0c20e969e29ee",
                 "test10.SEQC2.strelka.phasing.txt:md5,38920536b8c3e241e873c07ba61762e6",
                 "test10.SEQC2.strelka.summary.txt:md5,74d09547622c9dc49dce86593acfcea7",
                 "test10.strelka.bcftools_stats.txt:md5,dd3da96a738f77d89ed54c1452ed400e",
@@ -355,9 +381,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-09-29T14:50:12.281437286"
+        "timestamp": "2025-11-17T16:47:27.788243667"
     }
 }
