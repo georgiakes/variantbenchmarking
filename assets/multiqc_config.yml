@@ -20,7 +20,7 @@ table_columns_visible:
   bcftools:
     number_of_MNPs: true
     number_of_others: true
-    
+
 # Run only these modules
 run_modules:
   - bcftools
@@ -76,13 +76,13 @@ custom_data:
     id: "summary_reports_6"
     section_name: "Summary Benchmark Figures: TP comp INDEL lenght distrbutions"
     plot_type: "image"
-    format: "png" 
+    format: "png"
 
   summary_reports_7:
     id: "summary_reports_7"
     section_name: "Summary Benchmark Figures: TP base INDEL lenght distrbutions"
     plot_type: "image"
-    format: "png" 
+    format: "png"
 
   summary_reports_8:
     id: "summary_reports_8"
@@ -90,63 +90,63 @@ custom_data:
     plot_type: "image"
     format: "png"
 
-  summary_reports_9: 
+  summary_reports_9:
     id: "summary_reports_9"
     section_name: "Summary Benchmark Figure: Upset plot for TP vs FP"
     plot_type: "image"
     format: "png"
 
   variant_calling_summary:
-    file_format: 'csv'
-    section_name: 'Variant Calling Summary'
-    description: 'Comparison of variant calling results across different tools'
-    plot_type: 'table'
+    file_format: "csv"
+    section_name: "Variant Calling Summary"
+    description: "Comparison of variant calling results across different tools"
+    plot_type: "table"
     pconfig:
-      id: 'variant_calling_summary'
-      title: 'Variant Calling Performance Metrics'
+      id: "variant_calling_summary"
+      title: "Variant Calling Performance Metrics"
       scale: False
-      col1_header: 'Tool'
+      col1_header: "Tool"
     headers:
       File:
-        title: 'File'
-        description: 'Summary file name'
+        title: "File"
+        description: "Summary file name"
         scale: False
       Caller:
-        title: 'Caller'
-        description: 'Variant calling tool'
+        title: "Caller"
+        description: "Variant calling tool"
         scale: False
       TP_base:
-        title: 'TP (base)'
-        description: 'True positives in baseline'
-        format: '{:,.0f}'
+        title: "TP (base)"
+        description: "True positives in baseline"
+        format: "{:,.0f}"
       TP_comp:
-        title: 'TP (comp)'
-        description: 'True positives in comparison'
-        format: '{:,.0f}'
+        title: "TP (comp)"
+        description: "True positives in comparison"
+        format: "{:,.0f}"
       FP:
-        title: 'FP'
-        description: 'False positives'
-        format: '{:,.0f}'
+        title: "FP"
+        description: "False positives"
+        format: "{:,.0f}"
       FN:
-        title: 'FN'
-        description: 'False negatives'
-        format: '{:,.0f}'
+        title: "FN"
+        description: "False negatives"
+        format: "{:,.0f}"
       Precision:
-        title: 'Precision'
-        description: 'Precision metric'
-        format: '{:,.4f}'
+        title: "Precision"
+        description: "Precision metric"
+        format: "{:,.4f}"
         max: 1.0
         min: 0.0
       Recall:
-        title: 'Recall'
-        description: 'Recall metric'
-        format: '{:,.4f}'
+        title: "Recall"
+        description: "Recall metric"
+        format: "{:,.4f}"
         max: 1.0
         min: 0.0
       F1:
-        title: 'F1 Score'
-        description: 'F1 score metric'
-        format: '{:,.4f}'
+        title: "F1 Score"
+        description: "F1 score metric"
+        format: "{:,.4f}"
         max: 1.0
         min: 0.0
 
@@ -157,14 +157,14 @@ sp:
     contents: This file was produced by bcftools stats
   truvari/bench:
     contents_re: .*truvari.* bench.*
-    fn: '*log.txt'
+    fn: "*log.txt"
     num_lines: 10
   happy:
     contents: Type,Filter,TRUTH
-    fn: '*.summary.csv'
+    fn: "*.summary.csv"
   sompy:
-    contents: ',sompyversion,sompycmd'
-    fn: '*.stats.csv'
+    contents: ",sompyversion,sompycmd"
+    fn: "*.stats.csv"
     num_lines: 2
   summary_reports_1:
     fn: "variants_by_tool*.png"
@@ -185,14 +185,14 @@ sp:
   summary_reports_9:
     fn: "upset*tp_fp*.png"
   variant_calling_summary:
-    fn: '*summary.csv'
-    contents: 'Tool,File,Caller'
+    fn: "*summary.csv"
+    contents: "Tool,File,Caller"
 
 module_order:
   - bcftools:
       name: "Input SNV/INDEL/DELETION statatistics"
   - survivor:
-      name: "Input INDEL/DELETION statistics"      
+      name: "Input INDEL/DELETION statistics"
   - happy:
       name: "hap.py summary statistics"
   - sompy:
