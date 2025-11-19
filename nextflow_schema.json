@@ -114,7 +114,7 @@
                     "pattern": "^((homogenize|svync|svdecompose|svtk)?,?)*(?<!,)$",
                     "fa_icon": "fas fa-folder-open"
                 },
-                "skip_plots":{
+                "skip_plots": {
                     "type": "string",
                     "description": "Skip plots: metrics, upset, svlenght",
                     "errorMessage": "A wrong input has been detected. Should be a comma-separated list of one or more of the following options: metrics, upset, svlenght",
