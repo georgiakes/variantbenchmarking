@@ -55,7 +55,7 @@
                     "r-base": "4.3.1"
                 },
                 "PLOT_SVLEN_DIST": {
-                    "python": "3.8.1"
+                    "python": "3.14.0"
                 },
                 "PLOT_UPSET": {
                     "python": "3.13.7"
@@ -446,7 +446,7 @@
                     "r-base": "4.3.1"
                 },
                 "PLOT_SVLEN_DIST": {
-                    "python": "3.8.1"
+                    "python": "3.14.0"
                 },
                 "PLOT_UPSET": {
                     "python": "3.13.7"

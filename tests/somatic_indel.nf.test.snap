@@ -1,7 +1,7 @@
 {
     "Params: --analysis 'somatic' --variant_type 'indel' --method 'rtgtools'": {
         "content": [
-            91,
+            84,
             {
                 "BCFTOOLS_FILTER": {
                     "bcftools": 1.2
@@ -59,9 +59,6 @@
                 },
                 "PLOTS": {
                     "r-base": "4.3.1"
-                },
-                "PLOT_SVLEN_DIST": {
-                    "python": "3.8.1"
                 },
                 "PLOT_UPSET": {
                     "python": "3.13.7"
@@ -216,18 +213,11 @@
                 "indel/summary/plots/rtgtools",
                 "indel/summary/plots/rtgtools/f1_by_tool_rtgtools_mqc.png",
                 "indel/summary/plots/rtgtools/pr_recall_by_tool_rtgtools_mqc.png",
-                "indel/summary/plots/rtgtools/rtgtools.FN.indel.mqc.png",
-                "indel/summary/plots/rtgtools/rtgtools.FP.indel.mqc.png",
-                "indel/summary/plots/rtgtools/rtgtools.TP_base.indel.mqc.png",
-                "indel/summary/plots/rtgtools/rtgtools.TP_comp.indel.mqc.png",
                 "indel/summary/plots/rtgtools/upset_rtgtools_tp_fn_mqc.png",
                 "indel/summary/plots/rtgtools/variants_by_tool_rtgtools_mqc.png",
                 "indel/summary/plots/sompy",
                 "indel/summary/plots/sompy/f1_by_tool_sompy_mqc.png",
                 "indel/summary/plots/sompy/pr_recall_by_tool_sompy_mqc.png",
-                "indel/summary/plots/sompy/sompy.FN.indel.mqc.png",
-                "indel/summary/plots/sompy/sompy.FP.indel.mqc.png",
-                "indel/summary/plots/sompy/sompy.TP_comp.indel.mqc.png",
                 "indel/summary/plots/sompy/upset_sompy_tp_fn_mqc.png",
                 "indel/summary/plots/sompy/upset_sompy_tp_fp_mqc.png",
                 "indel/summary/plots/sompy/variants_by_tool_sompy_mqc.png",
@@ -382,8 +372,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.3"
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-17T16:47:27.788243667"
+        "timestamp": "2025-11-19T12:55:28.795953623"
     }
 }
