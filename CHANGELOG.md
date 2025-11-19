@@ -18,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Adding concordance analysis (pairwise comparison of test VCFs) can be used without peforming benchmarking with truth VCF [#237](https://github.com/nf-core/variantbenchmarking/pull/237)
 - Adding support for hap.py, som.py and truvari results to multiqc report. Also refactoring the report better [#249](https://github.com/nf-core/variantbenchmarking/pull/249)
 
-
 ### `Fixed`
 
 - Use local copies of test files instead of AWS links from sarek [#214](https://github.com/nf-core/variantbenchmarking/pull/214)

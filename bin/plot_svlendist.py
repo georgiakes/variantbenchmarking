@@ -2,11 +2,7 @@
 # A script to parse, analyze, and plot indel or structural variant lenght from VCF and CSV files.
 
 # Copyright 2025 - GHGA
-<<<<<<< HEAD
-# Author: Kuebra Narci - @kubranarci, Victor Didier @VictorDidier
-=======
 # Author: Victor Perez
->>>>>>> efa73b82bbf235ef06ac2ad9feaf175c6a1b0a14
 
 import matplotlib.pyplot as plt
 import os
