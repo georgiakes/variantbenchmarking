@@ -2,7 +2,7 @@
 # A script to parse, analyze, and plot indel or structural variant lenght from VCF and CSV files.
 
 # Copyright 2025 - GHGA
-# Author: Kuebra Narci - @kubranarci
+# Author: Kuebra Narci - @kubranarci, Victor Didier @VictorDidier
 
 import matplotlib.pyplot as plt
 import os
@@ -169,19 +169,16 @@ def format_bp_label(bin_edges,half_open=True,format="sci",decimals=1):
     Creates a string using the edges of the bins.
     Returns:
         A string of the form [lef_edge,right_edge]
-
     """
-    
     if format=="sci":
         format_type="E"
     elif format=="raw":
         format_type="f"
-    
     if half_open:
         symbol=")"
     else:
         symbol="]"
-    
+
     label="[{left},{right}{S}".format(left= f"{bin_edges[0]:.{decimals}{format_type}}",
                                     right=f"{bin_edges[1]:.{decimals}{format_type}}",
                                     S=symbol
@@ -220,7 +217,7 @@ def filter_frame(df):
 def data2frame(sv_data,bin_edges="default"):
     """
     Takes the sv_data and calculates the histogram of the counts of insertions and deletions
-    using the list of bin_edges. 
+    using the list of bin_edges.
     Returns:
         A pandas dataframe with the information organized for casting a bar plot.
 
@@ -240,7 +237,7 @@ def data2frame(sv_data,bin_edges="default"):
         bins=default_bins()
     elif isinstance(bin_edges, (list, np.ndarray)):
         bins=sorted(bin_edges)
-        
+
     bin_left_edge=bins[:-1]
     bin_right_edge=bins[1::]
     bin_intervals=list(zip(bin_left_edge,bin_right_edge))
@@ -268,20 +265,20 @@ def data2frame(sv_data,bin_edges="default"):
             data_table["bin_label"].extend(bin_labels)
             data_table["type"].extend(mod_type)
             data_table["counts"].extend(counts)
-            
-    df_table=pd.DataFrame(data_table) 
+
+    df_table=pd.DataFrame(data_table)
     return df_table
 
-def plot_svlen_distributions(sv_data, output_file, plot_title):
+def plot_svlen_distributions(sv_data, bins ,output_file, plot_title):
     """
     CreateS a bar plot and writes it in the output_file path
     Returns:
         A .png figure saved in the output_file path.
 
     """
-    df_table=data2frame(sv_data,bin_edges="default")
+    df_table=data2frame(sv_data,bin_edges=bins)
     df_upt=filter_frame(df_table)
-    
+
     category_label=df_upt["bin_label"].unique()
     files=df_upt["sample"].unique()
     bar_height={sample: df_upt.loc[ df_upt["sample"]==sample, "counts"].values for sample in files }
@@ -296,7 +293,7 @@ def plot_svlen_distributions(sv_data, output_file, plot_title):
         x = np.arange(len(category_label))  # the label locations
     else:
         x=(width*interval_load)*np.array(list(range(interval_load)))
-    
+
 
     if len(types_list)==2:
         xlabel_text="Deletions | Insertions"
@@ -305,16 +302,15 @@ def plot_svlen_distributions(sv_data, output_file, plot_title):
         aux=df_upt.loc[df_upt["sample"]==ref_file]
         transition_index=(aux["type"].values!="deletion").argmax()
         xlabel_position=x[transition_index]
-    
+
     elif len(types_list)==1:
         xlabel_future_action=None
         if types_list[0]=="insertion":
             xlabel_text="Insertions"
-            
+
         elif types_list[0]=="deletion":
             xlabel_text="Deletions"
-            
-    
+
     plt.style.use('seaborn-v0_8-colorblind')
     fig, ax = plt.subplots(figsize=(14, 10),layout='constrained')
     multiplier = 0
@@ -322,7 +318,7 @@ def plot_svlen_distributions(sv_data, output_file, plot_title):
     for attribute, measurement in bar_height.items():
         offset = width * multiplier
         rects = ax.bar(x + offset, measurement, width, label=attribute,alpha=1)
-        ax.bar_label(rects, padding=pads[multiplier%len(pads)])
+        ax.bar_label(rects, padding=pads[multiplier%len(pads)],rotation=30)
         multiplier += 1
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
@@ -346,6 +342,7 @@ def plot_svlen_distributions(sv_data, output_file, plot_title):
           bbox_to_anchor=(1.4, 1),
           prop={'size': 14}
           )
+    ax.set_facecolor((0.9,0.9,0.9))
     fig.tight_layout()
     fig.savefig(output_file, dpi=300, bbox_inches='tight')
     print(f"Plot saved to {output_file}")
@@ -357,6 +354,13 @@ if __name__ == "__main__":
                         help="The name of the output image file (default: svlen_distributions.png).")
     parser.add_argument('--title', '-t', dest='plot_title', default='Structural Variant Length Distributions by Type',
                         help="The title for the plot.")
+    parser.add_argument('--bins', '-b',nargs='+', type=int,default=None,
+                        help="""
+                        List of integer numbers representing the bin_edges for the plot.
+                        If no list is given the default edges are bp,kbp,Mbp,Gbp,Tbp in both
+                        negative(Deletions) and positive(Insertions) directions. The counts of
+                        the histogram are carried out by numpy.histogram.
+                        """)
 
     args = parser.parse_args()
 
@@ -379,6 +383,10 @@ if __name__ == "__main__":
             max_len = csv_max_len
 
     if sv_data:
-        plot_svlen_distributions(sv_data, args.output_file, args.plot_title)
+        if args.bins is None:
+            bin_edges="default"
+        else:
+            bin_edges=args.bins
+        plot_svlen_distributions(sv_data,bin_edges,args.output_file, args.plot_title)
     else:
         print("No valid input files found to plot.")
