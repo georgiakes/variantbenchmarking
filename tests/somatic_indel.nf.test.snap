@@ -329,7 +329,7 @@
                 "references/rtgtools/genome.sdf/summary.txt"
             ],
             [
-                "HCC1395T_vs_HCC1395N.strelka.somatic_indels.sort.subsample.setGT.vcf.gz:md5,cd84585a45ba81b63bb6c730ea500da1",
+                "HCC1395T_vs_HCC1395N.strelka.somatic_indels.sort.subsample.setGT.vcf.gz:md5,ab760913a833c14f369926c60d05e2c0",
                 "SEQC2.bcftools_stats.txt:md5,52f437871e43b97f6517ddc7aa735c4b",
                 "multiqc_bcftools_stats.txt:md5,69c21891911b2409a89c3a66597e25ac",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
@@ -365,6 +365,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-19T15:13:18.392794743"
+        "timestamp": "2025-11-20T08:32:18.436356588"
     }
 }
