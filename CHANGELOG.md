@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Wittyer doesnt support BND type of variants, added better documentation [#231](https://github.com/nf-core/variantbenchmarking/pull/231)
 - Fixing the handling of params (when value is 0) from schema_input.json [#234](https://github.com/nf-core/variantbenchmarking/pull/234)
 - Fixing and reformatting svlen distribution plot [#250](https://github.com/nf-core/variantbenchmarking/pull/250)
+  - Old graph is replaced with histogram
+- Filtering of non-called variants after multi-sample VCF split to selected sample is fixed [#251](https://github.com/nf-core/variantbenchmarking/pull/251)
+  - Fix for strelka added, if no GT field exist, tools will be added the code manually.
 
 ### `Dependencies`
 
