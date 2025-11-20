@@ -240,6 +240,14 @@ test2,test2.vcf,gatk
 test3,test3.vcf.gz,cnvkit
 ```
 
+## Analysis Plots
+
+There are 3 types of plots generated through the pipeline
+
+1. Metrics plots: TP/FN/FP Numbers, Recal vs precison, and F1 score (can be skipped by --skip_plots "metrics")
+2. Upset plots: TP_comp vs FP and TP_bse vs FN upset plots (can be skipped by --skip_plots "upset")
+3. SV lenght distribitions plots: INDEL lenght distribition histograms per TP_comp, TP_Base, FP, and FN variants (can be skipped by --skip_plots "svlenght")
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
