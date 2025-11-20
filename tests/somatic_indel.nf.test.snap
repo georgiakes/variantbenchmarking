@@ -1,7 +1,7 @@
 {
     "Params: --analysis 'somatic' --variant_type 'indel' --method 'rtgtools'": {
         "content": [
-            92,
+            85,
             {
                 "BCFTOOLS_FILTER": {
                     "bcftools": 1.2
@@ -89,8 +89,6 @@
                 }
             },
             [
-                "bcftools",
-                "bcftools/HCC1395T_vs_HCC1395N.strelka.somatic_indels.sort.subsample.setGT.vcf.gz",
                 "indel",
                 "indel/SEQC2",
                 "indel/SEQC2/preprocess",
@@ -338,11 +336,16 @@
                 "references/rtgtools/genome.sdf/summary.txt"
             ],
             [
-                "HCC1395T_vs_HCC1395N.strelka.somatic_indels.sort.subsample.setGT.vcf.gz:md5,ab760913a833c14f369926c60d05e2c0",
                 "SEQC2.bcftools_stats.txt:md5,52f437871e43b97f6517ddc7aa735c4b",
                 "multiqc_bcftools_stats.txt:md5,69c21891911b2409a89c3a66597e25ac",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
-                "multiqc_general_stats.txt:md5,cdfff3b345406d9e31ee51f751e6854d",
+                "multiqc_sompy_combined_data.txt:md5,ef4d503f1ee8bf3a0a2ecafb82e0c234",
+                "multiqc_sompy_indel_data.txt:md5,3b3c4397482750b89e3b229b19814afa",
+                "multiqc_sompy_snv_data.txt:md5,b95d8ca0333e2057f1533ef74e646767",
+                "multiqc_variant_calling_summary.txt:md5,1e7610bfa0331af77c587c5ac3b5a2d9",
+                "sompy_combined_plot.txt:md5,6d5f42230a5b936c93b0481edc7fd144",
+                "sompy_indel_plot.txt:md5,b6d92ee7570e8286d3ca0c4ff6c38abf",
+                "sompy_snv_plot.txt:md5,370db91dd8d8ec6b98a0c20e969e29ee",
                 "test10.SEQC2.strelka.phasing.txt:md5,38920536b8c3e241e873c07ba61762e6",
                 "test10.SEQC2.strelka.summary.txt:md5,74d09547622c9dc49dce86593acfcea7",
                 "test10.strelka.bcftools_stats.txt:md5,91c384818a7fdc8b650848635bd09ce3",
@@ -374,6 +377,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-20T08:32:18.436356588"
+        "timestamp": "2025-11-20T09:20:11.687311418"
     }
 }
