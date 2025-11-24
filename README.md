@@ -206,6 +206,7 @@ We thank the following people for their extensive assistance in the development 
 - Krešimir Beštak ([@kbestak](https://github.com/kbestak))
 - Ata Jadidahari ([@AtaJadidAhari](https://github.com/AtaJadidAhari))
 - Elad Herz ([@EladH1](https://github.com/EladH1))
+- Victor Didier Perez ([@VictorDidier](https://github.com/VictorDidier))
 
 ## Acknowledgements
 
