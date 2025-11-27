@@ -7,7 +7,10 @@
 suppressWarnings(library(ggplot2))
 suppressWarnings(library(reshape2))
 suppressWarnings(library(scales))
-
+seaborn_cb_palette <- c(
+    "#0173b2", "#d55e00", "#029e73", "#de8f05", "#cc78bc",
+    "#ca9161", "#fbafe4", "#949494", "#ece133", "#56b4e9"
+)
 # Function to generate plots
 generate_plots <- function(table, benchmark, type, filter, stats) {
     if (type != "None" && filter != "None") {
@@ -67,7 +70,8 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
             axis.title.y = element_text(size = axis_title_size),
             plot.title = element_text(size = title_size, face = "bold", hjust = 0.5),
             strip.text = element_text(size = facet_text_size, face = "bold")) +
-        scale_y_continuous(labels = scales::label_number(), limits = c(0, NA))
+        scale_y_continuous(labels = scales::label_number(), limits = c(0, NA)) +
+        scale_color_manual(values = seaborn_cb_palette)
 
     # Visualize f1
     f1_plot <- ggplot(metric_data, aes(x = Tool, y = value, color = Tool)) +
@@ -84,7 +88,7 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
             plot.title = element_text(size = title_size, face = "bold", hjust = 0.5)
             ) +
             scale_y_continuous(labels = scales::label_number(accuracy = 0.01), limits = c(0, 1)) +
-            scale_color_discrete()
+            scale_color_manual(values = seaborn_cb_palette)
 
     # Visualize Precision vs Recall
     pr_plot <- ggplot(table) +
@@ -102,7 +106,8 @@ generate_plots <- function(table, benchmark, type, filter, stats) {
             legend.text = element_text(size = legend_text_size),
             legend.title = element_text(size = legend_title_size)) +
         scale_x_continuous(limits = c(0, 1)) +
-        scale_y_continuous(limits = c(0, 1))
+        scale_y_continuous(limits = c(0, 1)) +
+        scale_color_manual(values = seaborn_cb_palette)
 
     # Save the plots
     tryCatch({

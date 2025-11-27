@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # A script to parse, analyze, and plot indel or structural variant lenght from VCF and CSV files.
 
-# Copyright 2025 - GHGA
 # Author: Victor Perez
 
 import matplotlib.pyplot as plt
@@ -192,7 +191,7 @@ def default_bins():
         A list of bins as described above.
 
     """
-    exps=[1,2,3,6,9,12]#bp,kbp,Mbp,Gbp,Tbp
+    exps=[1,2,3,4,5,6,7,8]#bp,kbp,Mbp,Gbp,Tbp
     bins_pos=[10**i for i in exps]
     bins_neg=[ -val for val in bins_pos ]
     bins=sorted(bins_pos+bins_neg+[0])
@@ -280,7 +279,7 @@ def plot_svlen_distributions(sv_data, bins ,output_file, plot_title):
     df_upt=filter_frame(df_table)
 
     category_label=df_upt["bin_label"].unique()
-    files=df_upt["sample"].unique()
+    files=sorted(df_upt["sample"].unique())
     bar_height={sample: df_upt.loc[ df_upt["sample"]==sample, "counts"].values for sample in files }
 
     types_list=df_upt["type"].unique()
