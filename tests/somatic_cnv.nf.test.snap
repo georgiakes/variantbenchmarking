@@ -76,7 +76,7 @@
                     "wittyer": "0.5.2.0"
                 },
                 "Workflow": {
-                    "nf-core/variantbenchmarking": "v1.4.0-dev"
+                    "nf-core/variantbenchmarking": "v2.0.0"
                 }
             },
             [
