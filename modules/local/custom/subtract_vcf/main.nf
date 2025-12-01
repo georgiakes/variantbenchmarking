@@ -28,7 +28,6 @@ process SUBTRACT_VCF {
         $exclude \\
         ${prefix}.remain.vcf.gz \\
         $bed \\
-        --zip-output \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

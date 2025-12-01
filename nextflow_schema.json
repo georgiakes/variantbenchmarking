@@ -116,9 +116,9 @@
                 },
                 "skip_plots": {
                     "type": "string",
-                    "description": "Skip plots: metrics, upset, svlenght",
-                    "errorMessage": "A wrong input has been detected. Should be a comma-separated list of one or more of the following options: metrics, upset, svlenght",
-                    "pattern": "^((svlenght|upset|metrics)?,?)*(?<!,)$",
+                    "description": "Skip plots: metrics, upset, svlength",
+                    "errorMessage": "A wrong input has been detected. Should be a comma-separated list of one or more of the following options: metrics, upset, svlength",
+                    "pattern": "^((svlength|upset|metrics)?,?)*(?<!,)$",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "min_sv_size": {

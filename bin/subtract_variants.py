@@ -81,7 +81,7 @@ def update_sample_name_in_header(line, new_sample_name):
         return '\t'.join(parts) + '\n'
     return line
 
-def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, zip_output=False, sample_name=None):
+def subtract_vcf_files(primary_vcf, to_subtract_vcf, output_vcf, bed_file=None, sample_name=None):
     """
     Subtracts variants from the primary VCF that exist in the second VCF,
     with an optional BED file for region filtering.
@@ -141,12 +141,11 @@ def main():
     parser.add_argument("to_subtract_vcf", help="The VCF file containing variants to remove.")
     parser.add_argument("output_vcf", help="The name of the output VCF file.")
     parser.add_argument("--bed-file", help="Optional BED file to restrict the output to specific regions.", default=None)
-    parser.add_argument("--zip-output", action="store_true", help="Compress the output file with gzip.")
     parser.add_argument("--sample-name", help="Optional new sample name to use in the output VCF header.", default=None)
 
     args = parser.parse_args()
 
-    subtract_vcf_files(args.primary_vcf, args.to_subtract_vcf, args.output_vcf, args.bed_file, args.zip_output, args.sample_name)
+    subtract_vcf_files(args.primary_vcf, args.to_subtract_vcf, args.output_vcf, args.bed_file, args.sample_name)
 
 if __name__ == "__main__":
     main()

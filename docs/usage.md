@@ -137,6 +137,13 @@ test2,test2.vcf,gatk,0.6,0.5,0.7,1100,40000,false,true
 - `dup_to_ins`: Converts DUP to INS type (boolean)
 - `typeignore`: Ignore SVTYPE matching (boolean)
 
+We are using below parameters default for this pipeline, please change it through config if else.
+
+  - `sizemin` 0 (no size minimum)
+  - `sizefilt` 0 (no size filtration)
+  - `sizemax` -1 (no size maximum)
+
+
 _Wittyer_
 
 ```csv title="samplesheet.csv"
@@ -246,7 +253,7 @@ There are 3 types of plots generated through the pipeline
 
 1. Metrics plots: TP/FN/FP Numbers, Recal vs precison, and F1 score (can be skipped by --skip_plots "metrics")
 2. Upset plots: TP_comp vs FP and TP_bse vs FN upset plots (can be skipped by --skip_plots "upset")
-3. SV lenght distribitions plots: INDEL lenght distribition histograms per TP_comp, TP_Base, FP, and FN variants (can be skipped by --skip_plots "svlenght")
+3. SV lenght distribitions plots: INDEL lenght distribition histograms per TP_comp, TP_Base, FP, and FN variants (can be skipped by --skip_plots "svlength")
 
 ## Running the pipeline
 
