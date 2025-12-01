@@ -139,10 +139,9 @@ test2,test2.vcf,gatk,0.6,0.5,0.7,1100,40000,false,true
 
 We are using below parameters default for this pipeline, please change it through config if else.
 
-  - `sizemin` 0 (no size minimum)
-  - `sizefilt` 0 (no size filtration)
-  - `sizemax` -1 (no size maximum)
-
+- `sizemin` 0 (no size minimum)
+- `sizefilt` 0 (no size filtration)
+- `sizemax` -1 (no size maximum)
 
 _Wittyer_
 
