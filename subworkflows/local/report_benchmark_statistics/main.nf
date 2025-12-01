@@ -36,7 +36,7 @@ workflow REPORT_BENCHMARK_STATISTICS {
         versions = versions.mix(PLOTS.out.versions.first())
     }
 
-    if (params.variant_type != "snv" && !params.skip_plots.contains("svlenght")){
+    if (params.variant_type != "snv" && !params.skip_plots.contains("svlength")){
         // plot INDEL/SV distribution plots
         PLOT_SVLEN_DIST(
             evaluations.groupTuple().mix(evaluations_csv.groupTuple())

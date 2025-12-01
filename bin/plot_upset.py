@@ -10,12 +10,13 @@ Command-line tool to create upset plots from FP/FN/TP results
 
 import argparse
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from upsetplot import UpSet, from_contents
 import sys
 import os
-import matplotlib
-matplotlib.use('Agg')
+
 
 def parse_file(file_path, category_name):
     """
