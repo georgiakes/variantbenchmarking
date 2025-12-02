@@ -237,7 +237,7 @@ test2,,cnvkit,cnvkit.cns
 
 Concordance analysis enables comparison of test VCFs with each other without the need of truth VCF. GATK4 Concordance can only be applied to small (including snv and indel for somatic samples) variants.
 
-In order to perform concordance analysis, just add _--method "concordance"_ . There is no need to provide truth VCF or id for concordance analysis. However, be carefull as concordance can be coupled to benchmarking analysis which requires truth VCF.
+In order to perform concordance analysis, just add `--method "concordance"` . There is no need to provide truth VCF or id for concordance analysis. However, be carefull as concordance can be coupled to benchmarking analysis which requires truth VCF.
 
 ```csv title="samplesheet.csv"
 id,test_vcf,caller
@@ -250,7 +250,7 @@ test3,test3.vcf.gz,cnvkit
 
 There are 3 types of plots generated through the pipeline
 
-1. Metrics plots: TP/FN/FP Numbers, Recal vs precison, and F1 score (can be skipped by --skip_plots "metrics")
+1. Metrics plots: TP/FN/FP numbers, recal vs precison, and F1 score (can be skipped by --skip_plots "metrics")
 2. Upset plots: TP_comp vs FP and TP_bse vs FN upset plots (can be skipped by --skip_plots "upset")
 3. SV lenght distribitions plots: INDEL lenght distribition histograms per TP_comp, TP_Base, FP, and FN variants (can be skipped by --skip_plots "svlength")
 
