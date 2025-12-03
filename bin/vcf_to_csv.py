@@ -8,14 +8,10 @@ Expected usage:
     $ python vcf_to_csv.py <vcf_file> <output>
 Use --help for more information.
 '''
-import sys
 from argparse import ArgumentParser
-import re
-
 import csv
 
 def parse_info_field(info):
-    """Parse the INFO field of a VCF line into a dictionary."""
     info_dict = {}
     for entry in info.split(';'):
         key_value = entry.split('=')
@@ -32,10 +28,9 @@ def extract_gt_from_sample(sample, format_field):
     if 'GT' in format_fields:
         gt_index = format_fields.index('GT')
         return sample_values[gt_index]
-    return './.'  # Default GT value if not present
+    return './.'
 
 def vcf_to_csv(vcf_file, csv_file):
-    """Convert a VCF file to a CSV file."""
     with open(vcf_file, 'r') as vcf:
         headers = []
         sample_headers = []
@@ -48,7 +43,7 @@ def vcf_to_csv(vcf_file, csv_file):
 
         for line in vcf:
             if line.startswith('##'):
-                continue  # Skip meta-information lines
+                continue
             elif line.startswith('#'):
                 headers = line[1:].strip().split('\t')
                 sample_headers = headers[9:]  # The sample headers start from the 10th column
@@ -89,7 +84,7 @@ def vcf_to_csv(vcf_file, csv_file):
             csv_writer.writerow(headers_to_write)
 
             for row, info_dict in records:
-                row_to_write = row[:7]  # Only keep CHROM, POS, ID, REF, ALT, QUAL, FILTER
+                row_to_write = row[:7]
                 if include_supp_vec:
                     row_to_write.append(info_dict.get('SUPP_VEC', ''))
                 if include_supp:

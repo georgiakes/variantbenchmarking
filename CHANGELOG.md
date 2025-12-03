@@ -3,7 +3,43 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.3.0 - dev
+## 1.4.0
+
+### `Added`
+
+- Truvari bench update to 5.3.0 [#215](https://github.com/nf-core/variantbenchmarking/pull/215)
+- Added a python script to plot indel distributions for SV variants [#216](https://github.com/nf-core/variantbenchmarking/pull/216)
+- Hirse promo badge [#217](https://github.com/nf-core/variantbenchmarking/pull/217)
+- svtk/standardize from GATK to standardize SVs to BND format. [#218](https://github.com/nf-core/variantbenchmarking/pull/218)
+- svync update to 0.3.0 [#219](https://github.com/nf-core/variantbenchmarking/pull/219)
+- UPSET plot for TP/FP/FN numbers [#223][#180](https://github.com/nf-core/variantbenchmarking/pull/223)
+- nf-co2footplot plugin is added [#224](https://github.com/nf-core/variantbenchmarking/pull/224)
+- [Template update for nf-core/tools v3.4.1](https://github.com/nf-core/variantbenchmarking/pull/235)
+- Adding concordance analysis (pairwise comparison of test VCFs) can be used without peforming benchmarking with truth VCF [#237](https://github.com/nf-core/variantbenchmarking/pull/237)
+- Adding support for hap.py, som.py and truvari results to multiqc report. Also refactoring the report better [#245][#246][#247](https://github.com/nf-core/variantbenchmarking/pull/249)
+- [Template update for nf-core/tools 3.5.1](https://github.com/nf-core/variantbenchmarking/pull/252)
+
+### `Fixed`
+
+- Use local copies of test files instead of AWS links from sarek [#214](https://github.com/nf-core/variantbenchmarking/pull/214)
+- Fixes and standardizations on headers and labels on tables and plots [#221](https://github.com/nf-core/variantbenchmarking/pull/221)
+- Fixing wrongly transmitted TP numbers and plots [#224](https://github.com/nf-core/variantbenchmarking/pull/224)
+- Fixing sompy split tag script [#230](https://github.com/nf-core/variantbenchmarking/pull/230)
+- Wittyer doesnt support BND type of variants, added better documentation [#231](https://github.com/nf-core/variantbenchmarking/pull/231)
+- Fixing the handling of params (when value is 0) from schema_input.json [#234](https://github.com/nf-core/variantbenchmarking/pull/234)
+- Fixing and reformatting svlen distribution plot [#250](https://github.com/nf-core/variantbenchmarking/pull/250)
+  - Old graph is replaced with histogram
+- Filtering of non-called variants after multi-sample VCF split to selected sample is fixed [#251](https://github.com/nf-core/variantbenchmarking/pull/251)
+  - Fix for strelka added, if no GT field exist, tools will be added the code manually.
+
+### `Dependencies`
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| truvari    | 4.1.0       | 5.3.0       |
+| svync      | 0.1.2       | 0.3.0       |
+
+## 1.3.0
 
 ### `Added`
 

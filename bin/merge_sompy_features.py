@@ -5,91 +5,108 @@
 '''
 Generates a CSV file from a VCF
 Expected usage:
-    $ python split_sompy_features.py <vcf_file> <prefix>
+    $ python merge_sompy_features.py  $csvs --output ${prefix}.${meta.tag}.csv
 Use --help for more information.
 '''
 
 import csv
 import argparse
 from collections import defaultdict
-import os
 
-KEY_COLUMNS = ["CHROM", "POS", "tag"]
-FIELDS_TO_EXTRACT = ["CHROM", "POS", "tag", "REF", "REF.truth", "ALT", "ALT.truth", "QUAL", "FILTER"]
-FIELDS_TO_SUFFIX = ["REF", "ALT"]
+KEY_COLUMNS = ["CHROM", "POS"]
 
-def extract_sample_suffix(filename):
-    """Extract sample suffix from filename (without extension)."""
-    return os.path.splitext(os.path.basename(filename))[0]
-
-def load_csv_by_key(filepath, suffix):
-    """Read a CSV file, filter relevant fields, and suffix REF/ALT."""
+def load_csv_by_key(filepath):
+    """
+    Read a CSV file, find the dynamic GT column, and rename
+    it with the extracted sample name and a '_GT' suffix.
+    """
     with open(filepath, newline='') as f:
         reader = csv.DictReader(f)
+        header = reader.fieldnames
+
+        gt_column = next((col for col in header if col.endswith('.GT')), None)
+        if not gt_column:
+            raise ValueError(f"No column ending with '.GT' found in {filepath}")
+
+        sample_suffix = gt_column.replace('.GT', '')
         data = {}
         for row in reader:
             key = tuple(row[k] for k in KEY_COLUMNS)
-            filtered = {}
-
-            for field in FIELDS_TO_EXTRACT:
-                if field in FIELDS_TO_SUFFIX:
-                    filtered[f"{field}_{suffix}"] = row.get(field, "")
-                elif field in KEY_COLUMNS:
-                    filtered[field] = row.get(field, "")
-                else:
-                    if field not in data.get(key, {}):
-                        filtered[field] = row.get(field, "")
+            processed_row = {
+                "CHROM": row.get("CHROM"),
+                "POS": row.get("POS"),
+                "REF": row.get("REF", ""),
+                "ALT": row.get("ALT", ""),
+                "FILTER": row.get("FILTER", "")
+            }
+            processed_row[f"{sample_suffix}_GT"] = row.get(gt_column, "")
 
             if key not in data:
-                data[key] = filtered
+                data[key] = processed_row
             else:
-                data[key].update(filtered)
+                data[key].update(processed_row)
 
-        return data
+        return data, sample_suffix
 
-def merge_dicts_by_key(dicts):
-    """Merge all dicts on shared key."""
+def merge_dicts_by_key(dicts, sample_names):
     merged = defaultdict(dict)
+
     for d in dicts:
         for key, row in d.items():
             merged[key].update(row)
+
+    for key in merged.keys():
+        for sample in sample_names:
+            gt_field = f"{sample}_GT"
+            if gt_field not in merged[key]:
+                merged[key][gt_field] = "./."
+
     return merged
 
-def write_merged_csv(merged_data, output_file):
+def get_sample_names(files):
+    """Extract sample names from a list of files."""
+    sample_names = []
+    for file in files:
+        with open(file, newline='') as f:
+            reader = csv.DictReader(f)
+            header = reader.fieldnames
+            gt_column = next((col for col in header if col.endswith('.GT')), None)
+            if gt_column:
+                sample_names.append(gt_column.replace('.GT', ''))
+    return sample_names
+
+def write_merged_csv(merged_data, output_file, sample_names):
     """Write merged dictionary to CSV."""
     sorted_keys = sorted(merged_data.keys(), key=lambda x: (x[0], int(x[1])))
 
-    # Determine full set of columns
-    all_fields = set()
-    for row in merged_data.values():
-        all_fields.update(row.keys())
-
-    # Reorder fields: key columns first, then others
-    fieldnames = KEY_COLUMNS + sorted(all_fields - set(KEY_COLUMNS))
+    fixed_fields = ["CHROM", "POS", "REF", "ALT", "FILTER"]
+    dynamic_fields = sorted([f"{sample}_GT" for sample in sample_names])
+    fieldnames = fixed_fields + dynamic_fields
 
     with open(output_file, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, restval='./.')
         writer.writeheader()
         for key in sorted_keys:
-            writer.writerow(merged_data[key])
+            writer.writerow({field: merged_data[key].get(field, "./.") for field in fieldnames})
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Merge TP/FP/FN CSVs by CHROM,POS,tag, keep selected fields, and suffix REF/ALT from filename."
+        description="Merge CSVs by CHROM, POS, and handle dynamic GT columns."
     )
     parser.add_argument("files", nargs='+', help="Input CSV files (e.g. *_TP.csv)")
     parser.add_argument("--output", required=True, help="Output merged CSV file")
     args = parser.parse_args()
 
     all_dicts = []
+    all_sample_names = get_sample_names(args.files)
+
     for file in args.files:
-        suffix = extract_sample_suffix(file)
-        print(f"Processing {file} (sample: {suffix})")
-        sample_dict = load_csv_by_key(file, suffix)
+        print(f"Processing {file}")
+        sample_dict, _ = load_csv_by_key(file)
         all_dicts.append(sample_dict)
 
-    merged = merge_dicts_by_key(all_dicts)
-    write_merged_csv(merged, args.output)
+    merged = merge_dicts_by_key(all_dicts, all_sample_names)
+    write_merged_csv(merged, args.output, all_sample_names)
     print(f"Merged CSV written to {args.output}")
 
 if __name__ == "__main__":

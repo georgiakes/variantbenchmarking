@@ -65,10 +65,11 @@ Please note that you should still provide chain and reame_chr files, and lifting
 
 Consistent formatting and alignment of variants in test and truth VCF files for accurate comparison is controlled by _sv_standardization_ and _preprocesses_.
 
-- `--sv_standardization`: The standardization methods to perform on the input files. Should be a comma-separated list of one or more of the following options: `homogenize,svync,svdecompose`.
+- `sv_standardization`: The standardization methods to perform on the input files. Should be a comma-separated list of one or more of the following options: `homogenize,svync,svdecompose,svtk`.
   - `homogenize`: makes use of [variant-extractor](https://github.com/EUCANCan/variant-extractor). Homogenizes the structural variants in a common format.
   - `svync`: makes use of [svync](https://github.com/nvnieuwk/svync). Reformats VCF headers properly.
   - `svdecompose`: makes use of [rtgtools svdecompose](https://cn.animalgenome.org/bioinfo/resources/manuals/RTGOperationsManual.pdf). Decomposes SVs into BND. Combine it only if you plan to run rtgtools bndeval!
+  - `svtk`: use [svtk standardize - from GATK](https://github.com/broadinstitute/gatk-sv/tree/main/src/svtk) to standardize structural variants. The standardization process may change by tool and may produce BND calls. Should be aplied very carefully. Applicable only to delly, manta, lumpy, dragen, scrable, smoove, melt and wham.
 
 - `preprocesses`: The preprocessing steps to perform on the input files. Should be a comma-separated list of one or more of the following options: `split_multiallelic,normalize,deduplicate,prepy,filter_contigs`
   - `split_multiallelic`: Splits multi-allelic variants in test and truth VCF files ([bcftools norm](https://samtools.github.io/bcftools/bcftools.html#norm))
@@ -77,7 +78,7 @@ Consistent formatting and alignment of variants in test and truth VCF files for 
   - `prepy`: Uses prepy in order to normalize test files. This option is only applicable for happy benchmarking of germline analysis ([prepy](https://github.com/Illumina/hap.py/tree/master))
   - `filter_contigs`: Filter out extra contigs. It is common for truth files not to include extra contigs.
 
-Filtration of tst variants are controlled through the following parameters:
+Filtration of the variants are controlled through the following parameters:
 
 - `exclude_expression`: Use ([bcftools expressions](https://samtools.github.io/bcftools/bcftools.html#expressions) to exclude variants)
 - `include_expression`: Use ([bcftools expressions](https://samtools.github.io/bcftools/bcftools.html#expressions) to include variants)
@@ -124,8 +125,8 @@ _Truvari_
 
 ```csv title="samplesheet.csv"
 id,test_vcf,caller,pctsize,pctseq,pctovl,refdist,chunksize,dup_to_ins,typeignore
-test1,test1.vcf.gz,delly,0.7,0.7,0.7,100000,50000,true,true
-test2,test2.vcf,gatk,0.6,0.5,0.7,110000,40000,false,true
+test1,test1.vcf.gz,delly,0.7,0.7,0.7,1000,50000,true,true
+test2,test2.vcf,gatk,0.6,0.5,0.7,1100,40000,false,true
 ```
 
 - `pctsize`: Has to be between 0-1. Ratio of min(base_size, comp_size)/max(base_size, comp_size)
@@ -135,6 +136,12 @@ test2,test2.vcf,gatk,0.6,0.5,0.7,110000,40000,false,true
 - `chunksize`: Create chunks of all calls overlapping within ±chunksize basepairs
 - `dup_to_ins`: Converts DUP to INS type (boolean)
 - `typeignore`: Ignore SVTYPE matching (boolean)
+
+We are using below parameters default for this pipeline, please change it through config if else.
+
+- `sizemin` 0 (no size minimum)
+- `sizefilt` 0 (no size filtration)
+- `sizemax` -1 (no size maximum)
 
 _Wittyer_
 
@@ -195,7 +202,7 @@ Example cmd:
 - ([svanalyzer benchmark](https://github.com/nhansen/SVanalyzer/blob/master/docs/svbenchmark.rst))
 - ([witty.er](https://github.com/Illumina/witty.er/tree/master))
 
-Please note that truvari is the only tool which can work with UNRESOLVED (without sequence) structural variants. Moreover, svbenchmark and wittyer analysis will require explicte SVTYPE and SVLEN annotations.
+Please note that truvari is the only tool which can work with UNRESOLVED (without sequence) structural variants. Moreover, svbenchmark and wittyer analysis will require explicte SVTYPE and SVLEN annotations. Moreover, wittyer does not support BND type of variants. It is recommended to either exclude (filter) them out or convert them to other types before analysis.
 
 - A special analysis for Break-Ends (SVTYPE=BND) is also possible. Please combine it with (_svdecompose_) to convert structural variants (both from truth and test cases) to Break-Ends if your inputs are not already in that type.
   - ([rtg bndeval](https://realtimegenomics.com/products/rtg-tools))
@@ -225,6 +232,27 @@ test2,,cnvkit,cnvkit.cns
 ```
 
 - `test_regions`: Test regions to be used for intersection analysis. Default: .bed format.
+
+## Concordance analysis
+
+Concordance analysis enables comparison of test VCFs with each other without the need of truth VCF. GATK4 Concordance can only be applied to small (including snv and indel for somatic samples) variants.
+
+In order to perform concordance analysis, just add `--method "concordance"` . There is no need to provide truth VCF or id for concordance analysis. However, be carefull as concordance can be coupled to benchmarking analysis which requires truth VCF.
+
+```csv title="samplesheet.csv"
+id,test_vcf,caller
+test1,test1.vcf.gz,delly
+test2,test2.vcf,gatk
+test3,test3.vcf.gz,cnvkit
+```
+
+## Analysis Plots
+
+There are 3 types of plots generated through the pipeline
+
+1. Metrics plots: TP/FN/FP numbers, recal vs precison, and F1 score (can be skipped by --skip_plots "metrics")
+2. Upset plots: TP_comp vs FP and TP_bse vs FN upset plots (can be skipped by --skip_plots "upset")
+3. SV lenght distribitions plots: INDEL lenght distribition histograms per TP_comp, TP_Base, FP, and FN variants (can be skipped by --skip_plots "svlength")
 
 ## Running the pipeline
 
@@ -358,7 +386,7 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
 - `shifter`
   - A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
 - `charliecloud`
-  - A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
+  - A generic configuration profile to be used with [Charliecloud](https://charliecloud.io/)
 - `apptainer`
   - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
 - `wave`
