@@ -6,10 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 1.5.0dev
 
 ### `Added`
+- RTGtools update to 3.13 [#261](https://github.com/nf-core/variantbenchmarking/issues/261)
 
 ### `Fixed`
 
 ### `Dependencies`
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| rtgtools    | 3.12.1     | 3.13        |
 
 ## 1.4.0
 
