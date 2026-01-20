@@ -76,7 +76,7 @@
                     "rtg-tools": 3.13
                 },
                 "RTGTOOLS_VCFEVAL": {
-                    "rtg-tools": null
+                    "rtg-tools": 3.13
                 },
                 "SPLIT_SOMPY_FEATURES": {
                     "python": "3.13.0"
