@@ -88,10 +88,10 @@
                     "tabix": 1.12
                 },
                 "RTGTOOLS_FORMAT": {
-                    "rtg-tools": "3.12.1"
+                    "rtg-tools": 3.13
                 },
                 "RTGTOOLS_VCFEVAL": {
-                    "rtg-tools": "3.12.1"
+                    "rtg-tools": 3.13
                 },
                 "SORT_BED": {
                     "sort": 8.3
@@ -422,7 +422,7 @@
                 "happy_snp_plot.txt:md5,b41aa6387ed8e9a44e7b91d103e7d1d3",
                 "multiqc_bcftools_stats.txt:md5,06efbea184d493e6f4b555014adbaf22",
                 "multiqc_citations.txt:md5,5cbab4ecbe14049d965fd97bd61d252b",
-                "multiqc_variant_calling_summary.txt:md5,6b5ba7190677d6d0899af2e39380ace3",
+                "multiqc_variant_calling_summary.txt:md5,54965d7a060d617b20e0728661677668",
                 "test6.HG002.strelka.extended.csv:md5,f18ca7e3374f3ce7861d6907d7e1cb3d",
                 "test6.HG002.strelka.roc.Locations.INDEL.PASS.csv.gz:md5,3c8622a36372debd7f34378950290e12",
                 "test6.HG002.strelka.roc.Locations.INDEL.csv.gz:md5,e42507fb78a4117875f70517ae96b8c6",
@@ -430,8 +430,8 @@
                 "test6.HG002.strelka.roc.Locations.SNP.csv.gz:md5,29fd6330276e92c7d8a717a28e3f9033",
                 "test6.HG002.strelka.roc.all.csv.gz:md5,a5ff48294cdc658188283f66cd6d082a",
                 "test6.HG002.strelka.summary.csv:md5,6141a8d3081586d646c17853f36c5c69",
-                "test6.HG002.strelka.phasing.txt:md5,9f9c0755194659bc73f95202319d3eb3",
-                "test6.HG002.strelka.summary.txt:md5,11cd187b1603f0c7302a88818e00d999",
+                "test6.HG002.strelka.phasing.txt:md5,74beb1b5143dc805429ba83161a1ddb1",
+                "test6.HG002.strelka.summary.txt:md5,aef91ec7a1ddc4a6630433f6758ce92c",
                 "test6.strelka.bcftools_stats.txt:md5,bcc46a7b008c4e814547cb5c6d7dca6d",
                 "test7.HG002.bcftools.extended.csv:md5,b5db7cb67af04ca3a1a7497d0feecea5",
                 "test7.HG002.bcftools.roc.Locations.INDEL.PASS.csv.gz:md5,eab526036509a758b3f9f817f426e9a1",
@@ -441,7 +441,7 @@
                 "test7.HG002.bcftools.roc.all.csv.gz:md5,7104d15203af3e508676e5a4b52519e4",
                 "test7.HG002.bcftools.summary.csv:md5,eae40dc5cb770b8a0823dc3158da2eee",
                 "test7.HG002.bcftools.phasing.txt:md5,38920536b8c3e241e873c07ba61762e6",
-                "test7.HG002.bcftools.summary.txt:md5,2b4e9d25a5b97539a44e75c97cee74b9",
+                "test7.HG002.bcftools.summary.txt:md5,fba45e70adf949ec87ab21cbcf0ef1e8",
                 "test7.bcftools.bcftools_stats.txt:md5,70f24cedd2233623f63f886e37977b93"
             ]
         ],
@@ -449,6 +449,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2025-11-17T16:20:17.63697071"
+        "timestamp": "2026-01-20T09:06:42.657093085"
     }
 }
