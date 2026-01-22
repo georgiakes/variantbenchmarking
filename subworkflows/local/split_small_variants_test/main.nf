@@ -28,9 +28,8 @@ workflow SPLIT_SMALL_VARIANTS_TEST {
     TABIX_BGZIPTABIX_SNV(
         BCFTOOLS_VIEW_SNV.out.vcf
     )
-    versions = versions.mix(TABIX_BGZIPTABIX_SNV.out.versions.first())
 
-    TABIX_BGZIPTABIX_SNV.out.gz_tbi
+    TABIX_BGZIPTABIX_SNV.out.gz_index
         .map { meta, file, index -> tuple(meta + [vartype: "snv"], file, index) }
         .set{split_snv_vcf}
     out_vcf_ch = out_vcf_ch.mix(split_snv_vcf)
@@ -46,8 +45,7 @@ workflow SPLIT_SMALL_VARIANTS_TEST {
     TABIX_BGZIPTABIX_INDEL(
         BCFTOOLS_VIEW_INDEL.out.vcf
     )
-    versions = versions.mix(TABIX_BGZIPTABIX_INDEL.out.versions.first())
-    TABIX_BGZIPTABIX_INDEL.out.gz_tbi
+    TABIX_BGZIPTABIX_INDEL.out.gz_index
         .map { meta, file, index -> tuple(meta + [vartype: "indel"], file, index) }
         .set{split_indel_vcf}
     out_vcf_ch = out_vcf_ch.mix(split_indel_vcf)

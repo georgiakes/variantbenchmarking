@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Added`
 
 - RTGtools update to 3.13 [#261](https://github.com/nf-core/variantbenchmarking/issues/261)
+- Transforming local modules with bcftools and tabix to standard nf-core modules [#267](https://github.com/nf-core/variantbenchmarking/pull/267)
 
 ### `Fixed`
 
 ### `Dependencies`
 
-| Dependency | Old version | New version |
-| ---------- | ----------- | ----------- |
-| rtgtools   | 3.12.1      | 3.13        |
+| Dependency        | Old version | New version |
+| ----------------- | ----------- | ----------- |
+| rtgtools          | 3.12.1      | 3.13        |
+| bcftools/reheader | 1.2         | 1.22        |
+| tabix             | 1.19.1      | 1.21        |
 
 ## 1.4.0
 

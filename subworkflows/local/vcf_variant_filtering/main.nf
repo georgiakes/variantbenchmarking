@@ -30,7 +30,6 @@ workflow VCF_VARIANT_FILTERING {
         TABIX_BGZIP(
             vcf_ch.map{ meta, vcf, index -> tuple(meta, vcf)}
         )
-        versions = versions.mix(TABIX_BGZIP.out.versions.first())
         vcf_ch = TABIX_BGZIP.out.output
     }
 
@@ -53,8 +52,7 @@ workflow VCF_VARIANT_FILTERING {
     TABIX_BGZIPTABIX(
         vcf_ch
     )
-    versions = versions.mix(TABIX_BGZIPTABIX.out.versions.first())
-    vcf_ch = TABIX_BGZIPTABIX.out.gz_tbi
+    vcf_ch = TABIX_BGZIPTABIX.out.gz_index
 
     emit:
     vcf_ch    // [val(meta), vcf.gz, index]

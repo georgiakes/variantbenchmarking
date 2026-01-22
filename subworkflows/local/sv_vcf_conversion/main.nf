@@ -3,13 +3,14 @@
 //
 
 include { SVYNC                   } from '../../../modules/nf-core/svync'
-include { BGZIP_TABIX             } from '../../../modules/local/bgzip/tabix'
-include { TABIX_TABIX             } from '../../../modules/nf-core/tabix/tabix'
+include { TABIX_BGZIPTABIX        } from '../../../modules/nf-core/tabix/bgziptabix'
 include { VARIANT_EXTRACTOR       } from '../../../modules/local/custom/variant_extractor'
-include { SVTK_STANDARDIZE        } from '../../../modules/nf-core/svtk/standardize/main.nf'
+include { SVTK_STANDARDIZE        } from '../../../modules/nf-core/svtk/standardize'
 include { RTGTOOLS_SVDECOMPOSE    } from '../../../modules/nf-core/rtgtools/svdecompose'
 include { BCFTOOLS_SORT as BCFTOOLS_SORT1 } from '../../../modules/nf-core/bcftools/sort'
 include { BCFTOOLS_SORT as BCFTOOLS_SORT2 } from '../../../modules/nf-core/bcftools/sort'
+include { TABIX_TABIX as TABIX_TABIX_1    } from '../../../modules/nf-core/tabix/tabix'
+include { TABIX_TABIX as TABIX_TABIX_2    } from '../../../modules/nf-core/tabix/tabix'
 
 
 workflow SV_VCF_CONVERSIONS {
@@ -57,13 +58,12 @@ workflow SV_VCF_CONVERSIONS {
             }
             .set{input}
 
-        TABIX_TABIX(
+        TABIX_TABIX_1(
             input.tool
         )
-        versions = versions.mix(TABIX_TABIX.out.versions)
 
         SVTK_STANDARDIZE(
-            input.tool.join(TABIX_TABIX.out.tbi),
+            input.tool.join(TABIX_TABIX_1.out.index),
             fai
         )
         versions = versions.mix(SVTK_STANDARDIZE.out.versions)
@@ -88,12 +88,24 @@ workflow SV_VCF_CONVERSIONS {
         input_ch = RTGTOOLS_SVDECOMPOSE.out.vcf
     }
 
-    // zip and index input test files
-    BGZIP_TABIX(
-        input_ch
-    )
-    versions = versions.mix(BGZIP_TABIX.out.versions.first())
-    vcf_ch = BGZIP_TABIX.out.gz_tbi
+   input_ch
+        .branch {
+            compressed:   it[1].getName().endsWith('.gz')
+            uncompressed: true
+        }
+        .set { ch_inputs }
+
+    TABIX_BGZIPTABIX (
+        ch_inputs.uncompressed
+        )
+
+    TABIX_TABIX_2 (
+        ch_inputs.compressed
+        )
+
+    compressed_ch = ch_inputs.compressed.join(TABIX_TABIX_2.out.index)
+
+    vcf_ch = TABIX_BGZIPTABIX.out.gz_index.mix(compressed_ch)
 
     // RUN SVYNC tool to reformat SV callers
     if(params.sv_standardization.contains("svync")){

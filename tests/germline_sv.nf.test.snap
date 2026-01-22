@@ -13,22 +13,22 @@
                     "bcftools": 1.21
                 },
                 "BCFTOOLS_REHEADER_1": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_2": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_3": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_4": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_QUERY": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_TRUTH": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_SORT2": {
                     "bcftools": 1.2
@@ -41,9 +41,6 @@
                 },
                 "BCFTOOLS_STATS": {
                     "bcftools": 1.18
-                },
-                "BGZIP_TABIX": {
-                    "tabix": 1.12
                 },
                 "DATAVZRD": {
                     "datavzrd": "2.36.12"
@@ -81,17 +78,14 @@
                 "SVTK_STANDARDIZE": {
                     "svtk": "0.0.20190615"
                 },
-                "TABIX_BGZIP_QUERY": {
-                    "tabix": "1.19.1"
-                },
-                "TABIX_BGZIP_TRUTH": {
-                    "tabix": "1.19.1"
-                },
                 "TABIX_BGZIP_UNZIP": {
-                    "tabix": "1.19.1"
+                    "tabix": 1.21
                 },
-                "TABIX_TABIX": {
-                    "tabix": "1.19.1"
+                "TABIX_TABIX_1": {
+                    "tabix": 1.21
+                },
+                "TABIX_TABIX_2": {
+                    "tabix": 1.21
                 },
                 "TRUVARI_BENCH": {
                     "truvari": "5.3.0)"
@@ -372,23 +366,23 @@
             [
                 "HG002.bcftools_stats.txt:md5,bc95472c545c41b97fc6c657ebb1132b",
                 "HG002_mqc.stats:md5,ba6a6398a99b95579872576cacde4c8c",
-                "multiqc_bcftools_stats.txt:md5,8a39c0f312176292b27cf545aa86fbb6",
+                "multiqc_bcftools_stats.txt:md5,6faf8d69bb278a448d964980040e4119",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
                 "multiqc_survivor.txt:md5,9d7cb093118b42cabfc8d9d9f7cc21bd",
                 "multiqc_variant_calling_summary.txt:md5,bc447c5d92b0e5ceb220b5d1b4272530",
-                "test1.manta.bcftools_stats.txt:md5,2112d58e5f7ab395ca1930c2c83a0bcc",
+                "test1.manta.bcftools_stats.txt:md5,0bdf40b561ea15c4678f3f2dab913b87",
                 "test1.manta_mqc.stats:md5,011ad66fec4287d32cb728c40e240c0b",
-                "test2.lumpy.bcftools_stats.txt:md5,410c81a7d4d092aed89c18e9d2ae5b29",
+                "test2.lumpy.bcftools_stats.txt:md5,902988ad414dbb55d106aa465832a85f",
                 "test2.lumpy_mqc.stats:md5,f3a75d802c37cd363f1b68695463a5b3",
-                "test3.delly.bcftools_stats.txt:md5,58af253c5c343d191b30390905c00adc",
+                "test3.delly.bcftools_stats.txt:md5,9a81357c971d0161666b11e1aa674b45",
                 "test3.delly_mqc.stats:md5,f5fa584015eadb2ef33c831f3479c0d4"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-11-18T09:11:26.633968849"
+        "timestamp": "2026-01-22T10:54:33.472493123"
     },
     "-stub": {
         "content": [
@@ -404,22 +398,22 @@
                     "bcftools": 1.21
                 },
                 "BCFTOOLS_REHEADER_1": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_2": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_3": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_4": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_QUERY": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_TRUTH": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_SORT2": {
                     "bcftools": 1.2
@@ -432,9 +426,6 @@
                 },
                 "BCFTOOLS_STATS": {
                     "bcftools": 1.18
-                },
-                "BGZIP_TABIX": {
-                    "tabix": 1.12
                 },
                 "DATAVZRD": {
                     "datavzrd": "2.36.12"
@@ -472,17 +463,14 @@
                 "SVTK_STANDARDIZE": {
                     "svtk": "0.0.20190615"
                 },
-                "TABIX_BGZIP_QUERY": {
-                    "tabix": "1.19.1"
-                },
-                "TABIX_BGZIP_TRUTH": {
-                    "tabix": "1.19.1"
-                },
                 "TABIX_BGZIP_UNZIP": {
-                    "tabix": "1.19.1"
+                    "tabix": 1.21
                 },
-                "TABIX_TABIX": {
-                    "tabix": "1.19.1"
+                "TABIX_TABIX_1": {
+                    "tabix": 1.21
+                },
+                "TABIX_TABIX_2": {
+                    "tabix": 1.21
                 },
                 "TRUVARI_BENCH": {
                     "truvari": "5.3.0)"
@@ -716,8 +704,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-10-20T11:31:22.014513937"
+        "timestamp": "2026-01-22T10:57:51.041513426"
     }
 }

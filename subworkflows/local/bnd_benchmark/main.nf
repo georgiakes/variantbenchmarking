@@ -3,10 +3,10 @@
 //
 
 include { RTGTOOLS_BNDEVAL   } from '../../../modules/nf-core/rtgtools/bndeval'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4  } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1  } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2  } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3  } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4  } from '../../../modules/nf-core/bcftools/reheader'
 
 workflow BND_BENCHMARK {
     take:
@@ -38,7 +38,6 @@ workflow BND_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_1.out.versions.first())
 
     BCFTOOLS_REHEADER_1.out.vcf
         .join(BCFTOOLS_REHEADER_1.out.index)
@@ -51,7 +50,6 @@ workflow BND_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_2.out.versions)
 
     BCFTOOLS_REHEADER_2.out.vcf
         .join(BCFTOOLS_REHEADER_2.out.index)
@@ -64,7 +62,6 @@ workflow BND_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_3.out.versions)
 
     BCFTOOLS_REHEADER_3.out.vcf
         .join(BCFTOOLS_REHEADER_3.out.index)
@@ -77,7 +74,6 @@ workflow BND_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_4.out.versions)
 
     BCFTOOLS_REHEADER_4.out.vcf
         .join(BCFTOOLS_REHEADER_4.out.index)

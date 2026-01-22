@@ -10,10 +10,10 @@
                     "bcftools": 1.21
                 },
                 "BCFTOOLS_REHEADER_QUERY": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_TRUTH": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_SORT": {
                     "bcftools": 1.2
@@ -23,9 +23,6 @@
                 },
                 "BCFTOOLS_VIEW_CONTIGS": {
                     "bcftools": 1.2
-                },
-                "BGZIP_TABIX": {
-                    "tabix": 1.12
                 },
                 "DATAVZRD": {
                     "datavzrd": "2.36.12"
@@ -61,7 +58,10 @@
                     "svanalyzer": 0.36
                 },
                 "TABIX_BGZIP_UNZIP": {
-                    "tabix": "1.19.1"
+                    "tabix": 1.21
+                },
+                "TABIX_TABIX_2": {
+                    "tabix": 1.21
                 },
                 "VCF_TO_CSV": {
                     "python": "3.13.0"
@@ -212,15 +212,15 @@
             [
                 "HG002.bcftools_stats.txt:md5,12b09b32a2793b52830091a5895e00d0",
                 "HG002_mqc.stats:md5,ba6a6398a99b95579872576cacde4c8c",
-                "multiqc_bcftools_stats.txt:md5,fced87ee1b40160c0fad29f1adc1bd1e",
+                "multiqc_bcftools_stats.txt:md5,cde88ce0913e6c210887b0f757d6d6c0",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
                 "multiqc_survivor.txt:md5,959dc53884368cf2f85d18be5c627b99",
                 "multiqc_variant_calling_summary.txt:md5,de653cd3599f286c3f065b2c0f923532",
-                "test1.delly.bcftools_stats.txt:md5,209604ebf522660875a29723798e03ae",
+                "test1.delly.bcftools_stats.txt:md5,0e543f5cfd3ca37e034faff63c54347a",
                 "test1.delly_mqc.stats:md5,6e79c2fe59f011aedc63a6286ef85001",
-                "test2.lumpy.bcftools_stats.txt:md5,793655055cdb78556ae6b8e126ff743f",
+                "test2.lumpy.bcftools_stats.txt:md5,6e9cbd41d6629a66898d5e94bac45178",
                 "test2.lumpy_mqc.stats:md5,6a22796091a559398e14325a4349f19e",
-                "test3.manta.bcftools_stats.txt:md5,a3f6a0e9aa7dbade8528836d3a2c8c85",
+                "test3.manta.bcftools_stats.txt:md5,d5ad992449bb9c770078358df3a8e99b",
                 "test3.manta_mqc.stats:md5,c6d5b9f40c4aa8c7b30155464eb52e3c"
             ]
         ],
@@ -228,7 +228,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2025-11-17T15:57:40.119156284"
+        "timestamp": "2026-01-22T11:10:19.451368557"
     },
     "-stub": {
         "content": [
@@ -241,10 +241,10 @@
                     "bcftools": 1.21
                 },
                 "BCFTOOLS_REHEADER_QUERY": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_TRUTH": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_SORT": {
                     "bcftools": 1.2
@@ -254,9 +254,6 @@
                 },
                 "BCFTOOLS_VIEW_CONTIGS": {
                     "bcftools": 1.2
-                },
-                "BGZIP_TABIX": {
-                    "tabix": 1.12
                 },
                 "DATAVZRD": {
                     "datavzrd": "2.36.12"
@@ -292,7 +289,10 @@
                     "svanalyzer": 0.36
                 },
                 "TABIX_BGZIP_UNZIP": {
-                    "tabix": "1.19.1"
+                    "tabix": 1.21
+                },
+                "TABIX_TABIX_2": {
+                    "tabix": 1.21
                 },
                 "VCF_TO_CSV": {
                     "python": "3.13.0"
@@ -422,6 +422,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2025-11-17T16:00:18.736648776"
+        "timestamp": "2026-01-22T11:13:03.89670906"
     }
 }

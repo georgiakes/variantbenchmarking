@@ -4,22 +4,22 @@
             52,
             {
                 "BCFTOOLS_REHEADER_1": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_2": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_3": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_4": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_QUERY": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_TRUTH": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_SPLIT_MULTI": {
                     "bcftools": 1.21
@@ -57,14 +57,8 @@
                 "SVTK_VCF2BED": {
                     "svtk": "0.0.20190615"
                 },
-                "TABIX_BGZIP_QUERY": {
-                    "tabix": "1.19.1"
-                },
-                "TABIX_BGZIP_TRUTH": {
-                    "tabix": "1.19.1"
-                },
                 "TABIX_BGZIP_UNZIP": {
-                    "tabix": "1.19.1"
+                    "tabix": 1.21
                 },
                 "TRUVARI_BENCH": {
                     "truvari": "5.3.0)"
@@ -349,8 +343,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-11-18T10:22:00.953028725"
+        "timestamp": "2026-01-22T15:15:28.738750746"
     }
 }

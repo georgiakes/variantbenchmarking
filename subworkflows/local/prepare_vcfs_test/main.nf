@@ -12,7 +12,7 @@ include { PUBLISH_PROCESSED_VCF        } from '../../../modules/local/custom/pub
 include { RTGTOOLS_SVDECOMPOSE         } from '../../../modules/nf-core/rtgtools/svdecompose'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_CONTIGS      } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_NORM as BCFTOOLS_SPLIT_MULTI       } from '../../../modules/nf-core/bcftools/norm'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_QUERY} from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_QUERY} from '../../../modules/nf-core/bcftools/reheader'
 
 
 workflow PREPARE_VCFS_TEST {
@@ -68,7 +68,6 @@ workflow PREPARE_VCFS_TEST {
     versions = versions.mix(FIX_VCF_PREFIX.out.versions.first())
     vcf_ch = vcf_ch.mix(FIX_VCF_PREFIX.out.vcf,fix.other)
 
-
     // Add "query" to test sample
     // rename sample name
     BCFTOOLS_REHEADER_QUERY(
@@ -78,7 +77,6 @@ workflow PREPARE_VCFS_TEST {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_QUERY.out.versions.first())
 
     BCFTOOLS_REHEADER_QUERY.out.vcf.join(BCFTOOLS_REHEADER_QUERY.out.index)
         .set{vcf_ch}

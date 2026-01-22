@@ -4,7 +4,7 @@
 
 include { PICARD_LIFTOVERVCF   } from '../../../modules/nf-core/picard/liftovervcf'
 include { REFORMAT_HEADER      } from '../../../modules/local/custom/reformat_header'
-include { BCFTOOLS_RENAME_CHR  } from '../../../modules/local/bcftools/rename_chr'
+include { BCFTOOLS_ANNOTATE    } from '../../../modules/nf-core/bcftools/annotate'
 include { UCSC_LIFTOVER        } from '../../../modules/nf-core/ucsc/liftover'
 include { SORT_BED             } from '../../../modules/local/custom/sort_bed'
 include { BEDTOOLS_MERGE       } from '../../../modules/nf-core/bedtools/merge'
@@ -40,12 +40,13 @@ workflow LIFTOVER_VCFS {
     versions = versions.mix(REFORMAT_HEADER.out.versions)
 
     // rename chr after liftover
-    BCFTOOLS_RENAME_CHR(
-        REFORMAT_HEADER.out.gz_tbi,
-        rename_chr
+    BCFTOOLS_ANNOTATE(
+        REFORMAT_HEADER.out.gz_tbi.map{meta, vcf, tbi -> tuple(meta, vcf, tbi, [], [])},
+        [],
+        [],
+        rename_chr.map{_meta, file -> file}
     )
-    vcf_ch = BCFTOOLS_RENAME_CHR.out.vcf
-    versions = versions.mix(BCFTOOLS_RENAME_CHR.out.versions)
+    vcf_ch = BCFTOOLS_ANNOTATE.out.vcf
 
     // liftover high confidence bed file if given
     UCSC_LIFTOVER(

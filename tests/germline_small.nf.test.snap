@@ -25,16 +25,22 @@
                     "bcftools": 1.21
                 },
                 "BCFTOOLS_REHEADER_1": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_2": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
+                },
+                "BCFTOOLS_REHEADER_3": {
+                    "bcftools": 1.22
+                },
+                "BCFTOOLS_REHEADER_4": {
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_QUERY": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_TRUTH": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_SORT": {
                     "bcftools": 1.2
@@ -278,7 +284,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2026-01-20T08:56:08.443970309"
+        "timestamp": "2026-01-22T11:24:20.888140227"
     },
     "Params: --analysis 'germline' --variant_type 'small' --method 'happy,rtgtools'": {
         "content": [
@@ -306,16 +312,22 @@
                     "bcftools": 1.21
                 },
                 "BCFTOOLS_REHEADER_1": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_2": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
+                },
+                "BCFTOOLS_REHEADER_3": {
+                    "bcftools": 1.22
+                },
+                "BCFTOOLS_REHEADER_4": {
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_QUERY": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_REHEADER_TRUTH": {
-                    "bcftools": 1.2
+                    "bcftools": 1.22
                 },
                 "BCFTOOLS_SORT": {
                     "bcftools": 1.2
@@ -706,6 +718,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2026-01-20T08:53:03.762028225"
+        "timestamp": "2026-01-21T16:12:37.280394425"
     }
 }
