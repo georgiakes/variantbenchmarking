@@ -14,11 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Dependencies`
 
-| Dependency | Old version | New version |
-| ---------- | ----------- | ----------- |
-| rtgtools   | 3.12.1      | 3.13        |
-| bcftools/reheader | 1.2  | 1.22        |
-| tabix      | 1.19.1      | 1.21        | 
+| Dependency        | Old version | New version |
+| ----------------- | ----------- | ----------- |
+| rtgtools          | 3.12.1      | 3.13        |
+| bcftools/reheader | 1.2         | 1.22        |
+| tabix             | 1.19.1      | 1.21        |
 
 ## 1.4.0
 
