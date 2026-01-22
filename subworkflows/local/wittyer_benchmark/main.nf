@@ -20,14 +20,12 @@ workflow WITTYER_BENCHMARK {
             [ meta, vcf ]
         }
     )
-    versions = versions.mix(TABIX_BGZIP_QUERY.out.versions.first())
 
     TABIX_BGZIP_TRUTH(
         input_ch.map { meta, _vcf, _tbi, truth_vcf, _truth_tbi, _bed, _targets_bed  ->
             [ meta, truth_vcf ]
         }
     )
-    versions = versions.mix(TABIX_BGZIP_TRUTH.out.versions.first())
 
     input_ch.map { meta, _vcf, _tbi, _truth_vcf, _truth_tbi, bed, _targets_bed  ->
             [ meta, bed ]

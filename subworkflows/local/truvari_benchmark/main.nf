@@ -3,10 +3,10 @@
 //
 
 include { TRUVARI_BENCH                             } from '../../../modules/nf-core/truvari/bench'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3  } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4  } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1  } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2  } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_3  } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_4  } from '../../../modules/nf-core/bcftools/reheader'
 
 workflow TRUVARI_BENCHMARK {
     take:
@@ -42,7 +42,6 @@ workflow TRUVARI_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_1.out.versions)
 
     BCFTOOLS_REHEADER_1.out.vcf
         .join(BCFTOOLS_REHEADER_1.out.index)
@@ -56,7 +55,6 @@ workflow TRUVARI_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_2.out.versions)
 
     // add tag and to meta
     BCFTOOLS_REHEADER_2.out.vcf
@@ -71,7 +69,6 @@ workflow TRUVARI_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_3.out.versions)
 
     // add tag and to meta
     BCFTOOLS_REHEADER_3.out.vcf
@@ -86,7 +83,6 @@ workflow TRUVARI_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_4.out.versions)
 
     // add tag and to meta
     BCFTOOLS_REHEADER_4.out.vcf

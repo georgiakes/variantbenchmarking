@@ -7,10 +7,10 @@ include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TP_BASE } from '../../../modules/nf-cor
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_FN      } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_FP      } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TP_COMP } from '../../../modules/nf-core/bcftools/view'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TP_BASE } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_FN      } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_FP      } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TP_COMP } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TP_BASE } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_FN      } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_FP      } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TP_COMP } from '../../../modules/nf-core/bcftools/reheader'
 
 workflow CONCORDANCE_ANALYSIS {
     take:
@@ -89,7 +89,6 @@ workflow CONCORDANCE_ANALYSIS {
         },
         fai_ch
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_FN.out.versions.first())
 
     // Tag FN variants
     BCFTOOLS_REHEADER_FN.out.vcf
@@ -114,7 +113,6 @@ workflow CONCORDANCE_ANALYSIS {
         },
         fai_ch
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_TP_BASE.out.versions.first())
 
     // Tag TP variants
     BCFTOOLS_REHEADER_TP_BASE.out.vcf
@@ -139,7 +137,6 @@ workflow CONCORDANCE_ANALYSIS {
         },
         fai_ch
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_TP_COMP.out.versions.first())
 
     // Tag TP comp variants
     BCFTOOLS_REHEADER_TP_COMP.out.vcf
@@ -163,7 +160,6 @@ workflow CONCORDANCE_ANALYSIS {
         },
         fai_ch
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_FP.out.versions.first())
 
     // Tag FP variants
     BCFTOOLS_REHEADER_FP.out.vcf

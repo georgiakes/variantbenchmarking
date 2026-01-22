@@ -9,7 +9,7 @@ include { BCFTOOLS_NORM              } from '../../../modules/nf-core/bcftools/n
 include { PUBLISH_PROCESSED_VCF      } from '../../../modules/local/custom/publish_processed_vcf'
 include { RTGTOOLS_SVDECOMPOSE      } from '../../../modules/nf-core/rtgtools/svdecompose'
 include { BCFTOOLS_NORM as BCFTOOLS_SPLIT_MULTI       } from '../../../modules/nf-core/bcftools/norm'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TRUTH} from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_TRUTH} from '../../../modules/nf-core/bcftools/reheader'
 
 
 workflow PREPARE_VCFS_TRUTH {
@@ -50,7 +50,6 @@ workflow PREPARE_VCFS_TRUTH {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_TRUTH.out.versions)
 
     BCFTOOLS_REHEADER_TRUTH.out.vcf.join(BCFTOOLS_REHEADER_TRUTH.out.index)
         .set{vcf_ch}

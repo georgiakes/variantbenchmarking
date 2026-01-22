@@ -4,8 +4,8 @@
 
 include { HAPPY_HAPPY      } from '../../../modules/nf-core/happy/happy/main'
 include { HAPPY_PREPY      } from '../../../modules/nf-core/happy/prepy/main'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1    } from '../../../modules/local/bcftools/reheader'
-include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2    } from '../../../modules/local/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_1    } from '../../../modules/nf-core/bcftools/reheader'
+include { BCFTOOLS_REHEADER as BCFTOOLS_REHEADER_2    } from '../../../modules/nf-core/bcftools/reheader'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_TRUTH        } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_QUERY        } from '../../../modules/nf-core/bcftools/view'
 include { BCFTOOLS_FILTER as BCFTOOLS_FILTER_TRUTH_TP } from '../../../modules/nf-core/bcftools/filter'
@@ -87,7 +87,6 @@ workflow HAPPY_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_1.out.versions)
 
     // Subsample QUERY column from happy results
     BCFTOOLS_VIEW_QUERY(
@@ -105,7 +104,6 @@ workflow HAPPY_BENCHMARK {
         },
         fai
     )
-    versions = versions.mix(BCFTOOLS_REHEADER_2.out.versions)
 
     BCFTOOLS_FILTER_TRUTH_TP(
         BCFTOOLS_REHEADER_1.out.vcf.join(BCFTOOLS_REHEADER_1.out.index)
