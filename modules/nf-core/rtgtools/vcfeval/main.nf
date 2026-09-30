@@ -12,19 +12,21 @@ process RTGTOOLS_VCFEVAL {
     tuple val(meta2), path(sdf)
 
     output:
-    tuple val(meta), path("*.tp.vcf.gz")                , emit: tp_vcf
-    tuple val(meta), path("*.tp.vcf.gz.tbi")            , emit: tp_tbi
-    tuple val(meta), path("*.fn.vcf.gz")                , emit: fn_vcf
-    tuple val(meta), path("*.fn.vcf.gz.tbi")            , emit: fn_tbi
-    tuple val(meta), path("*.fp.vcf.gz")                , emit: fp_vcf
-    tuple val(meta), path("*.fp.vcf.gz.tbi")            , emit: fp_tbi
-    tuple val(meta), path("*.tp-baseline.vcf.gz")       , emit: baseline_vcf
-    tuple val(meta), path("*.tp-baseline.vcf.gz.tbi")   , emit: baseline_tbi
-    tuple val(meta), path("*.snp_roc.tsv.gz")           , emit: snp_roc
-    tuple val(meta), path("*.non_snp_roc.tsv.gz")       , emit: non_snp_roc
-    tuple val(meta), path("*.weighted_roc.tsv.gz")      , emit: weighted_roc
-    tuple val(meta), path("*.summary.txt")              , emit: summary
-    tuple val(meta), path("*.phasing.txt")              , emit: phasing
+    tuple val(meta), path("*.tp.vcf.gz")                , emit: tp_vcf, optional: true
+    tuple val(meta), path("*.tp.vcf.gz.tbi")            , emit: tp_tbi, optional: true
+    tuple val(meta), path("*.fn.vcf.gz")                , emit: fn_vcf, optional: true
+    tuple val(meta), path("*.fn.vcf.gz.tbi")            , emit: fn_tbi, optional: true
+    tuple val(meta), path("*.fp.vcf.gz")                , emit: fp_vcf, optional: true
+    tuple val(meta), path("*.fp.vcf.gz.tbi")            , emit: fp_tbi, optional: true
+    tuple val(meta), path("*.tp-baseline.vcf.gz")       , emit: baseline_vcf, optional: true
+    tuple val(meta), path("*.tp-baseline.vcf.gz.tbi")   , emit: baseline_tbi, optional: true
+    tuple val(meta), path("*.output.vcf.gz")            , emit: output_vcf, optional: true
+    tuple val(meta), path("*.output.vcf.gz.tbi")        , emit: output_tbi, optional: true
+    tuple val(meta), path("*.snp_roc.tsv.gz")           , emit: snp_roc, optional: true
+    tuple val(meta), path("*.non_snp_roc.tsv.gz")       , emit: non_snp_roc, optional: true
+    tuple val(meta), path("*.weighted_roc.tsv.gz")      , emit: weighted_roc, optional: true
+    tuple val(meta), path("*.summary.txt")              , emit: summary, optional: true
+    tuple val(meta), path("*.phasing.txt")              , emit: phasing, optional: true
     tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
 
@@ -61,21 +63,29 @@ process RTGTOOLS_VCFEVAL {
     """
 
     stub:
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    """
-    echo | gzip > ${prefix}.tp.vcf.gz
-    touch ${prefix}.tp.vcf.gz.tbi
-    echo | gzip > ${prefix}.fn.vcf.gz
-    touch ${prefix}.fn.vcf.gz.tbi
-    echo | gzip > ${prefix}.fp.vcf.gz
-    touch ${prefix}.fp.vcf.gz.tbi
-    echo | gzip > ${prefix}.tp-baseline.vcf.gz
-    touch ${prefix}.tp-baseline.vcf.gz.tbi
-    echo | gzip > ${prefix}.snp_roc.tsv.gz
-    echo | gzip > ${prefix}.non_snp_roc.tsv.gz
-    echo | gzip > ${prefix}.weighted_roc.tsv.gz
-    touch ${prefix}.summary.txt
-    touch ${prefix}.phasing.txt
-    """
+    if (args ==~ /.*(-m|--output-mode)[ =]ga4gh.*/) {
+        """
+        echo | gzip > ${prefix}.output.vcf.gz
+        touch ${prefix}.output.vcf.gz.tbi
+        """
+    } else {
+        """
+        echo | gzip > ${prefix}.tp.vcf.gz
+        touch ${prefix}.tp.vcf.gz.tbi
+        echo | gzip > ${prefix}.fn.vcf.gz
+        touch ${prefix}.fn.vcf.gz.tbi
+        echo | gzip > ${prefix}.fp.vcf.gz
+        touch ${prefix}.fp.vcf.gz.tbi
+        echo | gzip > ${prefix}.tp-baseline.vcf.gz
+        touch ${prefix}.tp-baseline.vcf.gz.tbi
+        echo | gzip > ${prefix}.snp_roc.tsv.gz
+        echo | gzip > ${prefix}.non_snp_roc.tsv.gz
+        echo | gzip > ${prefix}.weighted_roc.tsv.gz
+        touch ${prefix}.summary.txt
+        touch ${prefix}.phasing.txt
+        """
+    }
 }

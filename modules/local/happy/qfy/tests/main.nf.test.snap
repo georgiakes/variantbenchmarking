@@ -1,0 +1,308 @@
+{
+    "homo_sapiens illumina happy vcf": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.summary.csv:md5,d802ef043c6b504e7a103e8dcd4ba300"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.extended.csv:md5,c7d1851ffb1aef2b2e3ca4aaf94dade3"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.roc.all.csv.gz:md5,f1ccbf86653374a9c09a20f5dec3bc50"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.roc.Locations.INDEL.csv.gz:md5,e7035c81472ea713ebdaa4c7f6fbc43b"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.roc.Locations.SNP.csv.gz:md5,12270ccd8b277097ac899b602de1fea9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.roc.Locations.INDEL.PASS.csv.gz:md5,c7b59f00a40bc2ce1b8d8e0c04caa7a8"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.roc.Locations.SNP.PASS.csv.gz:md5,16466cda713d728d91e801392b514158"
+                ]
+            ],
+            {
+                "versions_happy": [
+                    [
+                        "HAPPY_QFY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ]
+            },
+            "test.qfy.metrics.json.gz",
+            "test.qfy.vcf.gz.tbi"
+        ],
+        "timestamp": "2026-10-01T00:24:05.796563152",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "homo_sapiens illumina happy vcf - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.summary.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.extended.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "10": [
+                    [
+                        "HAPPY_QFY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.all.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.INDEL.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.INDEL.PASS.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.SNP.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.SNP.PASS.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.metrics.json.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "8": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "9": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "extended_csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.extended.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "metrics_json": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.metrics.json.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "roc_all_csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.all.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "roc_indel_locations_csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.INDEL.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "roc_indel_locations_pass_csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.INDEL.PASS.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "roc_snp_locations_csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.SNP.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "roc_snp_locations_pass_csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.roc.Locations.SNP.PASS.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "summary_csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.summary.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "tbi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qfy.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_happy": [
+                    [
+                        "HAPPY_QFY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T00:24:55.000987379",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "homo_sapiens illumina happy vcf false_positives stratification": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.summary.csv:md5,8a302b92d08de8d68509e3adc4bb9d4d"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.extended.csv:md5,53df0da737b05a037d5b7cc6b8820943"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qfy.roc.all.csv.gz:md5,05f6288d153837b942cdefe6fe36b8f9"
+                ]
+            ],
+            {
+                "versions_happy": [
+                    [
+                        "HAPPY_QFY",
+                        "happy",
+                        "0.3.15"
+                    ]
+                ]
+            },
+            "test.qfy.metrics.json.gz",
+            "test.qfy.vcf.gz",
+            "test.qfy.vcf.gz.tbi"
+        ],
+        "timestamp": "2026-10-01T00:24:33.571734071",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}

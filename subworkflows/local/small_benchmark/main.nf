@@ -3,6 +3,8 @@
 //
 
 include { RTGTOOLS_VCFEVAL    } from '../../../modules/nf-core/rtgtools/vcfeval'
+include { RTGTOOLS_VCFEVAL as RTGTOOLS_VCFEVAL_GA4GH } from '../../../modules/nf-core/rtgtools/vcfeval'
+include { HAPPY_QFY           } from '../../../modules/local/happy/qfy'
 include { HAPPY_BENCHMARK     } from '../../../subworkflows/local/happy_benchmark'
 include { SOMPY_BENCHMARK     } from '../../../subworkflows/local/sompy_benchmark'
 include { AARDVARK_BENCHMARK  } from '../../../subworkflows/local/aardvark_benchmark'
@@ -59,6 +61,44 @@ workflow SMALL_BENCHMARK {
                                             def transformedTag = mapping[tag] ?: tag
                                             tuple([vartype: params.variant_type, id: "rtgtools", tag: transformedTag], report , index)
                                         }
+
+        if (params.analysis == "germline"){
+
+            // rerun vcfeval in ga4gh mode to get a two-column TRUTH/QUERY annotated vcf
+            RTGTOOLS_VCFEVAL_GA4GH(
+                input_vcfeval_ch,
+                sdf
+            )
+
+            // vcfeval does not label query calls outside the evaluation regions,
+            // so pass them to qfy as confident regions to label those calls as UNK (like hap.py does)
+            RTGTOOLS_VCFEVAL_GA4GH.out.output_vcf
+                .join(RTGTOOLS_VCFEVAL_GA4GH.out.output_tbi, failOnDuplicate:true, failOnMismatch:true)
+                .join(input_vcfeval_ch.map { meta, _test_vcf, _test_tbi, _truth_vcf, _truth_tbi, truth_bed, _regions_bed -> [ meta, truth_bed ] }, failOnDuplicate:true, failOnMismatch:true)
+                .multiMap { meta, vcf, tbi, truth_bed ->
+                    vcf: [ meta, vcf, tbi ]
+                    falsepositive_bed: [ [ id: "falsepositive" ], truth_bed ]
+                }
+                .set { qfy_input }
+
+            // quantify the ga4gh vcf with hap.py qfy to get stratified roc curves
+            HAPPY_QFY(
+                qfy_input.vcf,
+                fasta,
+                fai,
+                qfy_input.falsepositive_bed,
+                stratification_tsv,
+                stratification_bed
+            )
+
+            // collect the roc csv files with the stratified results, labelled per sample and caller
+            stratified_reports = stratified_reports.mix(HAPPY_QFY.out.roc_all_csv
+                .map { meta, csv ->
+                    def csv_meta = [method: "${meta.id}-${meta.caller}"]
+                    tuple([vartype: params.variant_type] + [benchmark_tool: "rtgtools"] + [id: "rtgtools"], csv_meta, csv)
+                }
+                .groupTuple())
+        }
 
     }
 

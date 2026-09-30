@@ -17,6 +17,7 @@ nextflow_workflow {
     tag "aardvark"
     tag "aardvark/compare"
     tag "happy/sompy"
+    tag "happy/qfy"
 
     test("germline small variants happy") {
 
@@ -208,6 +209,9 @@ nextflow_workflow {
                     workflow.out.summary_reports.collect { meta, files ->
                         def fileNames = files instanceof Collection ? files.collect { path(it.toString()).getFileName().toString() } : [path(files.toString()).getFileName().toString()]
                         [meta, fileNames.sort()]
+                    },
+                    workflow.out.stratified_reports.collect { meta, csv_meta, csvs ->
+                        [meta, csv_meta, csvs.collect { path(it.toString()).getFileName().toString() }.sort()]
                     }
                 ).match() }
             )

@@ -1,0 +1,67 @@
+process HAPPY_QFY {
+    tag "$meta.id"
+    label 'process_medium'
+
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/686d544740520e77c3c18013df3b10d5e0b578b3ca198d442a9a1156d301f29e/data':
+        'community.wave.seqera.io/library/hap.py_rtg-tools:5de06c00cb4eb89f' }"
+
+    input:
+    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(false_positives_bed)
+    tuple val(meta5), path(stratification_tsv)
+    tuple val(meta6), path(stratification_beds)
+
+    output:
+    tuple val(meta), path('*.summary.csv')                      , emit: summary_csv
+    tuple val(meta), path('*.extended.csv')                     , emit: extended_csv
+    tuple val(meta), path('*.roc.all.csv.gz')                   , emit: roc_all_csv, optional:true
+    tuple val(meta), path('*.roc.Locations.INDEL.csv.gz')       , emit: roc_indel_locations_csv, optional:true
+    tuple val(meta), path('*.roc.Locations.INDEL.PASS.csv.gz')  , emit: roc_indel_locations_pass_csv, optional:true
+    tuple val(meta), path('*.roc.Locations.SNP.csv.gz')         , emit: roc_snp_locations_csv, optional:true
+    tuple val(meta), path('*.roc.Locations.SNP.PASS.csv.gz')    , emit: roc_snp_locations_pass_csv, optional:true
+    tuple val(meta), path('*.metrics.json.gz')                  , emit: metrics_json, optional:true
+    tuple val(meta), path('*.vcf.gz')                           , emit: vcf, optional:true
+    tuple val(meta), path('*.vcf.gz.tbi')                       , emit: tbi, optional:true
+    tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
+    def stratification = stratification_tsv && stratification_beds ? "--stratification ${stratification_tsv}" : ""
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    qfy.py \\
+        ${vcf} \\
+        ${args} \\
+        --reference ${fasta} \\
+        --threads ${task.cpus} \\
+        ${false_positives} \\
+        ${stratification} \\
+        --report-prefix ${prefix}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    echo "" | gzip > ${prefix}.roc.all.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.INDEL.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.INDEL.PASS.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.SNP.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.SNP.PASS.csv.gz
+    echo "" | gzip > ${prefix}.metrics.json.gz
+    echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
+    touch ${prefix}.summary.csv
+    touch ${prefix}.extended.csv
+    """
+}

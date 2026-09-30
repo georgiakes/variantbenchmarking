@@ -160,6 +160,29 @@ output:
             from the baseline
           pattern: "*.tp-baseline.vcf.gz.tbi"
           ontologies: []
+  output_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.output.vcf.gz":
+          type: file
+          description: Two-column TRUTH/QUERY VCF with GA4GH benchmarking annotations
+            (only produced with `--output-mode ga4gh` or `--output-mode combine`)
+          pattern: "*.output.vcf.gz"
+          ontologies: []
+  output_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.output.vcf.gz.tbi":
+          type: file
+          description: The index of the two-column TRUTH/QUERY VCF
+          pattern: "*.output.vcf.gz.tbi"
+          ontologies: []
   snp_roc:
     - - meta:
           type: map

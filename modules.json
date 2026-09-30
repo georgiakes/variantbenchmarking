@@ -139,7 +139,8 @@
                     "rtgtools/vcfeval": {
                         "branch": "master",
                         "git_sha": "0f04646a9282049b16b3eb35b042e94dfb3340a0",
-                        "installed_by": ["modules"]
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/rtgtools/vcfeval/rtgtools-vcfeval.diff"
                     },
                     "survivor/filter": {
                         "branch": "master",
