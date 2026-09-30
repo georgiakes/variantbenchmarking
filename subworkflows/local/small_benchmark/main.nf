@@ -94,7 +94,7 @@ workflow SMALL_BENCHMARK {
             // collect the roc csv files with the stratified results, labelled per sample and caller
             stratified_reports = stratified_reports.mix(HAPPY_QFY.out.roc_all_csv
                 .map { meta, csv ->
-                    def csv_meta = [method: "${meta.id}-${meta.caller}"]
+                    def csv_meta = [method: "${meta.id}-${meta.caller}", comparison_method: 'vcfeval']
                     tuple([vartype: params.variant_type] + [benchmark_tool: "rtgtools"] + [id: "rtgtools"], csv_meta, csv)
                 }
                 .groupTuple())
