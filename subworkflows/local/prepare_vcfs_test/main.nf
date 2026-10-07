@@ -67,10 +67,9 @@ workflow PREPARE_VCFS_TEST {
 
     // fix vcf chromosome prefix according to reference genome
     BCFTOOLS_RENAME_CHRS(
-        fix.prefix.map { meta, input -> tuple(meta, input, []) },
-        [],
-        [],
-        rename_chr,
+        fix.prefix
+            .combine(rename_chr.map { _meta, txt -> txt })
+            .map { meta, input, txt -> tuple(meta, input, [], [], [], [], [], txt) }
     )
     vcf_ch = vcf_ch.mix(BCFTOOLS_RENAME_CHRS.out.vcf, fix.other)
 
@@ -93,7 +92,7 @@ workflow PREPARE_VCFS_TEST {
             [],
         )
         BCFTOOLS_VIEW_CONTIGS.out.vcf
-            .join(BCFTOOLS_VIEW_CONTIGS.out.tbi, by: 0)
+            .join(BCFTOOLS_VIEW_CONTIGS.out.index, by: 0)
             .set { vcf_ch }
     }
     if (params.preprocess.contains("split_multiallelic")) {
@@ -104,7 +103,7 @@ workflow PREPARE_VCFS_TEST {
         )
 
         BCFTOOLS_SPLIT_MULTI.out.vcf
-            .join(BCFTOOLS_SPLIT_MULTI.out.tbi, by: 0)
+            .join(BCFTOOLS_SPLIT_MULTI.out.index, by: 0)
             .set { vcf_ch }
     }
 
@@ -132,7 +131,7 @@ workflow PREPARE_VCFS_TEST {
             fasta,
         )
         BCFTOOLS_NORM.out.vcf
-            .join(BCFTOOLS_NORM.out.tbi, by: 0)
+            .join(BCFTOOLS_NORM.out.index, by: 0)
             .set { vcf_ch }
     }
 
@@ -171,7 +170,7 @@ workflow PREPARE_VCFS_TEST {
         )
 
         // Recombine the streams
-        processed_vcf = BCFTOOLS_VIEW_FILTERMISSING.out.vcf.join(BCFTOOLS_VIEW_FILTERMISSING.out.tbi)
+        processed_vcf = BCFTOOLS_VIEW_FILTERMISSING.out.vcf.join(BCFTOOLS_VIEW_FILTERMISSING.out.index)
         vcf_ch = processed_vcf.mix(genotype_missing)
     }
 

@@ -57,7 +57,7 @@ workflow PREPARE_VCFS_TRUTH {
             vcf_ch,
             fasta
         )
-        BCFTOOLS_SPLIT_MULTI.out.vcf.join(BCFTOOLS_SPLIT_MULTI.out.tbi, by:0)
+        BCFTOOLS_SPLIT_MULTI.out.vcf.join(BCFTOOLS_SPLIT_MULTI.out.index, by:0)
                             .set{vcf_ch}
     }
 
@@ -77,7 +77,7 @@ workflow PREPARE_VCFS_TRUTH {
             vcf_ch,
             fasta
         )
-        BCFTOOLS_NORM.out.vcf.join(BCFTOOLS_NORM.out.tbi, by:0)
+        BCFTOOLS_NORM.out.vcf.join(BCFTOOLS_NORM.out.index, by:0)
                             .set{vcf_ch}
     }
 
@@ -96,7 +96,7 @@ workflow PREPARE_VCFS_TRUTH {
             [],
             []
         )
-        vcf_ch = BCFTOOLS_VIEW_FILTERMISSING.out.vcf.join(BCFTOOLS_VIEW_FILTERMISSING.out.tbi)
+        vcf_ch = BCFTOOLS_VIEW_FILTERMISSING.out.vcf.join(BCFTOOLS_VIEW_FILTERMISSING.out.index)
     }
 
     emit:

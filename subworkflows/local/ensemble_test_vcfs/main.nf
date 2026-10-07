@@ -24,15 +24,12 @@ workflow ENSEMBLE_TEST_VCFS {
 
     // unify header for callers
     BCFTOOLS_UNIFY_HEADER(
-        test_vcfs.map { meta, vcf, index -> [meta, vcf, index, [], []] },
-        [],
-        [],
-        [],
+        test_vcfs.map { meta, vcf, index -> [meta, vcf, index, [], [], [], [], []] }
     )
 
     // if the benchmarking method is rtgtools, missing GT field is already filled in VCF preperation step, so no need to inject missing GT field
     BCFTOOLS_UNIFY_HEADER.out.vcf
-        .join(BCFTOOLS_UNIFY_HEADER.out.tbi)
+        .join(BCFTOOLS_UNIFY_HEADER.out.index)
         .branch { meta, _vcf, _index ->
             def is_rtg = params.method?.contains("rtgtools")
             def is_strelka_manta = ['strelka', 'manta'].contains(meta.caller.toLowerCase())
@@ -69,10 +66,8 @@ workflow ENSEMBLE_TEST_VCFS {
 
         // merge small variants
         BCFTOOLS_ENSEMBLE(
-            ch_test_vcfs.groupTuple(),
-            fasta,
-            fai,
-            [[], []],
+            ch_test_vcfs.groupTuple().map { meta, vcfs, indexes -> [meta, vcfs, indexes, []] },
+            fasta.combine(fai).map { meta, ref, _meta2, ref_fai -> [meta, ref, ref_fai] }.collect(),
         )
 
         FILTER_MAJORITY(

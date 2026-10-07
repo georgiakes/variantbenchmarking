@@ -47,10 +47,9 @@ workflow LIFTOVER_VCFS {
 
     // rename chr after liftover
     BCFTOOLS_ANNOTATE(
-        TABIX_BGZIPTABIX.out.output.join(TABIX_BGZIPTABIX.out.index, failOnDuplicate: true, failOnMismatch: true).map { meta, vcf, tbi -> tuple(meta, vcf, tbi, [], []) },
-        [],
-        [],
-        rename_chr.map { _meta, vcf -> vcf },
+        TABIX_BGZIPTABIX.out.output.join(TABIX_BGZIPTABIX.out.index, failOnDuplicate: true, failOnMismatch: true)
+            .combine(rename_chr.map { _meta, txt -> txt })
+            .map { meta, vcf, tbi, txt -> tuple(meta, vcf, tbi, [], [], [], [], txt) }
     )
     vcf_ch = BCFTOOLS_ANNOTATE.out.vcf
 

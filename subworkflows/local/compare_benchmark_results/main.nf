@@ -44,10 +44,9 @@ if (params.variant_type == "small" || params.variant_type == "snv" || params.var
         BCFTOOLS_MERGE(
             TABIX_BGZIPTABIX.out.output
                 .join(TABIX_BGZIPTABIX.out.index, failOnMismatch: true)
-                .groupTuple(),
-            fasta,
-            fai,
-            [[], []],
+                .groupTuple()
+                .map { meta, vcfs, indexes -> [meta, vcfs, indexes, []] },
+            fasta.combine(fai).map { meta, ref, _meta2, ref_fai -> [meta, ref, ref_fai] }.collect(),
         )
         merged_vcfs = merged_vcfs.mix(BCFTOOLS_MERGE.out.vcf)
     }

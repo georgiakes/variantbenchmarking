@@ -50,7 +50,7 @@ workflow AARDVARK_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_TRUTH_TP.out.vcf
-        .join(BCFTOOLS_FILTER_TRUTH_TP.out.tbi)
+        .join(BCFTOOLS_FILTER_TRUTH_TP.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "TP_comp"] + [id: "aardvark"], vcf, index) }
         .set { vcf_tp_comp }
 
@@ -59,7 +59,7 @@ workflow AARDVARK_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_TRUTH_FN.out.vcf
-        .join(BCFTOOLS_FILTER_TRUTH_FN.out.tbi)
+        .join(BCFTOOLS_FILTER_TRUTH_FN.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "FN"] + [id: "aardvark"], vcf, index) }
         .set { vcf_fn }
 
@@ -80,7 +80,7 @@ workflow AARDVARK_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_QUERY_TP.out.vcf
-        .join(BCFTOOLS_FILTER_QUERY_TP.out.tbi)
+        .join(BCFTOOLS_FILTER_QUERY_TP.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "TP_base"] + [id: "aardvark"], vcf, index) }
         .set { vcf_tp_base }
 
@@ -89,7 +89,7 @@ workflow AARDVARK_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_QUERY_FP.out.vcf
-        .join(BCFTOOLS_FILTER_QUERY_FP.out.tbi)
+        .join(BCFTOOLS_FILTER_QUERY_FP.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "FP"] + [id: "aardvark"], vcf, index) }
         .set { vcf_fp }
 

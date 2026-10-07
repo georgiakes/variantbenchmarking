@@ -99,7 +99,7 @@ workflow HAPPY_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_TRUTH_TP.out.vcf
-        .join(BCFTOOLS_FILTER_TRUTH_TP.out.tbi)
+        .join(BCFTOOLS_FILTER_TRUTH_TP.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "TP_comp"] + [id: "happy"], vcf, index) }
         .set { vcf_tp_comp }
 
@@ -108,7 +108,7 @@ workflow HAPPY_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_TRUTH_FN.out.vcf
-        .join(BCFTOOLS_FILTER_TRUTH_FN.out.tbi)
+        .join(BCFTOOLS_FILTER_TRUTH_FN.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "FN"] + [id: "happy"], vcf, index) }
         .set { vcf_fn }
 
@@ -117,7 +117,7 @@ workflow HAPPY_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_QUERY_TP.out.vcf
-        .join(BCFTOOLS_FILTER_QUERY_TP.out.tbi)
+        .join(BCFTOOLS_FILTER_QUERY_TP.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "TP_base"] + [id: "happy"], vcf, index) }
         .set { vcf_tp_base }
 
@@ -126,7 +126,7 @@ workflow HAPPY_BENCHMARK {
     )
 
     BCFTOOLS_FILTER_QUERY_FP.out.vcf
-        .join(BCFTOOLS_FILTER_QUERY_FP.out.tbi)
+        .join(BCFTOOLS_FILTER_QUERY_FP.out.index)
         .map { _meta, vcf, index -> tuple([vartype: params.variant_type] + [tag: "FP"] + [id: "happy"], vcf, index) }
         .set { vcf_fp }
 
