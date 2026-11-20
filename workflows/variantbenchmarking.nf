@@ -129,6 +129,11 @@ workflow VARIANTBENCHMARKING {
         }
     }
 
+    // read dictionary file, needed by liftover and concordance
+    // if dictionary file is missing PICARD_CREATESEQUENCEDICTIONARY will create one
+    dictionary      = params.dictionary ? channel.fromPath(params.dictionary, checkIfExists: true).map{ dict -> tuple([id: dict.getSimpleName()], dict) }.collect()
+                                        : channel.empty()
+
     // read chain file, liftover genome and rename chr files if liftover is true
     if (params.liftover){
 
@@ -137,12 +142,8 @@ workflow VARIANTBENCHMARKING {
         }else{
             error "[nf-core/variantbenchmarking] ERROR:Please specify --chain to process liftover of the files"
         }
-        // if dictionary file is missing PICARD_CREATESEQUENCEDICTIONARY will create one
-        dictionary      = params.dictionary ? channel.fromPath(params.dictionary, checkIfExists: true).map{ dict -> tuple([id: dict.getSimpleName()], dict) }.collect()
-                                            : channel.empty()
     }else{
         chain           = channel.empty()
-        dictionary      = channel.empty()
     }
 
     //prepare references and libraries
